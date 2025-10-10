@@ -1,0 +1,5 @@
+# Basic raw ignoring
+*.o
+*.out
+*.bin
+*.~
