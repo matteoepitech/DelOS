@@ -6,9 +6,35 @@ ORG 0x7c00
 ; ======================================================
 [BITS 16]
 
-CODE_SEG equ code_descriptor - GDT_Start ; = 0x08 which is 1 * 8, so the CPU know it's the index number 1 for the code segment
-DATA_SEG equ data_descriptor - GDT_Start ; = 0x10 which is 2 * 8, so the CPU know it's the index number 2 for the data segment
+KERNEL_LOCATION equ 0x10000
+KERNEL_BASE_POINTER equ 0x90000
+CODE_SEG        equ code_descriptor - GDT_Start ; = 0x08 which is 1 * 8, so the CPU know it's the index number 1 for the code segment
+DATA_SEG        equ data_descriptor - GDT_Start ; = 0x10 which is 2 * 8, so the CPU know it's the index number 2 for the data segment
 
+; setup real mode stack and registers
+xor ax, ax
+mov ds, ax
+mov es, ax
+mov ss, ax
+mov sp, 0x7c00
+mov bp, sp
+
+; load kernel and store it on KERNEL_LOCATION
+mov bx, KERNEL_LOCATION ; where to store data 0x0000:KERNEL_LOCATION = KERNEL_LOCATION
+mov ah, 0x02            ; read storage from disk interuption id
+mov al, 0x14            ; we will read 20 sector (MAY INCREASE THIS, this is the kernel ~ size)
+mov ch, 0x00            ; cylinder number 0
+mov dh, 0x00            ; head number 0
+mov cl, 0x02            ; sector number 2 (after the bootsector)
+mov dl, [BOOT_DISK_ID]  ; drive number, the same as the bootsector owner
+int 0x13                ; interuption for reading disk storage
+
+; change the video mode
+mov ah, 0x0             ; change video mode interuption id
+mov al, 0x3             ; desired video mode (text mode)
+int 0x10                ; interuption for changing the video mode from the BIOS
+
+; switch to protected mode
 mov [BOOT_DISK_ID], dl  ; BIOS set dl to the loaded disk ID, so we copy it
 cli                     ; disable material interupts
 lgdt [GDT_Descriptor]   ; load the global descriptor table into the register GDTR
@@ -50,10 +76,17 @@ GDT_Descriptor:
 [BITS 32]
 
 start_protected_mode:
-    mov al, 'A'
-    mov ah, 0x0f
-    mov [0xb8000], ax
-    jmp $
+    mov ax, DATA_SEG
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ebp, KERNEL_BASE_POINTER
+    mov esp, ebp
+
+    jmp $ ; to delet
+    jmp KERNEL_LOCATION ; jump to the kernel
 
 ; ======================================================
 ; DATA
