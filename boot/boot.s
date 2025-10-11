@@ -1,39 +1,71 @@
-; boot.s - Bootloader real mode (16 bits)
+; boot.s
 BITS 16
 ORG 0x7C00
 
-; definitions
-global _start
-
-; _start symbol
+; ----------------------------------------
+; void _start(void)
+; ----------------------------------------
 _start:
     xor ax, ax
     mov ds, ax
     mov es, ax
     mov ss, ax
-    mov sp, 0x7C00    ; move stack pointer to 0x7C00
-   
-    cld               ; set DF flag to 0
-    mov si, msg
+    mov sp, 0x7C00
+
+    mov si, msg_start
     call print_string
     
+    call enable_a20
+
     jmp $
 
-; print_string symbol
+; ----------------------------------------
+; void print_string(char *string)
+;
+; Parameters:
+;   - si = string address
+; ----------------------------------------
 print_string:
-    lodsb             ; load a byte from si in al and increment si by 1 if DF is 0
-    test al, al       ; al & al
+    lodsb
+    test al, al
     jz .done
-    mov ah, 0x0E      ; function id (write teletype character on screen)
-    xor bh, bh        ; set the page number to 0 for the write
-    int 0x10          ; interupt 17 for managing visual and video mode
+    mov ah, 0x0E
+    xor bh, bh
+    int 0x10
     jmp print_string
 
 .done:
     ret
 
-msg db "DelOS booted!", 13, 10, 0
+; ----------------------------------------
+; void enable_a20(void)
+; ----------------------------------------
+enable_a20:
+    mov ah, 0x24        ; "Enable A20" BIOS function
+    int 0x15
+    jnc .done
+    jmp .fail
 
-; set 512 bytes object file with MBR signature
+.done:
+    mov si, msg_a20_ok
+    call print_string
+    ret
+
+.fail:
+    mov si, msg_a20_ko
+    call print_string
+    ret
+
+
+; ======================================================
+; DATA
+; ======================================================
+msg_start db "Bootloader started...", 13, 10, 0
+msg_a20_ok db "A20 line enabled!", 13, 10, 0
+msg_a20_ko db "A20 line failed!", 13, 10, 0
+
+; ======================================================
+; BOOT SIGNATURE
+; ======================================================
 times 510-($-$$) db 0
 dw 0xAA55
