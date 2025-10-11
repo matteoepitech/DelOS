@@ -2,47 +2,34 @@
 BITS 16
 ORG 0x7c00
 
-; ----------------------------------------
-; void _start(void)
-; ----------------------------------------
-_start:
-    xor ax, ax
-    mov ds, ax
-    mov es, ax
-    mov ss, ax
-    mov sp, 0x7c00
-    mov bp, sp
+; BIOS put into dl the disk number. So we save it back.
+mov [BOOT_DISK], dl
 
-    mov si, msg_start
-    call print_string
-    
-    call enable_a20
+xor ax, ax
+mov ds, ax
+mov es, ax
+mov ss, ax
+mov sp, 0x7c00
+mov bp, sp
 
-    xor cx, cx
+mov si, msg_start
+call print_string
 
-.wait_key:
-    mov ah, 0
-    int 0x16
-    cmp al, 13
-    je .print_key
-    push ax
-    inc cx
-    jmp .wait_key
+call enable_a20
 
-.print_key:
-    test cx, cx
-    jz .done
-    dec cx
-    mov bx, sp
-    add bx, cx
-    add bx, cx
-    mov al, byte [bx]
-    mov ah, 0x0e
-    int 0x10
-    jmp .print_key
+mov bx, 0x7e00 ; where to store data 0x0000:0x7E00 = 0x7E00
+mov ah, 2 ; read storage from disk
+mov al, 1 ; sector to read count
+mov ch, 0 ; cylinder
+mov dh, 0 ; head
+mov cl, 2 ; sector
+mov dl, [BOOT_DISK] ; drive
+int 0x13
 
-.done:
-    jmp $
+mov si, 0x7e00
+call print_string
+
+jmp $
 
 ; ----------------------------------------
 ; void print_string(char *string)
@@ -89,8 +76,12 @@ msg_start db "Bootloader started...", 13, 10, 0
 msg_a20_ok db "A20 line enabled!", 13, 10, 0
 msg_a20_ko db "A20 line failed!", 13, 10, 0
 
+BOOT_DISK db 0
+
 ; ======================================================
 ; BOOT SIGNATURE
 ; ======================================================
 times 510-($-$$) db 0
 dw 0xaa55
+
+times 512 db 'A'
