@@ -1,15 +1,18 @@
 ; boot.s
-ORG 0x7c00
+org 0x7c00
 
 ; ======================================================
 ; REAL MODE
 ; ======================================================
-[BITS 16]
+[bits 16]
 
 KERNEL_LOCATION equ 0x10000
 KERNEL_BASE_POINTER equ 0x90000
 CODE_SEG        equ code_descriptor - GDT_Start ; = 0x08 which is 1 * 8, so the CPU know it's the index number 1 for the code segment
 DATA_SEG        equ data_descriptor - GDT_Start ; = 0x10 which is 2 * 8, so the CPU know it's the index number 2 for the data segment
+
+; BIOS set dl to the loaded disk ID, so we copy it
+mov [BOOT_DISK_ID], dl
 
 ; setup real mode stack and registers
 xor ax, ax
@@ -20,7 +23,12 @@ mov sp, 0x7c00
 mov bp, sp
 
 ; load kernel and store it on KERNEL_LOCATION
-mov bx, KERNEL_LOCATION ; where to store data 0x0000:KERNEL_LOCATION = KERNEL_LOCATION
+; in real mode, we need to use segment:offset addressing
+; 0x10000 = 0x1000:0x0000
+mov ax, 0x1000          ; segment for kernel location
+mov es, ax              ; set ES segment
+xor bx, bx              ; offset = 0, so ES:BX = 0x1000:0x0000 = 0x10000
+
 mov ah, 0x02            ; read storage from disk interuption id
 mov al, 0x14            ; we will read 20 sector (MAY INCREASE THIS, this is the kernel ~ size)
 mov ch, 0x00            ; cylinder number 0
@@ -35,7 +43,6 @@ mov al, 0x3             ; desired video mode (text mode)
 int 0x10                ; interuption for changing the video mode from the BIOS
 
 ; switch to protected mode
-mov [BOOT_DISK_ID], dl  ; BIOS set dl to the loaded disk ID, so we copy it
 cli                     ; disable material interupts
 lgdt [GDT_Descriptor]   ; load the global descriptor table into the register GDTR
 mov eax, cr0            ; copy the cr0 = control register 0
@@ -73,7 +80,7 @@ GDT_Descriptor:
 ; ======================================================
 ; PROTECTED MODE
 ; ======================================================
-[BITS 32]
+[bits 32]
 
 start_protected_mode:
     mov ax, DATA_SEG
@@ -85,14 +92,11 @@ start_protected_mode:
     mov ebp, KERNEL_BASE_POINTER
     mov esp, ebp
 
-    jmp $ ; to delet
     jmp KERNEL_LOCATION ; jump to the kernel
 
 ; ======================================================
 ; DATA
 ; ======================================================
-msg_start db "Bootloader started...", 13, 10, 0
-
 BOOT_DISK_ID db 0
 
 ; ======================================================
