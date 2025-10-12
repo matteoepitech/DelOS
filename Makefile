@@ -8,11 +8,18 @@
 BOOT_DIR	:= boot
 SRC_DIR		:= src
 BUILD_DIR	:= build
+INCLUDE_DIR	:= include
 
 BOOT_FILE	:= $(BOOT_DIR)/bootsector.s
 ENTRY_FILE	:= $(BOOT_DIR)/kernel_entry.s
 ZERO_FILE 	:= $(BOOT_DIR)/padding_zeroes.s
-KERNEL_C	:= $(SRC_DIR)/kernel/kernel.c
+
+# Recursive function to find files
+rwildcard = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+SRC_C := $(call rwildcard,$(SRC_DIR)/,*.c)
+SRC_S := $(call rwildcard,$(SRC_DIR)/,*.s)
+OBJ_C := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/$(SRC_DIR)/%.o,$(SRC_C))
+OBJ_S := $(patsubst $(SRC_DIR)/%.s,$(BUILD_DIR)/$(SRC_DIR)/%.o,$(SRC_S))
 
 OS_BIN		:= $(BUILD_DIR)/delos.bin
 
@@ -21,7 +28,7 @@ CC		:= i386-elf-gcc
 LD		:= i386-elf-ld
 QEMU		:= qemu-system-i386
 
-CFLAGS		:= -ffreestanding -m32 -g -c -Wall -Wextra
+CFLAGS		:= -ffreestanding -m32 -g -c -Wall -Wextra -I$(INCLUDE_DIR)
 LDFLAGS		:= -Ttext 0x10000 --oformat binary
 
 # all RULE : do the whole process
@@ -46,13 +53,20 @@ $(BUILD_DIR)/padding_zeroes.bin: $(ZERO_FILE)
 	@echo "Creating padding..."
 	@$(NASM) -f bin $< -o $@
 
-# $(BUILD_DIR)/kernel.o RULE : create the kernel source code
-$(BUILD_DIR)/kernel.o: $(KERNEL_C)
-	@echo "Compiling kernel..."
+# Compilation des fichiers C
+$(BUILD_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
+	@echo "Compiling $< ..."
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $< -o $@
 
-# $(BUILD_DIR)/full_kernel.bin RULE : link the kernel source code with the kernel entry
-$(BUILD_DIR)/full_kernel.bin: $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/kernel.o
+# Assemblage des fichiers ASM
+$(BUILD_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.s
+	@echo "Assembling $< ..."
+	@mkdir -p $(dir $@)
+	@$(NASM) -f elf32 $< -o $@
+
+# Link du kernel
+$(BUILD_DIR)/full_kernel.bin: $(BUILD_DIR)/kernel_entry.o $(OBJ_C) $(OBJ_S)
 	@echo "Linking kernel..."
 	@$(LD) $(LDFLAGS) -o $@ $^
 
@@ -75,15 +89,34 @@ clean:
 # re RULE : redo the whole build + clean
 re: clean all
 
+# compile_commands RULE : create a compile_commands.json file for LSP
+compile_commands:
+	@echo "[" > compile_commands.json
+	@first=1; \
+	for f in $(SRC_C); do \
+		[ $$first -eq 1 ] || echo "," >> compile_commands.json; \
+		first=0; \
+		echo "{" >> compile_commands.json; \
+		echo "  \"directory\": \"$$PWD\"," >> compile_commands.json; \
+		echo "  \"command\": \"$(CC) $(CFLAGS) -c $$f -o build/$$f.o\"," >> compile_commands.json; \
+		echo "  \"file\": \"$$f\"" >> compile_commands.json; \
+		echo "}" >> compile_commands.json; \
+	done; \
+	echo "]" >> compile_commands.json
+
 # info RULE : show build information
 info:
 	@echo "=== DELOS BUILD INFO ==="
 	@echo "Bootloader: $(BOOT_FILE)"
 	@echo "Kernel Entry: $(ENTRY_FILE)"
-	@echo "Kernel C: $(KERNEL_C)"
+	@echo "Sources C: $(SRC_C)"
+	@echo "Sources ASM: $(SRC_S)"
+	@echo "Objects C: $(OBJ_C)"
+	@echo "Objects ASM: $(OBJ_S)"
+	@echo "Include dir: $(INCLUDE_DIR)"
 	@echo "Output: $(OS_BIN)"
 	@echo "CC: $(CC)"
 	@echo "LD: $(LD)"
 	@echo "QEMU: $(QEMU)"
 
-.PHONY: all clean run re prepare info
+.PHONY: all clean run re prepare info compile_commands
