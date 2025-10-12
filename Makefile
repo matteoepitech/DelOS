@@ -9,9 +9,9 @@ BOOT_DIR	:= boot
 SRC_DIR		:= src
 BUILD_DIR	:= build
 
-BOOT_FILE	:= $(BOOT_DIR)/boot.s
+BOOT_FILE	:= $(BOOT_DIR)/bootsector.s
 ENTRY_FILE	:= $(BOOT_DIR)/kernel_entry.s
-ZERO_FILE 	:= $(BOOT_DIR)/padding_zero.s
+ZERO_FILE 	:= $(BOOT_DIR)/padding_zeroes.s
 KERNEL_C	:= $(SRC_DIR)/kernel/kernel.c
 
 OS_BIN		:= $(BUILD_DIR)/delos.bin
@@ -34,7 +34,7 @@ prepare:
 # $(BUILD_DIR)/boot_sector.bin RULE : create the boot sector for the bin
 $(BUILD_DIR)/boot_sector.bin: $(BOOT_FILE)
 	@echo "Assembling bootloader..."
-	@$(NASM) -f bin $< -o $@
+	@$(NASM) -I $(BOOT_DIR) -f bin $< -o $@
 
 # $(BUILD_DIR)/kernel_entry.o RULE : create the kernel entry
 $(BUILD_DIR)/kernel_entry.o: $(ENTRY_FILE)
@@ -61,7 +61,6 @@ $(OS_BIN): $(BUILD_DIR)/boot_sector.bin $(BUILD_DIR)/full_kernel.bin $(BUILD_DIR
 	@echo "Creating OS image..."
 	@cat $^ > $@
 	@echo "Build complete: $@"
-	@ls -lh $@
 
 # run RULE : run the OS
 run: $(OS_BIN)
