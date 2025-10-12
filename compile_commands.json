@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/del/Development/PersonalProjects/DelOS",
-  "command": "i386-elf-gcc -ffreestanding -m32 -g -c -Wall -Wextra -Iinclude -c src/kernel/kernel.c -o build/src/kernel/kernel.c.o",
-  "file": "src/kernel/kernel.c"
-}
-]
