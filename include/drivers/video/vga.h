@@ -62,6 +62,7 @@
 
 /**
  * @brief Variable vga_text_mmio is a pointer to the start of the VGA MMIO.
+ *
  *        Declared in src/drivers/video/vga.c
  */
 extern unsigned char *vga_text_mmio;
