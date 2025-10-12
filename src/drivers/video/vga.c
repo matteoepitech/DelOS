@@ -21,7 +21,9 @@ unsigned char *vga_text_mmio = (unsigned char *) (VGA_TEXT_MODE_START_MMIO_ADDR)
  * @param c             The character
  * @param color         The color
  */
-void vga_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color)
+void
+vga_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color)
 {
-    vga_text_mmio[x * 2] = c;
+    vga_text_mmio[(x * 2) + (y * VGA_COLUMNS_MAX * 2)] = c;
+    vga_text_mmio[(x * 2) + (y * VGA_COLUMNS_MAX * 2) + 1] = color;
 }

@@ -1,0 +1,19 @@
+[
+{
+  "directory": "/Users/del/Development/PersonalProjects/DelOS",
+  "command": "i386-elf-gcc -ffreestanding -m32 -g -c -Wall -Wextra -Iinclude -c src/drivers/video/vga.c -o build/src/drivers/video/vga.c.o",
+  "file": "src/drivers/video/vga.c"
+}
+,
+{
+  "directory": "/Users/del/Development/PersonalProjects/DelOS",
+  "command": "i386-elf-gcc -ffreestanding -m32 -g -c -Wall -Wextra -Iinclude -c src/kernel/kernel.c -o build/src/kernel/kernel.c.o",
+  "file": "src/kernel/kernel.c"
+}
+,
+{
+  "directory": "/Users/del/Development/PersonalProjects/DelOS",
+  "command": "i386-elf-gcc -ffreestanding -m32 -g -c -Wall -Wextra -Iinclude -c src/kernel/tty/tty.c -o build/src/kernel/tty/tty.c.o",
+  "file": "src/kernel/tty/tty.c"
+}
+]
