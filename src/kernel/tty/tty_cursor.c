@@ -61,12 +61,13 @@ ktty_cursor_set(unsigned char x, unsigned char y)
 void
 ktty_cursor_add(int32_t x, int32_t y)
 {
-    unsigned char real_x = ktty_cursor_pos._x + x;
-    unsigned char real_y = ktty_cursor_pos._y + y;
+    int32_t real_x = ((int32_t) ktty_cursor_pos._x) + x;
+    int32_t real_y = ((int32_t) ktty_cursor_pos._y) + y;
 
-    if (real_x > VGA_COLUMNS_MAX) {
+    if (real_x >= VGA_COLUMNS_MAX) {
         real_y += real_x / VGA_COLUMNS_MAX;
         real_x = real_x % VGA_COLUMNS_MAX;
     }
+    // TODO: if y > VGA_LINES_MAX, move the vga memory buffer by VGA_COLUMNS_MAX on top and erasing top data
     ktty_cursor_set(real_x, real_y);
 }

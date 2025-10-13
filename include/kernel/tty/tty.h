@@ -45,6 +45,16 @@ void
 ktty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned char color);
 
 /**
+ * @brief Print a character on the screen at the TTY cursor position.
+ *        This function use VGA text mode by default.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+ktty_putc(unsigned char c, unsigned char color);
+
+/**
  * @brief Print a character array on the screen at the TTY cursor position.
  *
  * @param string        The character array
