@@ -18,7 +18,7 @@
  *
  *        Declared in src/kernel/tty/tty_cursor.c
  */
-extern point8_t tty_cursor_pos;
+extern point8_t ktty_cursor_pos;
 
 /**
  * @brief Print a character on the screen at a certain coordinates.
@@ -30,7 +30,7 @@ extern point8_t tty_cursor_pos;
  * @param color         The color
  */
 void
-tty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color);
+ktty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color);
 
 /**
  * @brief Print a character array on the screen at a certain coordinates.
@@ -42,7 +42,7 @@ tty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char col
  * @param color         The color
  */
 void
-tty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned char color);
+ktty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned char color);
 
 /**
  * @brief Print a character array on the screen at the TTY cursor position.
@@ -51,7 +51,7 @@ tty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned
  * @param color         The color
  */
 void
-tty_puts(const char * const string, unsigned char color);
+ktty_puts(const char * const string, unsigned char color);
 
 /**
  * @brief Get a copy of the TTY cursor position in a structure of char values.
@@ -59,7 +59,7 @@ tty_puts(const char * const string, unsigned char color);
  * @return The point8_t structure.
  */
 point8_t
-tty_cursor_get_copy(void);
+ktty_cursor_get_copy(void);
 
 /**
  * @brief Get a ptr of the TTY cursor position in a structure of char values.
@@ -67,7 +67,7 @@ tty_cursor_get_copy(void);
  * @return The point8_t structure.
  */
 point8_t *
-tty_cursor_get_ptr(void);
+ktty_cursor_get_ptr(void);
 
 /**
  * @brief Set the cursor position to a X and Y values.
@@ -76,7 +76,7 @@ tty_cursor_get_ptr(void);
  * @param y             The Y coordinate
  */
 void
-tty_cursor_set(unsigned char x, unsigned char y);
+ktty_cursor_set(unsigned char x, unsigned char y);
 
 /**
  * @brief Move the TTY cursor by these value.
@@ -86,6 +86,6 @@ tty_cursor_set(unsigned char x, unsigned char y);
  * @param y             The amount of lines to add
  */
 void
-tty_cursor_add(int32_t x, int32_t y);
+ktty_cursor_add(int32_t x, int32_t y);
 
 #endif /* ifndef KERNEL_TTY_H_ */

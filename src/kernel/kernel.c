@@ -16,8 +16,8 @@
 void
 kmain(void)
 {
-    tty_puts("$> ", VGA_GREEN_FOREGROUND | VGA_BLACK_BACKGROUND);
-    tty_puts("Welcome to DelOS's kernel!", VGA_TEXT_DEFAULT_COLOR);
+    ktty_puts("$> ", VGA_GREEN_FOREGROUND | VGA_BLACK_BACKGROUND);
+    ktty_puts("Welcome to DelOS's kernel!", VGA_TEXT_DEFAULT_COLOR);
     while (1);
     return;
 }

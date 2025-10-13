@@ -61,13 +61,6 @@
 #endif /* VGA_COLORS_VALUES_H_ */
 
 /**
- * @brief Variable vga_text_mmio is a pointer to the start of the VGA MMIO.
- *
- *        Declared in src/drivers/video/vga.c
- */
-extern unsigned char *vga_text_mmio;
-
-/**
  * @brief Print a character on the screen at a certain coordinates using VGA.
  *
  * @param x             The coordinate X
@@ -76,6 +69,6 @@ extern unsigned char *vga_text_mmio;
  * @param color         The color
  */
 void
-vga_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color);
+kvga_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color);
 
 #endif /* ifndef DRIVER_VIDEO_VGA_H_ */

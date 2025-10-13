@@ -14,7 +14,7 @@
  *        It use a 8 bits (1 byte) point structure since text mode used is
  *        limited to a 80x25 screen coordinates.
  */
-point8_t tty_cursor_pos = {0, 0};
+point8_t ktty_cursor_pos = {0, 0};
 
 /**
  * @brief Get a copy of the TTY cursor position in a structure of char values.
@@ -22,9 +22,9 @@ point8_t tty_cursor_pos = {0, 0};
  * @return The point8_t structure.
  */
 point8_t
-tty_cursor_get_copy(void)
+ktty_cursor_get_copy(void)
 {
-    return tty_cursor_pos;
+    return ktty_cursor_pos;
 }
 
 /**
@@ -33,9 +33,9 @@ tty_cursor_get_copy(void)
  * @return The point8_t structure.
  */
 point8_t *
-tty_cursor_get_ptr(void)
+ktty_cursor_get_ptr(void)
 {
-    return &tty_cursor_pos;
+    return &ktty_cursor_pos;
 }
 
 /**
@@ -45,10 +45,10 @@ tty_cursor_get_ptr(void)
  * @param y             The Y coordinate
  */
 void
-tty_cursor_set(unsigned char x, unsigned char y)
+ktty_cursor_set(unsigned char x, unsigned char y)
 {
-    tty_cursor_pos._x = x;
-    tty_cursor_pos._y = y;
+    ktty_cursor_pos._x = x;
+    ktty_cursor_pos._y = y;
 }
 
 /**
@@ -59,14 +59,14 @@ tty_cursor_set(unsigned char x, unsigned char y)
  * @param y             The amount of lines to add
  */
 void
-tty_cursor_add(int32_t x, int32_t y)
+ktty_cursor_add(int32_t x, int32_t y)
 {
-    unsigned char real_x = tty_cursor_pos._x + x;
-    unsigned char real_y = tty_cursor_pos._y + y;
+    unsigned char real_x = ktty_cursor_pos._x + x;
+    unsigned char real_y = ktty_cursor_pos._y + y;
 
     if (real_x > VGA_COLUMNS_MAX) {
         real_y += real_x / VGA_COLUMNS_MAX;
         real_x = real_x % VGA_COLUMNS_MAX;
     }
-    tty_cursor_set(real_x, real_y);
+    ktty_cursor_set(real_x, real_y);
 }

@@ -7,7 +7,7 @@
 
 #include "drivers/video/vga.h"
 #include "kernel/tty/tty.h"
-#include "utils/kstring.h"
+#include "utils/string.h"
 
 /**
  * @brief Print a character on the screen at a certain coordinates.
@@ -19,9 +19,9 @@
  * @param color         The color
  */
 void
-tty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color)
+ktty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color)
 {
-    vga_putc_at(x, y, c, color);
+    kvga_putc_at(x, y, c, color);
 }
 
 /**
@@ -34,10 +34,10 @@ tty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char col
  * @param color         The color
  */
 void
-tty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned char color)
+ktty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned char color)
 {
     for (int i = 0; *(string + i); i++) {
-        vga_putc_at(x + i, y, *(string + i), color);
+        kvga_putc_at(x + i, y, *(string + i), color);
     }
 }
 
@@ -48,8 +48,8 @@ tty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned
  * @param color         The color
  */
 void
-tty_puts(const char *const string, unsigned char color)
+ktty_puts(const char *const string, unsigned char color)
 {
-    tty_puts_at(tty_cursor_pos._x, tty_cursor_pos._y, string, color);
-    tty_cursor_add(kstrlen(string), 0);
+    ktty_puts_at(ktty_cursor_pos._x, ktty_cursor_pos._y, string, color);
+    ktty_cursor_add(kstrlen(string), 0);
 }
