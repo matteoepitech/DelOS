@@ -5,7 +5,7 @@
 ** Math point header file
 */
 
-#include <stdint.h>
+#include "types.h"
 
 #ifndef MATH_2D_POINT_H_
     #define MATH_2D_POINT_H_
@@ -26,8 +26,8 @@ typedef struct point32_s {
  *        -y = The Y coordinate
  */
 typedef struct point8_s {
-    char _x;
-    char _y;
+    int8_t _x;
+    int8_t _y;
 } point8_t;
 
 #endif /* ifndef MATH_2D_POINT_H_ */

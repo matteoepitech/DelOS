@@ -5,7 +5,6 @@
 ** Kernel Source file main
 */
 
-#include "drivers/video/vga.h"
 #include "kernel/tty/tty.h"
 
 /**
@@ -16,17 +15,7 @@
 void
 kmain(void)
 {
-    ktty_puts("$> ", VGA_GREEN_FOREGROUND | VGA_BLACK_BACKGROUND);
-    ktty_puts("Welcome to DelOS's kernel!", VGA_TEXT_DEFAULT_COLOR);
-    ktty_puts("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", VGA_TEXT_DEFAULT_COLOR);
-    ktty_puts("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj", VGA_TEXT_DEFAULT_COLOR);
-    ktty_putc('M', VGA_RED_BACKGROUND | VGA_BLUE_FOREGROUND);
-    ktty_putc('M', VGA_RED_BACKGROUND | VGA_BLUE_FOREGROUND);
-    ktty_putc_at(40, 12, 'm', VGA_RED_BACKGROUND | VGA_BLUE_FOREGROUND);
-    ktty_putc('M', VGA_RED_BACKGROUND | VGA_BLUE_FOREGROUND);
-    ktty_puts("salut", VGA_GREEN_BACKGROUND | VGA_BLUE_FOREGROUND);
-    ktty_puts_at(41, 12, "salutoooooooooooooooooooooooooooooooooooooooooooooooooo", VGA_GREEN_BACKGROUND | VGA_BLUE_FOREGROUND);
-    ktty_puts_at(3, 13, "salutoooooooooooooooooooooooooooooooooooooooooooooooooo", VGA_BLUE_BACKGROUND | VGA_BLUE_FOREGROUND);
+    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.");
     while (1);
     return;
 }

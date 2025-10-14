@@ -19,7 +19,7 @@
  * @param color         The color
  */
 void
-ktty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color)
+ktty_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
 {
     kvga_putc_at(x, y, c, color);
 }
@@ -32,7 +32,7 @@ ktty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char co
  * @param color         The color
  */
 void
-ktty_putc(unsigned char c, unsigned char color)
+ktty_putc(uint8_t c, uint8_t color)
 {
     ktty_putc_at(ktty_cursor_pos._x, ktty_cursor_pos._y, c, color);
     ktty_cursor_add(1, 0);
@@ -48,10 +48,10 @@ ktty_putc(unsigned char c, unsigned char color)
  * @param color         The color
  */
 void
-ktty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned char color)
+ktty_puts_at(uint8_t x, uint8_t y, const int8_t *const string, uint8_t color)
 {
-    unsigned char current_x = x;
-    unsigned char current_y = y;
+    uint8_t current_x = x;
+    uint8_t current_y = y;
 
     for (int i = 0; *(string + i); i++) {
         ktty_putc_at(current_x, current_y, *(string + i), color);
@@ -70,7 +70,7 @@ ktty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigne
  * @param color         The color
  */
 void
-ktty_puts(const char *const string, unsigned char color)
+ktty_puts(const int8_t *const string, uint8_t color)
 {
     for (int i = 0; *(string + i); i++) {
         ktty_putc(*(string + i), color);

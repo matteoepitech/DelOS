@@ -45,7 +45,7 @@ ktty_cursor_get_ptr(void)
  * @param y             The Y coordinate
  */
 void
-ktty_cursor_set(unsigned char x, unsigned char y)
+ktty_cursor_set(uint8_t x, uint8_t y)
 {
     ktty_cursor_pos._x = x;
     ktty_cursor_pos._y = y;

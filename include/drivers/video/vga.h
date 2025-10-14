@@ -5,6 +5,8 @@
 ** VGA Header file
 */
 
+#include "types.h"
+
 #ifndef DRIVER_VIDEO_VGA_H_
     #define DRIVER_VIDEO_VGA_H_
 
@@ -69,6 +71,6 @@
  * @param color         The color
  */
 void
-kvga_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color);
+kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color);
 
 #endif /* ifndef DRIVER_VIDEO_VGA_H_ */

@@ -5,6 +5,7 @@
 ** TTY header file
 */
 
+#include "drivers/video/vga.h"
 #include "math/2d/point.h"
 
 #ifndef KERNEL_TTY_H_
@@ -20,6 +21,10 @@
  */
 extern point8_t ktty_cursor_pos;
 
+#ifndef KDEBUG_TTY
+    #define KDEBUG_TTY(msg) ktty_puts(msg, VGA_TEXT_DEFAULT_COLOR);
+#endif /* ifndef KDEBUG_TTY */
+
 /**
  * @brief Print a character on the screen at a certain coordinates.
  *        This function use VGA text mode by default.
@@ -30,7 +35,7 @@ extern point8_t ktty_cursor_pos;
  * @param color         The color
  */
 void
-ktty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color);
+ktty_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color);
 
 /**
  * @brief Print a character array on the screen at a certain coordinates.
@@ -42,7 +47,7 @@ ktty_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char co
  * @param color         The color
  */
 void
-ktty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigned char color);
+ktty_puts_at(uint8_t x, uint8_t y, const char *const string, uint8_t color);
 
 /**
  * @brief Print a character on the screen at the TTY cursor position.
@@ -52,7 +57,7 @@ ktty_puts_at(unsigned char x, unsigned char y, const char *const string, unsigne
  * @param color         The color
  */
 void
-ktty_putc(unsigned char c, unsigned char color);
+ktty_putc(uint8_t c, uint8_t color);
 
 /**
  * @brief Print a character array on the screen at the TTY cursor position.
@@ -61,7 +66,7 @@ ktty_putc(unsigned char c, unsigned char color);
  * @param color         The color
  */
 void
-ktty_puts(const char * const string, unsigned char color);
+ktty_puts(const int8_t *const string, uint8_t color);
 
 /**
  * @brief Get a copy of the TTY cursor position in a structure of char values.
@@ -86,7 +91,7 @@ ktty_cursor_get_ptr(void);
  * @param y             The Y coordinate
  */
 void
-ktty_cursor_set(unsigned char x, unsigned char y);
+ktty_cursor_set(uint8_t x, uint8_t y);
 
 /**
  * @brief Move the TTY cursor by these value.

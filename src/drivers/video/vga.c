@@ -10,7 +10,7 @@
 /**
  * @brief Variable vga_text_mmio is a pointer to the start of the VGA MMIO.
  */
-static unsigned char *vga_text_mmio = (unsigned char *) (VGA_TEXT_MODE_START_MMIO_ADDR);
+static uint8_t *vga_text_mmio = (uint8_t *) (VGA_TEXT_MODE_START_MMIO_ADDR);
 
 /**
  * @brief Print a character on the screen at a certain coordinates using VGA.
@@ -21,7 +21,7 @@ static unsigned char *vga_text_mmio = (unsigned char *) (VGA_TEXT_MODE_START_MMI
  * @param color         The color
  */
 void
-kvga_putc_at(unsigned char x, unsigned char y, unsigned char c, unsigned char color)
+kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
 {
     vga_text_mmio[(x * 2) + (y * VGA_COLUMNS_MAX * 2)] = c;
     vga_text_mmio[(x * 2) + (y * VGA_COLUMNS_MAX * 2) + 1] = color;

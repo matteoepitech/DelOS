@@ -15,7 +15,7 @@
  * @return The length of it until a zero terminated byte.
  */
 uint32_t
-kstrlen(const char *const string)
+kstrlen(const int8_t *const string)
 {
     uint32_t len = 0;
 

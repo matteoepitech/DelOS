@@ -5,7 +5,7 @@
 ** Kstring header file
 */
 
-#include <stdint.h>
+#include "types.h"
 
 #ifndef UTILS_KSTRING_H_
     #define UTILS_KSTRING_H_
@@ -18,6 +18,6 @@
  * @return The length of it until a zero terminated byte.
  */
 uint32_t
-kstrlen(const char *const string);
+kstrlen(const int8_t *const string);
 
 #endif /* ifndef UTILS_KSTRING_H_ */
