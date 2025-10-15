@@ -7,7 +7,7 @@
 
 #include "drivers/video/vga.h"
 #include "kernel/tty/tty.h"
-#include "utils/string/string.h"
+#include "utils/kstring.h"
 
 /**
  * @brief Print a character on the screen at a certain coordinates.

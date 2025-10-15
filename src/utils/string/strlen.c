@@ -5,7 +5,7 @@
 ** strlen source file
 */
 
-#include "utils/string/string.h"
+#include "utils/kstring.h"
 
 /**
  * @brief Get the length of a string.
