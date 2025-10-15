@@ -5,9 +5,9 @@
 ** TTY source file
 */
 
+#include "utils/kstdlib/kstring.h"
 #include "drivers/video/vga.h"
 #include "kernel/tty/tty.h"
-#include "utils/kstring.h"
 
 /**
  * @brief Print a character on the screen at a certain coordinates.
@@ -34,6 +34,10 @@ ktty_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
 void
 ktty_putc(uint8_t c, uint8_t color)
 {
+    if (ktty_cursor_pos._y >= VGA_LINES_MAX) {
+        kvga_scroll_line();
+        ktty_cursor_set(ktty_cursor_pos._x, VGA_LINES_MAX - 1);
+    }
     ktty_putc_at(ktty_cursor_pos._x, ktty_cursor_pos._y, c, color);
     ktty_cursor_add(1, 0);
 }

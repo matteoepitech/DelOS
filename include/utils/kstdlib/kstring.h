@@ -7,8 +7,8 @@
 
 #include "types.h"
 
-#ifndef UTILS_KSTRING_H_
-    #define UTILS_KSTRING_H_
+#ifndef UTILS_KSTDLIB_KSTRING_H_
+    #define UTILS_KSTDLIB_KSTRING_H_
 
 /**
  * @brief Get the length of a string.
@@ -17,7 +17,7 @@
  *
  * @return The length of it until a zero terminated byte.
  */
-uint32_t
-kstrlen(const int8_t *const string);
+size_t
+kstrlen(const int8_t *string);
 
-#endif /* ifndef UTILS_KSTRING_H_ */
+#endif /* ifndef UTILS_KSTDLIB_KSTRING_H_ */

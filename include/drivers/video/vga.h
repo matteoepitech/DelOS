@@ -90,4 +90,10 @@ kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color);
 void
 kvga_set_cursor_position(point8_t new_position);
 
+/**
+ * @brief Do a scroll to the top. Using kmemmove.
+ */
+void
+kvga_scroll_line(void);
+
 #endif /* ifndef DRIVER_VIDEO_VGA_H_ */

@@ -5,7 +5,7 @@
 ** strlen source file
 */
 
-#include "utils/kstring.h"
+#include "utils/kstdlib/kstring.h"
 
 /**
  * @brief Get the length of a string.
@@ -14,12 +14,13 @@
  *
  * @return The length of it until a zero terminated byte.
  */
-uint32_t
-kstrlen(const int8_t *const string)
+size_t
+kstrlen(const int8_t *string)
 {
-    uint32_t len = 0;
+    size_t len = 0;
 
-    while (*(string + len)) {
+    while (*string) {
+        string++;
         len++;
     }
     return len;
