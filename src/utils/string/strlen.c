@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2025
-** src/utils/kstring
+** DELOS PROJECT, 2025
+** src/utils/string/strlen
 ** File description:
-** Kstring source file
+** strlen source file
 */
 
 #include "utils/string/string.h"

@@ -18,22 +18,6 @@
 point8_t ktty_cursor_pos = {0, 0};
 
 /**
- * @brief Refresh the cursor position using the new_position parameter.
- *
- * @param new_position          The new position
- */
-static void
-tty_cursor_refresh_position(point8_t new_position)
-{
-    uint16_t pos = new_position._y * VGA_COLUMNS_MAX + new_position._x;
-
-    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0e);
-    outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, (pos & 0xff00) >> 8);
-    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0f);
-    outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, pos & 0x00ff);
-}
-
-/**
  * @brief Get a copy of the TTY cursor position in a structure of char values.
  *
  * @return The point8_t structure.
@@ -66,7 +50,7 @@ ktty_cursor_set(uint8_t x, uint8_t y)
 {
     ktty_cursor_pos._x = x;
     ktty_cursor_pos._y = y;
-    tty_cursor_refresh_position(ktty_cursor_pos);
+    kvga_set_cursor_position(ktty_cursor_pos);
 }
 
 /**

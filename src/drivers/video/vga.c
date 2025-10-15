@@ -5,12 +5,29 @@
 ** VGA Source file
 */
 
+#include "utils/asm/io_port.h"
 #include "drivers/video/vga.h"
 
 /**
  * @brief Variable vga_text_mmio is a pointer to the start of the VGA MMIO.
  */
 static uint8_t *vga_text_mmio = (uint8_t *) (VGA_TEXT_MODE_START_MMIO_ADDR);
+
+/**
+ * @brief Refresh the cursor position using the new_position parameter.
+ *
+ * @param new_position          The new position
+ */
+void
+kvga_set_cursor_position(point8_t new_position)
+{
+    uint16_t pos = new_position._y * VGA_COLUMNS_MAX + new_position._x;
+
+    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0e);
+    outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, (pos & 0xff00) >> 8);
+    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0f);
+    outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, pos & 0x00ff);
+}
 
 /**
  * @brief Print a character on the screen at a certain coordinates using VGA.

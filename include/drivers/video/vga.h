@@ -6,6 +6,7 @@
 */
 
 #include "types.h"
+#include "math/2d/point.h"
 
 #ifndef DRIVER_VIDEO_VGA_H_
     #define DRIVER_VIDEO_VGA_H_
@@ -80,5 +81,13 @@
  */
 void
 kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color);
+
+/**
+ * @brief Refresh the cursor position using the new_position parameter.
+ *
+ * @param new_position          The new position
+ */
+void
+kvga_set_cursor_position(point8_t new_position);
 
 #endif /* ifndef DRIVER_VIDEO_VGA_H_ */
