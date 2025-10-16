@@ -19,28 +19,41 @@ typedef unsigned char uint8_t;
 typedef char int8_t;
 
 /**
- * @brief Integer (4 byte)
+ * @brief Integer (4 bytes)
  */
 typedef int int32_t;
 
 /**
- * @brief Unsigned integer (4 byte)
+ * @brief Unsigned integer (4 bytes)
  */
 typedef unsigned int uint32_t;
 
 /**
- * @brief Unsigned integer (4 byte)
+ * @brief Unsigned integer (4 bytes)
  */
 typedef uint32_t size_t;
 
 /**
- * @brief Short (2 byte)
+ * @brief Short (2 bytes)
  */
 typedef short int16_t;
 
 /**
- * @brief Unsigned short (2 byte)
+ * @brief Unsigned short (2 bytes)
  */
 typedef unsigned short uint16_t;
+
+
+/**
+ * @brief Unsigned char (1 byte)
+ *        This type is used specially in structures or in arrays to save mem.
+ *        Prefer using bool32_t if you work in stack, functions, condition.
+ */
+typedef uint8_t bool8_t;
+
+/**
+ * @brief Unsigned integer (4 bytes)
+ */
+typedef uint32_t bool32_t;
 
 #endif /* ifndef TYPES_H_ */

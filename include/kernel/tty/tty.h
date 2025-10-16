@@ -25,6 +25,10 @@ extern point8_t ktty_cursor_pos;
     #define KDEBUG_TTY(msg) ktty_puts(msg, VGA_TEXT_DEFAULT_COLOR);
 #endif /* ifndef KDEBUG_TTY */
 
+#ifndef KERROR_TTY
+    #define KERROR_TTY(msg) ktty_cursor_set(0, ktty_cursor_pos._y + 1) ; ktty_puts("KERNEL ERROR: "msg, VGA_TEXT_ERROR_COLOR);
+#endif /* ifndef KERROR_TTY */
+
 /**
  * @brief Print a character on the screen at a certain coordinates.
  *        This function use VGA text mode by default.

@@ -17,4 +17,16 @@
     #define OUT
 #endif /* ifndef OUT */
 
+#ifndef OK_TRUE
+    #define OK_TRUE 1
+#endif /* ifndef OK_TRUE */
+
+#ifndef KO_FALSE
+    #define KO_FALSE 0
+#endif /* ifndef KO_FALSE */
+
+#ifndef NULL
+    #define NULL 0
+#endif /* ifndef NULL */
+
 #endif /* ifndef DEFINES_H_ */
