@@ -29,4 +29,8 @@
     #define NULL 0
 #endif /* ifndef NULL */
 
+#ifndef UNUSED
+    #define UNUSED __attribute__((unused))
+#endif /* ifndef UNUSED */
+
 #endif /* ifndef DEFINES_H_ */

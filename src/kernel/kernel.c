@@ -17,7 +17,6 @@ void
 kmain(void)
 {
     KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.");
-    KERROR_TTY("This kernel is still in development...");
     kidt_create_ptr(&idt_ptr);
     kidt_load_cpu(&idt_ptr);
     while (1);
