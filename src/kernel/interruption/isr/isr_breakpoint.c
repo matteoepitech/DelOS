@@ -1,23 +1,22 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/interruption/isr/isr_div_zero
+** src/kernel/interruption/isr/isr_breakpoint
 ** File description:
-** ISR div zero
+** ISR breakpoint
 */
 
 #include "kernel/interruption/isr.h"
-#include "kernel/misc/panic.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 
 /**
- * @brief ISR division by zero.
+ * @brief ISR breapoint.
  *
  * @param int_no                The interruption number
  * @param err_code              The error code if provided
  */
 void
-isr_div_zero(UNUSED registers_t *regs)
+isr_breakpoint(UNUSED registers_t *regs)
 {
-    KPANIC("Division by zero.");
+    KDEBUG_TTY("Got a breakpoint");
 }

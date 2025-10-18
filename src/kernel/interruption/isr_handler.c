@@ -6,6 +6,7 @@
 */
 
 #include "kernel/interruption/idt.h"
+#include "kernel/interruption/isr.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 #include "types.h"
@@ -15,7 +16,7 @@
  *        This is an abstraction between the call ASM and C.
  *        The process is "int -> jump asm code -> jump isr_handler -> jump specific function".
  */
-void (*isr_handlers[IDT_SIZE]) (uint32_t int_no, uint32_t err_code) = {0};
+isr_handler_t isr_handlers[IDT_SIZE] = {0};
 
 /**
  * @brief Register an handler of a ISR in the isr_handlers variable.
@@ -26,7 +27,7 @@ void (*isr_handlers[IDT_SIZE]) (uint32_t int_no, uint32_t err_code) = {0};
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-kisr_register_handler(uint8_t index, void (*func_handler)(uint32_t int_no, uint32_t err_code))
+kisr_register_handler(uint8_t index, isr_handler_t func_handler)
 {
     if (func_handler == NULL) {
         return KO_FALSE;
@@ -42,10 +43,12 @@ kisr_register_handler(uint8_t index, void (*func_handler)(uint32_t int_no, uint3
  * @param err_code              The error code if provided by the CPU
  */
 void
-kisr_handler(uint32_t int_no, uint32_t err_code)
+kisr_handler(registers_t *regs)
 {
+    uint32_t int_no = regs->_int_no;
+
     if (isr_handlers[int_no] != NULL) {
-        isr_handlers[int_no](int_no, err_code);
+        isr_handlers[int_no](regs);
     } else {
         KERROR_TTY("Interruption not handled!");
     }

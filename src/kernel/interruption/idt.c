@@ -23,6 +23,16 @@ idt_ptr_t idt_ptr;
  */
 idt_entry_t idt[IDT_SIZE];
 
+// division by zero
+extern void isr0();
+extern void isr_div_zero(registers_t *regs);
+// debug exception
+extern void isr1();
+extern void isr_debug_exception(registers_t *regs);
+// breakpoint
+extern void isr3();
+extern void isr_breakpoint(registers_t *regs);
+
 /**
  * @brief Load all interruption service routine before the load in CPU.
  *
@@ -32,13 +42,20 @@ static bool32_t
 idt_load_all_isr(void)
 {
     // division by zero
-    extern void isr0();
-    extern void isr_div_zero(uint32_t int_no, uint32_t err_code);
     if (kidt_set_entry(0, (uint32_t) isr0, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
         return KO_FALSE;
     if (kisr_register_handler(0, isr_div_zero) == KO_FALSE)
         return KO_FALSE;
-    // others
+    // debug exception
+    if (kidt_set_entry(1, (uint32_t) isr1, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+        return KO_FALSE;
+    if (kisr_register_handler(1, isr_debug_exception) == KO_FALSE)
+        return KO_FALSE;
+    // breakpoint
+    if (kidt_set_entry(3, (uint32_t) isr3, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+        return KO_FALSE;
+    if (kisr_register_handler(3, isr_breakpoint) == KO_FALSE)
+        return KO_FALSE;
     return OK_TRUE;
 }
 
