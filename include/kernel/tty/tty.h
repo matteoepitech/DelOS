@@ -73,6 +73,15 @@ void
 ktty_puts(const int8_t *const string, uint8_t color);
 
 /**
+ * @brief Fill the TTY screen of c characters and colors.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+ktty_fill(uint8_t c, uint8_t color);
+
+/**
  * @brief Get a copy of the TTY cursor position in a structure of char values.
  *
  * @return The point8_t structure.

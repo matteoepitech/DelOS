@@ -80,3 +80,15 @@ ktty_puts(const int8_t *const string, uint8_t color)
         ktty_putc(*(string + i), color);
     }
 }
+
+/**
+ * @brief Fill the TTY screen of c characters and colors.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+ktty_fill(uint8_t c, uint8_t color)
+{
+    kvga_fill(c, color);
+}

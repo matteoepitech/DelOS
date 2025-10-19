@@ -70,6 +70,7 @@
 
     #define VGA_TEXT_DEFAULT_COLOR       VGA_WHITE_FOREGROUND | VGA_BLACK_BACKGROUND
     #define VGA_TEXT_ERROR_COLOR         VGA_RED_FOREGROUND | VGA_BLACK_BACKGROUND
+    #define VGA_TEXT_PANIC_COLOR         VGA_WHITE_FOREGROUND | VGA_BLUE_BACKGROUND
 #endif /* VGA_COLORS_VALUES_H_ */
 
 /**
@@ -96,5 +97,14 @@ kvga_set_cursor_position(point8_t new_position);
  */
 void
 kvga_scroll_line(void);
+
+/**
+ * @brief Fill the VGA buffer to the c character and his color.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+kvga_fill(uint8_t c, uint8_t color);
 
 #endif /* ifndef DRIVER_VIDEO_VGA_H_ */

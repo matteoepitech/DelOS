@@ -24,6 +24,19 @@ void *
 kmemset(void *addr, uint8_t byte, size_t len);
 
 /**
+ * @brief Kernel word memset.
+ *        Put the 2 bytes values at the addr for len bytes.
+ *
+ * @param addr          The address to start the set
+ * @param word          The word to set
+ * @param len           The n times we do it
+ *
+ * @return addr
+ */
+void *
+kwmemset(void *addr, uint16_t word, size_t len);
+
+/**
  * @brief Kernel memcpy.
  *
  * @param dst           The address to start the copy

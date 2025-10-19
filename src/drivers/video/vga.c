@@ -57,3 +57,15 @@ kvga_scroll_line(void)
     kmemmove(vga_text_mmio, vga_text_mmio + (VGA_COLUMNS_MAX * 2), ((VGA_COLUMNS_MAX * VGA_LINES_MAX * 2) - (VGA_COLUMNS_MAX * 2)));
     kmemset(vga_text_mmio + (VGA_COLUMNS_MAX * VGA_LINES_MAX * 2) - (VGA_COLUMNS_MAX * 2), 0, VGA_COLUMNS_MAX * 2);
 }
+
+/**
+ * @brief Fill the VGA buffer to the c character and his color.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+kvga_fill(uint8_t c, uint8_t color)
+{
+    kwmemset(vga_text_mmio, ((uint16_t) color << 8) | c, VGA_COLUMNS_MAX * VGA_LINES_MAX);
+}
