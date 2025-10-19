@@ -7,6 +7,7 @@
 
 #include "kernel/interruption/idt.h"
 #include "kernel/interruption/isr.h"
+#include "kernel/misc/panic.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 #include "types.h"
@@ -50,6 +51,6 @@ kisr_handler(registers_t *regs)
     if (isr_handlers[int_no] != NULL) {
         isr_handlers[int_no](regs);
     } else {
-        KERROR_TTY("Interruption not handled!");
+        KPANIC("Interruption not handled.");
     }
 }

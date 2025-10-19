@@ -11,6 +11,15 @@
 /**
  * @brief ISR debug exception.
  *        We set here the eflags trap flag (bit 8) to 0 to continue the execution.
+ *        Basically this debug exception can be called via lot of ways but the
+ *        most common way is by doing a single step execution for debugging.
+ *
+ *        The process is, when you put the trap flag bit to 1 the CPU will
+ *        make an interruption #DB for each instruction.
+ *
+ *        When you are on this interruption you can do your stuff but you want maybe
+ *        to continue the execution of the program. To do so you will need to
+ *        put the trap flag back to 0 to continue the execution.
  *
  * @param int_no                The interruption number
  * @param err_code              The error code if provided
@@ -19,5 +28,5 @@ void
 isr_debug_exception(registers_t *regs)
 {
     KDEBUG_TTY("Debug exception.");
-    regs->_eflags &= ~0x100;
+    DEACTIVATE_TRAP_FLAG(regs);
 }

@@ -10,6 +10,14 @@
 #ifndef KERNEL_INTERRUTPION_ISR_H_
     #define KERNEL_INTERRUTPION_ISR_H_
 
+#ifndef ACTIVATE_TRAP_FLAG
+    #define ACTIVATE_TRAP_FLAG(regs) regs->_eflags |= 0b100000000
+#endif /* ifndef ACTIVATE_TRAP_FLAG */
+
+#ifndef DEACTIVATE_TRAP_FLAG
+    #define DEACTIVATE_TRAP_FLAG(regs) regs->_eflags &= ~0b100000000
+#endif /* ifndef DEACTIVATE_TRAP_FLAG */
+
 /**
  * @brief Register structure passed by the CPU when interruption.
  *        -...
