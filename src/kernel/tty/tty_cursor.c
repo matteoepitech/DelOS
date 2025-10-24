@@ -5,6 +5,7 @@
 ** TTY cursor source file
 */
 
+#include "defines.h"
 #include "utils/asm/io_port.h"
 #include "drivers/video/vga.h"
 #include "kernel/tty/tty.h"
@@ -71,4 +72,19 @@ ktty_cursor_add(int32_t x, int32_t y)
         real_x = real_x % VGA_COLUMNS_MAX;
     }
     ktty_cursor_set(real_x, real_y);
+}
+
+/**
+ * @brief Set the cursor visibility.
+ *
+ * @param visible       Visible or not
+ */
+void
+ktty_cursor_set_visibility(bool32_t visible)
+{
+    if (visible == OK_TRUE) {
+        kvga_show_cursor();
+    } else if (visible == KO_FALSE){
+        kvga_hide_cursor();
+    }
 }

@@ -49,6 +49,31 @@ kvga_set_cursor_position(point8_t new_position)
 }
 
 /**
+ * @brief Set the cursor visibility to hidden.
+ *        0x0a -> manage the cursor visibility
+ */
+void
+kvga_hide_cursor(void)
+{
+    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0a);
+    outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, 0x20);
+
+}
+
+/**
+ * @brief Set the cursor visibility to visible.
+ *        0x0a -> manage the cursor visibility
+ */
+void
+kvga_show_cursor(void)
+{
+    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0a);
+    outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, (inb(VGA_TEXT_MODE_CURSOR_DATA_ADDR) & 0xC0) | 0);
+    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0b);
+    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, (inb(VGA_TEXT_MODE_CURSOR_DATA_ADDR) & 0xe0) | 0);
+}
+
+/**
  * @brief Do a scroll to the top. Using kmemmove.
  */
 void

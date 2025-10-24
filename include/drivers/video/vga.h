@@ -93,6 +93,18 @@ void
 kvga_set_cursor_position(point8_t new_position);
 
 /**
+ * @brief Set the cursor visibility to hidden.
+ */
+void
+kvga_hide_cursor(void);
+
+/**
+ * @brief Set the cursor visibility to visible.
+ */
+void
+kvga_show_cursor(void);
+
+/**
  * @brief Do a scroll to the top. Using kmemmove.
  */
 void

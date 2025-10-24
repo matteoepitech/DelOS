@@ -5,8 +5,8 @@
 ** Kernel Source file main
 */
 
+#include "defines.h"
 #include "kernel/interruption/idt.h"
-#include "kernel/misc/panic.h"
 #include "kernel/tty/tty.h"
 
 /**
@@ -20,7 +20,7 @@ kmain(void)
     KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.");
     kidt_create_ptr(&idt_ptr);
     kidt_load_cpu(&idt_ptr);
-    KPANIC("ddd");
+    ktty_cursor_set_visibility(OK_TRUE);
     while (1);
     return;
 }

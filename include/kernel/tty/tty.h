@@ -116,4 +116,12 @@ ktty_cursor_set(uint8_t x, uint8_t y);
 void
 ktty_cursor_add(int32_t x, int32_t y);
 
+/**
+ * @brief Set the cursor visibility.
+ *
+ * @param visible       Visible or not
+ */
+void
+ktty_cursor_set_visibility(bool32_t visible);
+
 #endif /* ifndef KERNEL_TTY_H_ */

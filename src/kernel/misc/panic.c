@@ -29,6 +29,7 @@ kpanic(const char *msg)
         ktty_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(msg) / 2), (VGA_LINES_MAX / 2) + 2, msg, VGA_TEXT_PANIC_COLOR);
     }
     ktty_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_bottom_msg) / 2), VGA_LINES_MAX - 1, kernel_bottom_msg, VGA_TEXT_PANIC_COLOR);
+    ktty_cursor_set_visibility(KO_FALSE);
     kstop_interruption();
     while (1);
 }
