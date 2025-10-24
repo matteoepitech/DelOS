@@ -62,6 +62,17 @@ bool32_t
 kisr_register_handler(uint8_t index, isr_handler_t func_handler);
 
 /**
+ * @brief Register an handler of a IRQ in the isr_handlers variable.
+ *
+ * @param index                 The index in the IDT and isr_handlers
+ * @param func_handler          The function to jump at
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kirq_register_handler(uint8_t index, isr_handler_t func_handler);
+
+/**
  * @brief Call the handler with the interruption number and his error code if provided.
  *
  * @param int_no                The interruption number

@@ -22,6 +22,7 @@ kpanic(const char *msg)
     const char *kernel_reason_msg = "This is the reason of the kernel panic:";
     const char *kernel_bottom_msg = "Please submit this to Del.";
 
+    kstop_interruption_extern();
     ktty_fill(' ', VGA_TEXT_PANIC_COLOR);
     ktty_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_panic_msg) / 2), VGA_LINES_MAX / 2, kernel_panic_msg, VGA_TEXT_PANIC_COLOR);
     if (msg != NULL) {
@@ -30,6 +31,5 @@ kpanic(const char *msg)
     }
     ktty_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_bottom_msg) / 2), VGA_LINES_MAX - 1, kernel_bottom_msg, VGA_TEXT_PANIC_COLOR);
     ktty_cursor_set_visibility(KO_FALSE);
-    kstop_interruption();
     while (1);
 }

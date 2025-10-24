@@ -1,8 +1,8 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/interruption/isr/isr_breakpoint
+** src/kernel/interruption/irq/irq_timer
 ** File description:
-** ISR breakpoint
+** IRQ timer (IRQ0)
 */
 
 #include "kernel/interruption/isr.h"
@@ -10,12 +10,13 @@
 #include "defines.h"
 
 /**
- * @brief ISR breapoint.
- *
+ * @brief IRQ timer.
+ * 
  * @param regs          The registers
  */
 void
-isr_breakpoint(UNUSED registers_t *regs)
+irq_timer(UNUSED registers_t *regs)
 {
-    KDEBUG_TTY("Got a breakpoint");
+    // TODO: Timer handling
+    return;
 }

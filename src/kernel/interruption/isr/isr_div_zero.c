@@ -13,8 +13,7 @@
 /**
  * @brief ISR division by zero.
  *
- * @param int_no                The interruption number
- * @param err_code              The error code if provided
+ * @param regs          The registers
  */
 void
 isr_div_zero(UNUSED registers_t *regs)

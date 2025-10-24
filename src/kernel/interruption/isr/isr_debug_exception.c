@@ -21,8 +21,7 @@
  *        to continue the execution of the program. To do so you will need to
  *        put the trap flag back to 0 to continue the execution.
  *
- * @param int_no                The interruption number
- * @param err_code              The error code if provided
+ * @param regs          The registers
  */
 void
 isr_debug_exception(registers_t *regs)

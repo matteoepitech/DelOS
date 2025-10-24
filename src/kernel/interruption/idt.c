@@ -23,15 +23,22 @@ idt_ptr_t idt_ptr;
  */
 idt_entry_t idt[IDT_SIZE];
 
-// division by zero
+// isr0 = division by zero
 extern void isr0();
 extern void isr_div_zero(registers_t *regs);
-// debug exception
+// isr1 = debug exception
 extern void isr1();
 extern void isr_debug_exception(registers_t *regs);
-// breakpoint
+// isr2 = breakpoint
 extern void isr3();
 extern void isr_breakpoint(registers_t *regs);
+
+// irq0 = timer
+extern void irq0();
+extern void irq_timer(registers_t *regs);
+// irq1 = keyboard press
+extern void irq1();
+extern void irq_keyboard_press(registers_t *regs);
 
 /**
  * @brief Load all interruption service routine before the load in CPU.
@@ -55,6 +62,17 @@ idt_load_all_isr(void)
     if (kidt_set_entry(3, (uint32_t) isr3, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
         return KO_FALSE;
     if (kisr_register_handler(3, isr_breakpoint) == KO_FALSE)
+        return KO_FALSE;
+
+    // timer
+    if (kidt_set_entry(32, (uint32_t) irq0, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+        return KO_FALSE;
+    if (kirq_register_handler(32, irq_timer) == KO_FALSE)
+        return KO_FALSE;
+    // keyboard press
+    if (kidt_set_entry(33, (uint32_t) irq1, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+        return KO_FALSE;
+    if (kirq_register_handler(33, irq_keyboard_press) == KO_FALSE)
         return KO_FALSE;
     return OK_TRUE;
 }

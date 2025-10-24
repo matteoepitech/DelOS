@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2025
+** DELOS PROJECT, 2025
 ** src/kernel/interruption/isr_handler
 ** File description:
-** Interruption service routine source file
+** Interruption service routine source file and for IRQs
 */
 
 #include "kernel/interruption/idt.h"
@@ -38,6 +38,24 @@ kisr_register_handler(uint8_t index, isr_handler_t func_handler)
 }
 
 /**
+ * @brief Register an handler of a IRQ in the isr_handlers variable.
+ *
+ * @param index                 The index in the IDT and isr_handlers
+ * @param func_handler          The function to jump at
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kirq_register_handler(uint8_t index, isr_handler_t func_handler)
+{
+    if (func_handler == NULL) {
+        return KO_FALSE;
+    }
+    isr_handlers[index] = func_handler;
+    return OK_TRUE;
+}
+
+/**
  * @brief Call the handler with the interruption number and his error code if provided.
  *
  * @param int_no                The interruption number
@@ -46,7 +64,7 @@ kisr_register_handler(uint8_t index, isr_handler_t func_handler)
 void
 kisr_handler(registers_t *regs)
 {
-    uint32_t int_no = regs->_int_no;
+   uint32_t int_no = regs->_int_no;
 
     if (isr_handlers[int_no] != NULL) {
         isr_handlers[int_no](regs);

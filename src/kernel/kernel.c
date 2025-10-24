@@ -5,9 +5,11 @@
 ** Kernel Source file main
 */
 
-#include "defines.h"
 #include "kernel/interruption/idt.h"
+#include "kernel/interruption/interruption.h"
+#include "kernel/interruption/pic.h"
 #include "kernel/tty/tty.h"
+#include "defines.h"
 
 /**
  * @brief Kernel main entry point.
@@ -17,9 +19,13 @@
 void
 kmain(void)
 {
-    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.");
+    kstop_interruption_extern();
+    kpic_remap();
     kidt_create_ptr(&idt_ptr);
     kidt_load_cpu(&idt_ptr);
+    kstart_interruption_extern();
+
+    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.");
     ktty_cursor_set_visibility(OK_TRUE);
     while (1);
     return;
