@@ -5,9 +5,10 @@
 ** Kernel Source file main
 */
 
-#include "kernel/interruption/idt.h"
 #include "kernel/interruption/interruption.h"
+#include "kernel/interruption/idt.h"
 #include "kernel/interruption/pic.h"
+#include "kernel/shell/shell.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 
@@ -27,6 +28,9 @@ kmain(void)
 
     KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.");
     ktty_cursor_set_visibility(OK_TRUE);
+
+    kshell_start();
+
     while (1);
     return;
 }
