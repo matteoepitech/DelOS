@@ -10,6 +10,8 @@
 #ifndef KERNEL_SHELL_H_
     #define KERNEL_SHELL_H_
 
+#define KERNEL_SHELL_BUFFER_SIZE 512
+
 /**
  * @brief Start the shell and waiting for user prompt.
  *

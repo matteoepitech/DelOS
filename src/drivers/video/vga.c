@@ -7,6 +7,7 @@
 
 #include "utils/kstdlib/kmemory.h"
 #include "utils/asm/io_port.h"
+#include "kernel/tty/tty.h"
 #include "drivers/video/vga.h"
 
 /**
@@ -28,8 +29,8 @@ kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
     if (x >= VGA_COLUMNS_MAX || y >= VGA_LINES_MAX) {
         return;
     }
-    vga_text_mmio[(x * 2) + (y * VGA_COLUMNS_MAX * 2)] = c;
-    vga_text_mmio[(x * 2) + (y * VGA_COLUMNS_MAX * 2) + 1] = color;
+    vga_text_mmio[(y * VGA_COLUMNS_MAX * 2) + (x * 2)] = c;
+    vga_text_mmio[(y * VGA_COLUMNS_MAX * 2) + (x * 2) + 1] = color;
 }
 
 /**
@@ -70,7 +71,7 @@ kvga_show_cursor(void)
     outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0a);
     outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, (inb(VGA_TEXT_MODE_CURSOR_DATA_ADDR) & 0xC0) | 0);
     outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, 0x0b);
-    outb(VGA_TEXT_MODE_CURSOR_REGISTER_ADDR, (inb(VGA_TEXT_MODE_CURSOR_DATA_ADDR) & 0xe0) | 0);
+    outb(VGA_TEXT_MODE_CURSOR_DATA_ADDR, (inb(VGA_TEXT_MODE_CURSOR_DATA_ADDR) & 0xe0) | 15);
 }
 
 /**
@@ -79,8 +80,19 @@ kvga_show_cursor(void)
 void
 kvga_scroll_line(void)
 {
-    kmemmove(vga_text_mmio, vga_text_mmio + (VGA_COLUMNS_MAX * 2), ((VGA_COLUMNS_MAX * VGA_LINES_MAX * 2) - (VGA_COLUMNS_MAX * 2)));
-    kmemset(vga_text_mmio + (VGA_COLUMNS_MAX * VGA_LINES_MAX * 2) - (VGA_COLUMNS_MAX * 2), 0, VGA_COLUMNS_MAX * 2);
+    uint8_t *vm = vga_text_mmio + (VGA_LINES_MAX * VGA_COLUMNS_MAX * 2) - (VGA_COLUMNS_MAX * 2);
+
+    kmemmove(
+        vga_text_mmio,
+        vga_text_mmio + (VGA_COLUMNS_MAX * 2),
+        (VGA_COLUMNS_MAX * VGA_LINES_MAX * 2) - (VGA_COLUMNS_MAX * 2)
+    );
+    for (int i = 0; i < VGA_COLUMNS_MAX; i++) {
+        *vm = ' ';
+        vm++;
+        *vm = VGA_TEXT_DEFAULT_COLOR;
+        vm++;
+    }
 }
 
 /**
