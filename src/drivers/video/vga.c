@@ -80,19 +80,14 @@ kvga_show_cursor(void)
 void
 kvga_scroll_line(void)
 {
-    uint8_t *vm = vga_text_mmio + (VGA_LINES_MAX * VGA_COLUMNS_MAX * 2) - (VGA_COLUMNS_MAX * 2);
+    void *vm = vga_text_mmio + (VGA_LINES_MAX * VGA_COLUMNS_MAX * 2) - (VGA_COLUMNS_MAX * 2);
 
     kmemmove(
         vga_text_mmio,
         vga_text_mmio + (VGA_COLUMNS_MAX * 2),
         (VGA_COLUMNS_MAX * VGA_LINES_MAX * 2) - (VGA_COLUMNS_MAX * 2)
     );
-    for (int i = 0; i < VGA_COLUMNS_MAX; i++) {
-        *vm = ' ';
-        vm++;
-        *vm = VGA_TEXT_DEFAULT_COLOR;
-        vm++;
-    }
+    kwmemset((uint16_t *) vm, (VGA_TEXT_DEFAULT_COLOR << 8) | ' ', VGA_COLUMNS_MAX);
 }
 
 /**
