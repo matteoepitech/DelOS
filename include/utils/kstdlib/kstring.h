@@ -20,4 +20,15 @@
 size_t
 kstrlen(const int8_t *string);
 
+/**
+ * @brief Get the difference between the first non equal character.
+ *
+ * @param string_a      The string A
+ * @param string_b      The string B
+ *
+ * @return The difference between the first non equal character.
+ */
+int32_t
+kstrcmp(const char *string_a, const char *string_b);
+
 #endif /* ifndef UTILS_KSTDLIB_KSTRING_H_ */

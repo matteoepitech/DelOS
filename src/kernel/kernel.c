@@ -26,7 +26,7 @@ kmain(void)
     kidt_load_cpu(&idt_ptr);
     kstart_interruption_extern();
 
-    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.");
+    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.\n");
     ktty_cursor_set_visibility(OK_TRUE);
 
     kshell_start();
