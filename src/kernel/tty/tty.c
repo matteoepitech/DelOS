@@ -52,6 +52,7 @@ ktty_putc(uint8_t c, uint8_t color)
                 ktty_cursor_set(0, ktty_cursor_pos._y + 1);
             }
             return; 
+
         default:
             ktty_putc_at(ktty_cursor_pos._x, ktty_cursor_pos._y, c, color);
             ktty_cursor_add(1, 0);
