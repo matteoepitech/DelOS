@@ -9,6 +9,7 @@
 
 /**
  * @brief Kernel memmove.
+ *        Including backward memory move.
  *
  * @param dst           The address to start the move
  * @param src           The address where to take data from
@@ -19,11 +20,22 @@
 void *
 kmemmove(void *dst, const void *src, size_t n)
 {
-    while (n) {
-        *(uint8_t *) dst = *(uint8_t *) src;
-        dst++;
-        src++;
-        n--;
+    const uint8_t *s = src;
+    uint8_t *d = dst;
+    void *ret = dst;
+
+    if (s < d) {
+        d += n - 1;
+        s += n - 1;
+        while (n) {
+            *d-- = *s--;
+            n--;
+        }
+    } else {
+        while (n) {
+            *d++ = *s++;
+            n--;
+        }
     }
-    return dst;
+    return ret;
 }

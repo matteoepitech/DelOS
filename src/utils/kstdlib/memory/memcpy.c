@@ -19,11 +19,13 @@
 void *
 kmemcpy(void *restrict dst, const void *restrict src, size_t n)
 {
+    void *ret = dst;
+
     while (n) {
         *(uint8_t *) dst = *(uint8_t *) src;
         dst++;
         src++;
         n--;
     }
-    return dst;
+    return ret;
 }

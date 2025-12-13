@@ -11,6 +11,7 @@
 #include "kernel/shell/shell.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
+#include "utils/kstdlib/kmemory.h"
 
 /**
  * @brief Kernel main entry point.
