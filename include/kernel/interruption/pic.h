@@ -5,10 +5,18 @@
 ** PIC header file
 */
 
-#include "types.h"
+#include "utils/asm/io_port.h"
 
 #ifndef KERNEL_INTERRUPTION_PIC_H_
     #define KERNEL_INTERRUPTION_PIC_H_
+
+    // PIC commands primary port and secondary port
+    #define PIC1_COMMAND_PORT        0x20
+    #define PIC2_COMMAND_PORT        0xA0
+
+    // PIC End of Interrupt
+    #define PIC_EOI        0x20
+    #define PIC_CALL_EOI() kpic_send_eoi()
 
 /**
  * @brief Remap the whole PIC interface to permit no collision between the ISR and IRQ.
@@ -31,5 +39,14 @@ kpic_set_mask(uint8_t irq_line);
  */
 void
 kpic_clear_mask(uint8_t irq_line);
+
+/**
+ * @brief Send an End of Interrupt 
+ */
+static inline void
+kpic_send_eoi(void)
+{
+    outb(PIC1_COMMAND_PORT, PIC_EOI);
+}
 
 #endif /* ifndef KERNEL_INTERRUPTION_PIC_H_ */

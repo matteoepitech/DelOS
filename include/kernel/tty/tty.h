@@ -25,6 +25,10 @@ extern point8_t ktty_cursor_pos;
     #define KDEBUG_TTY(msg) ktty_puts(msg, VGA_TEXT_DEFAULT_COLOR);
 #endif /* ifndef KDEBUG_TTY */
 
+#ifndef KDEBUG_TTY_NUMBER
+    #define KDEBUG_TTY_NUMBER(msg) ktty_put_number(msg, VGA_TEXT_DEFAULT_COLOR);
+#endif /* ifndef KDEBUG_TTY_NUMBER */
+
 #ifndef KERROR_TTY
     #define KERROR_TTY(msg) ktty_cursor_set(0, ktty_cursor_pos._y + 1) ; ktty_puts("KERNEL ERROR: "msg, VGA_TEXT_ERROR_COLOR);
 #endif /* ifndef KERROR_TTY */
@@ -123,5 +127,15 @@ ktty_cursor_add(int32_t x, int32_t y);
  */
 void
 ktty_cursor_set_visibility(bool32_t visible);
+
+/**
+ * @brief Print a number on the screen at the TTY cursor position.
+ *        This function use VGA text mode by default.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+ktty_put_number(int32_t number, uint8_t color);
 
 #endif /* ifndef KERNEL_TTY_H_ */

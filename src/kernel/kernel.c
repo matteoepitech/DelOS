@@ -8,10 +8,10 @@
 #include "kernel/interruption/interruption.h"
 #include "kernel/interruption/idt.h"
 #include "kernel/interruption/pic.h"
+#include "kernel/interruption/pit.h"
 #include "kernel/shell/shell.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
-#include "utils/kstdlib/kmemory.h"
 
 /**
  * @brief Kernel main entry point.
@@ -23,6 +23,7 @@ kmain(void)
 {
     kstop_interruption_extern();
     kpic_remap();
+    kpit_timer_init(PIT_TARGET_FREQUENCY);
     kidt_create_ptr(&idt_ptr);
     kidt_load_cpu(&idt_ptr);
     kstart_interruption_extern();
@@ -33,5 +34,6 @@ kmain(void)
     kshell_start();
 
     while (1);
+
     return;
 }

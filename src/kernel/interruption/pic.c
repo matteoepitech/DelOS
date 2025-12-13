@@ -14,28 +14,18 @@
 void
 kpic_remap(void)
 {
-    // Init PIC primary
-    outb(0x20, 0x11);
-    // Init PIC secondary
-    outb(0xA0, 0x11);
-    // Offset of primary is now 0x20 (idt number 32)
-    outb(0x21, 0x20);
-    // Offset of secondary is now 0x28 (idt number 40)
-    outb(0xA1, 0x28);
-    // Set the secondary PIC to the IRQ2
-    outb(0x21, 0x04);
-    // Say to secondary PIC his identifier (IRQ2)
-    outb(0xA1, 0x02);
-    // Mode 8086/88
-    outb(0x21, 0x01);
-    // Mode 8086/88
-    outb(0xA1, 0x01);
-    // Reactivate all PIC primary
-    outb(0x21, 0x0);
-    // Reactivate all PIC secondary
-    outb(0xA1, 0x0);
+    outb(PIC1_COMMAND_PORT, 0x11);     // Init PIC primary
+    outb(PIC2_COMMAND_PORT, 0x11);     // Init PIC secondary
+    outb(0x21, 0x20);                  // Offset of primary is now 0x20 (idt number 32)
+    outb(0xA1, 0x28);                  // Offset of secondary is now 0x28 (idt number 40)
+    outb(0x21, 0x04);                  // Set the secondary PIC to the IRQ2
+    outb(0xA1, 0x02);                  // Say to secondary PIC his identifier (IRQ2)
+    outb(0x21, 0x01);                  // Set the mode 8086/88
+    outb(0xA1, 0x01);                  // Set the mode 8086/88
+    outb(0x21, 0x0);                   // Reactivate all PIC primary
+    outb(0xA1, 0x0);                   // Reactivate all PIC secondary
     // Set all masks for the 8 first IRQs for the primary PIC
-    kpic_set_mask(0);
+    kpic_clear_mask(0);
     kpic_clear_mask(1);
     kpic_set_mask(2);
     kpic_set_mask(3);
@@ -47,6 +37,7 @@ kpic_remap(void)
 
 /**
  * @brief Set the bit mask of the IRQ to 1 = blocked.
+ *        NOTE: Maybe the outb will not works for IRQ > 8 since it's byte
  *
  * @param irq_line              The IRQ number
  */
@@ -68,6 +59,7 @@ kpic_set_mask(uint8_t irq_line)
 
 /**
  * @brief Set the bit mask of the IRQ to 0 = activated.
+ *        NOTE: Maybe the outb will not works for IRQ > 8 since it's byte
  *
  * @param irq_line              The IRQ number
  */

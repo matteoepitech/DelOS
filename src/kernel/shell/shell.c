@@ -17,6 +17,7 @@
 shell_command_t shell_commands[] = {
     {"help", kshell_help},
     {"reboot", kshell_reboot},
+    {"timer", kshell_timer},
     {NULL, NULL}
 };
 
@@ -62,12 +63,14 @@ kshell_start(void)
                 ktty_puts("$> ", VGA_TEXT_PROMPT_COLOR);
                 index = 0;
                 break;
+
             case '\b':
                 if (index > 0) {
                     ktty_putc('\b', VGA_TEXT_DEFAULT_COLOR);
                     index--;
                 }
                 break;
+
             default:
                 if (index < KERNEL_SHELL_BUFFER_SIZE - 1) {
                     buffer[index] = c;

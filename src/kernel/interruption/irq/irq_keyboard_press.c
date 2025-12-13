@@ -7,6 +7,7 @@
 
 #define KEYBOARD_LAYOUT_AZERTY
 
+#include "kernel/interruption/pic.h"
 #include "kernel/interruption/isr.h"
 #include "kernel/misc/keyboard.h"
 #include "utils/asm/io_port.h"
@@ -86,5 +87,5 @@ irq_keyboard_press(UNUSED registers_t *regs)
             kkeyboard_push(ascii);
         }
     }
-    outb(0x20, 0x20);
+    PIC_CALL_EOI();
 }
