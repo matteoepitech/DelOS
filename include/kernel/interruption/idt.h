@@ -32,6 +32,9 @@
     #define IDT_INT_GATE_USER    (IDT_PRESENT | IDT_DPL_RING3 | IDT_GATE_INT_32)
     #define IDT_TRAP_GATE_USER   (IDT_PRESENT | IDT_DPL_RING3 | IDT_GATE_TRAP_32)
 
+    // Segments for IDT
+    #define IDT_SEGMENT_CODE     0x08
+
 /**
  * @brief Structure for an IDT entry.
  *        -offset_low  = The low part of the address handler

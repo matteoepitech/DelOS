@@ -49,30 +49,30 @@ static bool32_t
 idt_load_all_isr(void)
 {
     // division by zero
-    if (kidt_set_entry(0, (uint32_t) isr0, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+    if (kidt_set_entry(0, (uint32_t) isr0, IDT_SEGMENT_CODE, IDT_INT_GATE_KERNEL) == KO_FALSE)
         return KO_FALSE;
     if (kisr_register_handler(0, isr_div_zero) == KO_FALSE)
         return KO_FALSE;
     // debug exception
-    if (kidt_set_entry(1, (uint32_t) isr1, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+    if (kidt_set_entry(1, (uint32_t) isr1, IDT_SEGMENT_CODE, IDT_INT_GATE_KERNEL) == KO_FALSE)
         return KO_FALSE;
     if (kisr_register_handler(1, isr_debug_exception) == KO_FALSE)
         return KO_FALSE;
     // breakpoint
-    if (kidt_set_entry(3, (uint32_t) isr3, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+    if (kidt_set_entry(3, (uint32_t) isr3, IDT_SEGMENT_CODE, IDT_INT_GATE_KERNEL) == KO_FALSE)
         return KO_FALSE;
     if (kisr_register_handler(3, isr_breakpoint) == KO_FALSE)
         return KO_FALSE;
 
     // timer
-    if (kidt_set_entry(32, (uint32_t) irq0, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+    if (kidt_set_entry(32, (uint32_t) irq0, IDT_SEGMENT_CODE, IDT_INT_GATE_KERNEL) == KO_FALSE)
         return KO_FALSE;
-    if (kirq_register_handler(32, irq_timer) == KO_FALSE)
+    if (kisr_register_handler(32, irq_timer) == KO_FALSE)
         return KO_FALSE;
     // keyboard press
-    if (kidt_set_entry(33, (uint32_t) irq1, 0x08, IDT_INT_GATE_KERNEL) == KO_FALSE)
+    if (kidt_set_entry(33, (uint32_t) irq1, IDT_SEGMENT_CODE, IDT_INT_GATE_KERNEL) == KO_FALSE)
         return KO_FALSE;
-    if (kirq_register_handler(33, irq_keyboard_press) == KO_FALSE)
+    if (kisr_register_handler(33, irq_keyboard_press) == KO_FALSE)
         return KO_FALSE;
     return OK_TRUE;
 }
@@ -147,6 +147,6 @@ kidt_set_entry(uint8_t index, uint32_t addr, uint16_t selector, uint8_t type_att
     idt[index]._offset_low = addr & 0x0000FFFF;
     idt[index]._selector = selector;
     idt[index]._type_attr = type_attr;
-    idt[index]._zero = 0;
+    idt[index]._zero = NULL;
     return OK_TRUE;
 }
