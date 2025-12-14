@@ -1,31 +1,53 @@
 # DelOS
 
-DelOS is a tiny 32-bit educational x86 operating system opened to contributions.
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-## Toolchain requirements
-- `nasm`
-- `i386-elf-gcc` / `i386-elf-ld` (freestanding, 32-bit)
-- `qemu-system-i386`
-- `make`
+DelOS is a tiny 32-bit educational x86 operating system designed for learning OS development fundamentals.
 
-You can inspect detected sources/objects via `make info`.
+## Requirements
 
-## Quick start
+- `nasm` - Netwide Assembler
+- `i386-elf-gcc` / `i386-elf-ld` (32-bit cross-compiler)
+- `qemu-system-i386` - x86 emulator
+- `make` - Build automation
 
+## Installation
+
+### Ubuntu/Debian
 ```sh
-make            # build bootsector + kernel -> build/delos.bin
-make run        # launch QEMU (floppy raw image)
+sudo apt install nasm qemu-system-x86 build-essential
 ```
 
-## Contributing
-- Check `todo.md` for bite-sized tasks and ideas.
-- Follow the existing code style (freestanding C, no dependencies).
-- Prefer small, focused PRs (one task per PR).
-- Add brief comments only where behavior is non-obvious.
+For the `i386-elf` cross-compiler toolchain, you'll need to build it from source or use a pre-built package. See [OSDev Wiki](https://wiki.osdev.org/GCC_Cross-Compiler) for detailed instructions.
 
-## Notes & disclaimers
-- This is an educational operating system, do not run on bare metal hardware you care about :)
-- Tested in QEMU only; behavior on other emulators/hardware may differ.
+### macOS
+You are free to use a container / virtual machine for compiling the project. <3
+
+## Quick Start
+
+```sh
+make       # Build the bootsector + OS image into build/delos.bin
+make run   # Launch QEMU with the image
+make clean # Clean build artifacts
+```
+
+## Notes & Disclaimers
+
+> [!NOTE]
+This is an educational operating system. Do not run on bare metal hardware you care about.
+
+- Tested in QEMU only. Behavior on other emulators or real hardware may differ
+- No warranty or guarantees of any kind
+- Use at your own risk :)
+
+## Contributing
+
+Contributions are welcome! Whether you're fixing bugs, adding features, or improving documentation, your help is appreciated.
+
+- See `CONTRIBUTING.md` for workflow, coding style, and contribution checklist
+- See `TODO.md` for a list of tasks and ideas
+
 
 ## License
-MIT License. See `LICENSE`.
+
+MIT License. See `LICENSE` for details.
