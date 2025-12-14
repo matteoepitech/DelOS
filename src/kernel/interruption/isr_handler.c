@@ -46,9 +46,11 @@ kisr_register_handler(uint8_t index, isr_handler_t func_handler)
 void
 kisr_handler(registers_t *regs)
 {
-   uint32_t int_no = regs->_int_no;
+    uint32_t int_no = regs->_int_no;
 
-    if (isr_handlers[int_no] != NULL) {
+    if (regs == NULL) {
+        KPANIC("Interruption's registers not pushed on stack.");
+    } else if (isr_handlers[int_no] != NULL) {
         isr_handlers[int_no](regs);
     } else {
         KPANIC("Interruption not handled.");
