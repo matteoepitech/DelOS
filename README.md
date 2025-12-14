@@ -1,6 +1,8 @@
 # DelOS
 
-![License](https://img.shields.io/badge/license-MIT-blue)
+![Status](https://img.shields.io/badge/Status-WIP-yellow)
+![Made with](https://img.shields.io/badge/Made%20with-C%20%2B%20ASM-blueviolet)
+[![MIT license](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 DelOS is a tiny 32-bit educational x86 operating system designed for learning OS development fundamentals.
 
