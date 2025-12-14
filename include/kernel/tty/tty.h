@@ -26,7 +26,7 @@ extern point8_t ktty_cursor_pos;
 #endif /* ifndef KDEBUG_TTY */
 
 #ifndef KDEBUG_TTY_NUMBER
-    #define KDEBUG_TTY_NUMBER(msg) ktty_put_number(msg, VGA_TEXT_DEFAULT_COLOR);
+    #define KDEBUG_TTY_NUMBER(nb) ktty_put_number(nb, VGA_TEXT_DEFAULT_COLOR);
 #endif /* ifndef KDEBUG_TTY_NUMBER */
 
 #ifndef KERROR_TTY

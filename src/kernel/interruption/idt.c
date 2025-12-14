@@ -91,8 +91,8 @@ kidt_create_ptr(idt_ptr_t *ptr)
         return KO_FALSE;
     }
     ptr->_limit = (sizeof(idt_entry_t) * IDT_SIZE) - 1;
-    ptr->_base = (uint32_t) &idt;
-    kmemset(&idt, 0, sizeof(idt_entry_t) * IDT_SIZE - 1);
+    ptr->_base = (uint32_t) idt;
+    kmemset(idt, 0, sizeof(idt));
     return OK_TRUE;
 }
 

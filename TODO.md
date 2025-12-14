@@ -1,7 +1,7 @@
 # TODO DelOS
 
 ## Critical fixes
-- [ ] Zero the entire IDT with `kmemset(idt, 0, sizeof(idt))` (src/kernel/interruption/idt.c).
+- [x] Zero the entire IDT with `kmemset(idt, 0, sizeof(idt))` (src/kernel/interruption/idt.c).
 - [ ] Add index bounds checks in `kidt_set_entry`, `kisr_register_handler`, `kisr_handler` to stay within `IDT_SIZE` (src/kernel/interruption/idt.c, src/kernel/interruption/isr_handler.c).
 - [ ] Add default handlers for CPU exceptions 0–31 (#GP, #PF, #DF, etc.) and register them in the IDT (src/kernel/interruption/idt.c, src/kernel/interruption/isr/*).
 - [ ] Send EOI to both PICs for IRQ >= 8 (extend PIC_CALL_EOI) (include/kernel/interruption/pic.h).
