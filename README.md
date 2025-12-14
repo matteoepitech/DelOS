@@ -20,7 +20,7 @@ DelOS is a tiny 32-bit educational x86 operating system designed for learning OS
 sudo apt install nasm qemu-system-x86 build-essential
 ```
 
-For the `i386-elf` cross-compiler toolchain, you'll need to build it from source or use a pre-built package.
+For the `i386-elf` cross-compiler toolchain, you'll need to build it from source or use a pre-built package. 
 See [OSDev Wiki](https://wiki.osdev.org/GCC_Cross-Compiler) for detailed instructions.
 
 ### macOS
