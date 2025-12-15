@@ -44,11 +44,13 @@ isr%1:
     push 0              ; err_code if not pushed by the CPU
 %endif
 
-    push %1             ; int_no    
+    push %1             ; int_no
     pusha               ; push EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI
 
-    push es
     push ds
+    push es
+    push fs
+    push gs
 
     mov ax, 0x10
     mov ds, ax
@@ -60,11 +62,13 @@ isr%1:
     call kisr_handler
     add esp, 4          ; clean the pointer to registers_t
 
+    pop gs
+    pop fs
     pop es
     pop ds
+
     popa
     add esp, 8          ; clean int_no and err_code
-    sti
     iret
 %endmacro
 
@@ -76,13 +80,20 @@ ISR_COMMON 4,0
 ISR_COMMON 5,0
 ISR_COMMON 6,0
 ISR_COMMON 7,0
+ISR_COMMON 8,1
 ISR_COMMON 9,0
+ISR_COMMON 10,1
+ISR_COMMON 11,1
+ISR_COMMON 12,1
+ISR_COMMON 13,1
+ISR_COMMON 14,1
+ISR_COMMON 15,0
 ISR_COMMON 16,0
+ISR_COMMON 17,1
 ISR_COMMON 18,0
 ISR_COMMON 19,0
-ISR_COMMON 15,0
 ISR_COMMON 20,0
-ISR_COMMON 21,0
+ISR_COMMON 21,1
 ISR_COMMON 22,0
 ISR_COMMON 23,0
 ISR_COMMON 24,0
@@ -90,14 +101,6 @@ ISR_COMMON 25,0
 ISR_COMMON 26,0
 ISR_COMMON 27,0
 ISR_COMMON 28,0
-ISR_COMMON 29,0
-ISR_COMMON 30,0
+ISR_COMMON 29,1
+ISR_COMMON 30,1
 ISR_COMMON 31,0
-
-ISR_COMMON 8,1
-ISR_COMMON 10,1
-ISR_COMMON 11,1
-ISR_COMMON 12,1
-ISR_COMMON 13,1
-ISR_COMMON 14,1
-ISR_COMMON 17,1

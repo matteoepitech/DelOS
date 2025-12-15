@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** include/kernel/interruption/pit
+** include/kernel/arch/i386/interruption/pit
 ** File description:
 ** PIT header file
 */

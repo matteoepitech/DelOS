@@ -5,7 +5,7 @@
 ** timer command source file
 */
 
-#include "kernel/interruption/pit.h"
+#include "kernel/arch/i386/interruption/pit.h"
 #include "kernel/shell/shell.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"

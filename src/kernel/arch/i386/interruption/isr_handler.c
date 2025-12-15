@@ -1,12 +1,12 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/interruption/isr_handler
+** src/kernel/arch/i386/interruption/isr_handler
 ** File description:
 ** Interruption service routine source file and for IRQs
 */
 
-#include "kernel/interruption/idt.h"
-#include "kernel/interruption/isr.h"
+#include "kernel/arch/i386/interruption/idt.h"
+#include "kernel/arch/i386/interruption/isr.h"
 #include "kernel/misc/panic.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
@@ -46,10 +46,13 @@ kisr_register_handler(uint8_t index, isr_handler_t func_handler)
 void
 kisr_handler(registers_t *regs)
 {
-    uint32_t int_no = regs->_int_no;
-
     if (regs == NULL) {
         KPANIC("Interruption's registers not pushed on stack.");
+    }
+    uint32_t int_no = regs->_int_no;
+
+    if (int_no >= IDT_SIZE) {
+        KPANIC("Interruption number out of IDT bounds.");
     } else if (isr_handlers[int_no] != NULL) {
         isr_handlers[int_no](regs);
     } else {

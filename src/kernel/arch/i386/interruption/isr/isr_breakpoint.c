@@ -1,11 +1,11 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/interruption/isr/isr_breakpoint
+** src/kernel/arch/i386/interruption/isr/isr_breakpoint
 ** File description:
 ** ISR breakpoint
 */
 
-#include "kernel/interruption/isr.h"
+#include "kernel/arch/i386/interruption/isr.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 

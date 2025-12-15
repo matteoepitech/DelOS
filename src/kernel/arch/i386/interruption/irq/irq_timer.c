@@ -1,13 +1,13 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/interruption/irq/irq_timer
+** src/kernel/arch/i386/interruption/irq/irq_timer
 ** File description:
 ** IRQ timer (IRQ0)
 */
 
-#include "kernel/interruption/isr.h"
-#include "kernel/interruption/pic.h"
-#include "kernel/interruption/pit.h"
+#include "kernel/arch/i386/interruption/isr.h"
+#include "kernel/arch/i386/interruption/pic.h"
+#include "kernel/arch/i386/interruption/pit.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 

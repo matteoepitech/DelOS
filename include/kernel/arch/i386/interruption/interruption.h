@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2025
-** include/kernel/interruption/interruption
+** include/kernel/arch/i386/interruption/interruption
 ** File description:
 ** Interruption header file
 */

@@ -46,8 +46,8 @@ typedef unsigned short uint16_t;
 
 /**
  * @brief Unsigned char (1 byte)
- *        This type is used specially in structures or in arrays to save mem.
- *        Prefer using bool32_t if you work in stack, functions, condition.
+ *        This type is used specially in structures or in arrays to save memory.
+ *        Prefer using bool32_t if you work in stack, functions, condition for alignement.
  */
 typedef uint8_t bool8_t;
 

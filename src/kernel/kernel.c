@@ -5,10 +5,10 @@
 ** Kernel Source file main
 */
 
-#include "kernel/interruption/interruption.h"
-#include "kernel/interruption/idt.h"
-#include "kernel/interruption/pic.h"
-#include "kernel/interruption/pit.h"
+#include "kernel/arch/i386/interruption/interruption.h"
+#include "kernel/arch/i386/interruption/idt.h"
+#include "kernel/arch/i386/interruption/pic.h"
+#include "kernel/arch/i386/interruption/pit.h"
 #include "kernel/shell/shell.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
@@ -23,17 +23,15 @@ kmain(void)
 {
     kstop_interruption_extern();
     kpic_remap();
-    kpit_timer_init(PIT_TARGET_FREQUENCY);
     kidt_create_ptr(&idt_ptr);
     kidt_load_cpu(&idt_ptr);
     kstart_interruption_extern();
-
-    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.\n");
+    kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
 
+    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.\n");
     kshell_start();
 
     while (1);
-
     return;
 }

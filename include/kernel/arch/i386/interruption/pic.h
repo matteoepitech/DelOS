@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** include/kernel/interruption/pic
+** include/kernel/arch/i386/interruption/pic
 ** File description:
 ** PIC header file
 */

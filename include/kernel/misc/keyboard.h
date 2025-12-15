@@ -10,9 +10,9 @@
 #ifndef KERNEL_MISC_KEYBOARD_H_
     #define KERNEL_MISC_KEYBOARD_H_
 
-#ifndef KEYBOARD_BUFFER_SIZE
-    #define KEYBOARD_BUFFER_SIZE 128
-#endif /* ifndef KEYBOARD_BUFFER_SIZE */
+    #ifndef KEYBOARD_BUFFER_SIZE
+        #define KEYBOARD_BUFFER_SIZE 128
+    #endif /* ifndef KEYBOARD_BUFFER_SIZE */
 
 extern int8_t keyboard_buffer[KEYBOARD_BUFFER_SIZE];
 extern size_t keyboard_head;

@@ -1,14 +1,14 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/interruption/irq/irq_keyboard_press
+** src/kernel/arch/i386/interruption/irq/irq_keyboard_press
 ** File description:
 ** IRQ keyboard press (IRQ1)
 */
 
 #define KEYBOARD_LAYOUT_AZERTY
 
-#include "kernel/interruption/pic.h"
-#include "kernel/interruption/isr.h"
+#include "kernel/arch/i386/interruption/pic.h"
+#include "kernel/arch/i386/interruption/isr.h"
 #include "kernel/misc/keyboard.h"
 #include "utils/asm/io_port.h"
 #include "kernel/tty/tty.h"
@@ -82,9 +82,8 @@ irq_keyboard_press(UNUSED registers_t *regs)
     uint8_t code = inb(0x60);
 
     if (!(code & 0x80) && code < 128) {
-        uint8_t ascii = scancode_to_ascii[code];
-        if (ascii != 0x0) {
-            kkeyboard_push(ascii);
+        if (scancode_to_ascii[code] != 0x0) {
+            kkeyboard_push(scancode_to_ascii[code]);
         }
     }
     PIC_CALL_EOI();

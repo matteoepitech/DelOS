@@ -1,11 +1,11 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/interruption/pit
+** src/kernel/arch/i386/interruption/pit
 ** File description:
 ** PIT source file
 */
 
-#include "kernel/interruption/pit.h"
+#include "kernel/arch/i386/interruption/pit.h"
 #include "utils/asm/io_port.h"
 
 // @brief The ticks count of since start of the kernel.

@@ -28,8 +28,10 @@ irq%1:
     push %2             ; interrupt number (vector)
     pusha               ; push general registers
 
-    push es
     push ds
+    push es
+    push fs
+    push gs
 
     mov ax, 0x10
     mov ds, ax
@@ -41,11 +43,13 @@ irq%1:
     call kisr_handler
     add esp, 4          ; clean pointer
 
+    pop gs
+    pop fs
     pop es
     pop ds
+
     popa
     add esp, 8          ; pop int_no + err_code
-    sti
     iret
 %endmacro
 

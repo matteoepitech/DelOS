@@ -1,22 +1,22 @@
 # TODO DelOS
 
 ## Critical fixes
-- [x] Zero the entire IDT with `kmemset(idt, 0, sizeof(idt))` (src/kernel/interruption/idt.c).
-- [x] Add index bounds checks in `kidt_set_entry`, `kisr_register_handler`, `kisr_handler` to stay within `IDT_SIZE` (src/kernel/interruption/idt.c, src/kernel/interruption/isr_handler.c).
-- [ ] Add default handlers for CPU exceptions 0–31 (#GP, #PF, #DF, etc.) and register them in the IDT (src/kernel/interruption/idt.c, src/kernel/interruption/isr/*).
-- [ ] Send EOI to both PICs for IRQ >= 8 (extend PIC_CALL_EOI) (include/kernel/interruption/pic.h).
+- [x] Zero the entire IDT with `kmemset(idt, 0, sizeof(idt))` (src/kernel/arch/i386/interruption/idt.c).
+- [x] Add index bounds checks in `kidt_set_entry`, `kisr_register_handler`, `kisr_handler` to stay within `IDT_SIZE` (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr_handler.c).
+- [ ] Add default handlers for CPU exceptions 0–31 (#GP, #PF, #DF, etc.) and register them in the IDT (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr/*).
+- [ ] Send EOI to both PICs for IRQ >= 8 (extend PIC_CALL_EOI) (include/kernel/arch/i386/interruption/pic.h).
 - [ ] Replace the infinite busy loop in `kmain` with an idle `hlt` loop or idle task (src/kernel/kernel.c).
-- [ ] Guard `kpit_timer_init` against `frequency == 0` / too high; clamp divisor to 16 bits (src/kernel/interruption/pit.c).
+- [ ] Guard `kpit_timer_init` against `frequency == 0` / too high; clamp divisor to 16 bits (src/kernel/arch/i386/interruption/pit.c).
 - [ ] Add null-pointer checks before dereferencing in shell/TTY/panic paths (grep for `NULL` comparisons) (multiple files).
 - [ ] Ensure `kvga_putc_at` silently drops out-of-bounds writes; add tests/logging guard (src/drivers/video/vga.c).
-- [ ] Add sanity checks for PIT divisor overflows and log the actual divisor (src/kernel/interruption/pit.c).
+- [ ] Add sanity checks for PIT divisor overflows and log the actual divisor (src/kernel/arch/i386/interruption/pit.c).
 - [ ] Make `kreboot` timeout and fail gracefully if controller never clears bit 1 (src/kernel/misc/reboot.c).
 
 ## Shell / input / TTY
 - [ ] Implement basic argv/argc parsing (split on space/tab, handle quotes) and return an error code when a command is unknown (src/kernel/shell/shell.c).
 - [ ] Print "command not found" on unknown commands; stop after executing one matched command (src/kernel/shell/shell.c).
 - [ ] Add `clear`, `uptime`/`ticks`, `mem` placeholder, and `panic-test` commands (src/kernel/shell/commands/).
-- [ ] Handle Shift/CapsLock and 0xE0 extended scancodes; cleanly switch keyboard layouts (src/kernel/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
+- [ ] Handle Shift/CapsLock and 0xE0 extended scancodes; cleanly switch keyboard layouts (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
 - [ ] Make `kkeyboard_getchar` CPU-friendly (e.g., `hlt` in loop with interrupts enabled) (src/kernel/misc/keyboard.c).
 - [ ] Wrap `KDEBUG_TTY`/`KERROR_TTY` macros in `do { } while (0)` to avoid side effects (include/kernel/tty/tty.h).
 - [ ] Align `ktty_puts_at` signature (char * vs int8_t *) between header and implementation; preserve passed color on newline handling (src/kernel/tty/tty.c, include/kernel/tty/tty.h).
@@ -35,13 +35,13 @@
 - [ ] Compute kernel sector count dynamically instead of hardcoded `0x14` + padding (boot/bootsector.s, boot/padding_zeroes.s, Makefile).
 - [ ] Check `int 0x13` return status and print a readable disk error before continuing (boot/bootsector.s).
 - [ ] Enable A20 line before jumping to protected mode (boot/bootsector.s).
-- [ ] Replace magic numbers (KERNEL_LOCATION, KERNEL_BASE_POINTER, PIC offsets) with documented defines (boot/bootsector.s, boot/extra/gdt.s, include/kernel/interruption/pic.h).
-- [ ] Add a double-fault handler and a fallback IDT/GDT to avoid triple faults (src/kernel/interruption/idt.c, src/kernel/interruption/isr/*).
+- [ ] Replace magic numbers (KERNEL_LOCATION, KERNEL_BASE_POINTER, PIC offsets) with documented defines (boot/bootsector.s, boot/extra/gdt.s, include/kernel/arch/i386/interruption/pic.h).
+- [ ] Add a double-fault handler and a fallback IDT/GDT to avoid triple faults (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr/*).
 - [ ] Add NMI (Non Maskable Interrupt) disable/enable helpers and ensure NMI masking where needed (new helper + boot/bootsector.s).
-- [ ] Add spurious IRQ handler and mask if repeatedly triggered (src/kernel/interruption/idt.c, irq handler).
-- [ ] Add lazy PIC masking/unmasking helper to avoid magic `outb` duplication (src/kernel/interruption/pic.c).
-- [ ] Provide an `isr_dump_regs` helper reusable by all handlers (src/kernel/interruption/isr_handler.c).
-- [ ] Add `sti`/`cli` wrappers with debug logging toggles for tracing (include/kernel/interruption/interruption.h).
+- [ ] Add spurious IRQ handler and mask if repeatedly triggered (src/kernel/arch/i386/interruption/idt.c, irq handler).
+- [ ] Add lazy PIC masking/unmasking helper to avoid magic `outb` duplication (src/kernel/arch/i386/interruption/pic.c).
+- [ ] Provide an `isr_dump_regs` helper reusable by all handlers (src/kernel/arch/i386/interruption/isr_handler.c).
+- [ ] Add `sti`/`cli` wrappers with debug logging toggles for tracing (include/kernel/arch/i386/interruption/interruption.h).
 
 ## Kernel library
 - [ ] Finish 4-byte aligned `kmemset` optimization (TODO present) (src/utils/kstdlib/memory/memset.c).
@@ -93,10 +93,10 @@
 - [ ] Add `cmp-mem <addr1> <addr2> <len>` command for quick memory comparisons (src/kernel/shell/commands/cmp_mem.c).
 
 ## Debug / observability
-- [ ] Extend `kpanic`/`KPANIC` to dump registers, int number, and context (src/kernel/misc/panic.c, src/kernel/interruption/isr_handler.c).
+- [ ] Extend `kpanic`/`KPANIC` to dump registers, int number, and context (src/kernel/misc/panic.c, src/kernel/arch/i386/interruption/isr_handler.c).
 - [ ] Add a small logging helper (levels, colors) instead of raw `KDEBUG_TTY` (include/kernel/tty/tty.h).
 - [ ] Add shell test commands: `int3`, divide-by-zero, and `dump-idt` (src/kernel/shell/commands/).
-- [ ] Add `trace interrupts on/off` to log int numbers in `kisr_handler` (src/kernel/interruption/isr_handler.c).
+- [ ] Add `trace interrupts on/off` to log int numbers in `kisr_handler` (src/kernel/arch/i386/interruption/isr_handler.c).
 - [ ] Add a configurable debug level flag (bitmask) settable via a shell command (config header + shell command).
 - [ ] Add a crash counter and last-crash reason stored in a small struct (src/kernel/misc/panic.c).
 - [ ] Add a watchdog command that triggers a timeout and reports via panic/log (shell command).

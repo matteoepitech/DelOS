@@ -11,6 +11,18 @@
 #ifndef KERNEL_TTY_H_
     #define KERNEL_TTY_H_
 
+    #ifndef KDEBUG_TTY
+        #define KDEBUG_TTY(msg) ktty_puts(msg, VGA_TEXT_DEFAULT_COLOR);
+    #endif /* ifndef KDEBUG_TTY */
+
+    #ifndef KDEBUG_TTY_NUMBER
+        #define KDEBUG_TTY_NUMBER(nb) ktty_put_number(nb, VGA_TEXT_DEFAULT_COLOR);
+    #endif /* ifndef KDEBUG_TTY_NUMBER */
+
+    #ifndef KERROR_TTY
+        #define KERROR_TTY(msg) ktty_puts("KERNEL ERROR: "msg, VGA_TEXT_ERROR_COLOR);
+    #endif /* ifndef KERROR_TTY */
+
 /**
  * @brief Variable tty_cursor_pos contain a structure for representing the
  *        TTY cursor position in a VGA mode.
@@ -20,18 +32,6 @@
  *        Declared in src/kernel/tty/tty_cursor.c
  */
 extern point8_t ktty_cursor_pos;
-
-#ifndef KDEBUG_TTY
-    #define KDEBUG_TTY(msg) ktty_puts(msg, VGA_TEXT_DEFAULT_COLOR);
-#endif /* ifndef KDEBUG_TTY */
-
-#ifndef KDEBUG_TTY_NUMBER
-    #define KDEBUG_TTY_NUMBER(nb) ktty_put_number(nb, VGA_TEXT_DEFAULT_COLOR);
-#endif /* ifndef KDEBUG_TTY_NUMBER */
-
-#ifndef KERROR_TTY
-    #define KERROR_TTY(msg) ktty_cursor_set(0, ktty_cursor_pos._y + 1) ; ktty_puts("KERNEL ERROR: "msg, VGA_TEXT_ERROR_COLOR);
-#endif /* ifndef KERROR_TTY */
 
 /**
  * @brief Print a character on the screen at a certain coordinates.

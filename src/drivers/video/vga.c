@@ -11,11 +11,6 @@
 #include "drivers/video/vga.h"
 
 /**
- * @brief Variable vga_text_mmio is a pointer to the start of the VGA MMIO.
- */
-static uint8_t *vga_text_mmio = (uint8_t *) (VGA_TEXT_MODE_START_MMIO_ADDR);
-
-/**
  * @brief Print a character on the screen at a certain coordinates using VGA.
  *
  * @param x             The coordinate X
@@ -29,8 +24,8 @@ kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
     if (x >= VGA_COLUMNS_MAX || y >= VGA_LINES_MAX) {
         return;
     }
-    vga_text_mmio[(y * VGA_COLUMNS_MAX * 2) + (x * 2)] = c;
-    vga_text_mmio[(y * VGA_COLUMNS_MAX * 2) + (x * 2) + 1] = color;
+    VGA_MMIO_ADDR[(y * VGA_COLUMNS_MAX * 2) + (x * 2)] = c;
+    VGA_MMIO_ADDR[(y * VGA_COLUMNS_MAX * 2) + (x * 2) + 1] = color;
 }
 
 /**
@@ -80,11 +75,11 @@ kvga_show_cursor(void)
 void
 kvga_scroll_line(void)
 {
-    void *vm = vga_text_mmio + (VGA_LINES_MAX * VGA_COLUMNS_MAX * 2) - (VGA_COLUMNS_MAX * 2);
+    void *vm = (void *) VGA_MMIO_ADDR + (VGA_LINES_MAX * VGA_COLUMNS_MAX * 2) - (VGA_COLUMNS_MAX * 2);
 
     kmemmove(
-        vga_text_mmio,
-        vga_text_mmio + (VGA_COLUMNS_MAX * 2),
+        (void *) VGA_MMIO_ADDR,
+        (void *) VGA_MMIO_ADDR + (VGA_COLUMNS_MAX * 2),
         (VGA_COLUMNS_MAX * VGA_LINES_MAX * 2) - (VGA_COLUMNS_MAX * 2)
     );
     kwmemset((uint16_t *) vm, (VGA_TEXT_DEFAULT_COLOR << 8) | ' ', VGA_COLUMNS_MAX);
@@ -99,5 +94,5 @@ kvga_scroll_line(void)
 void
 kvga_fill(uint8_t c, uint8_t color)
 {
-    kwmemset(vga_text_mmio, ((uint16_t) color << 8) | c, VGA_COLUMNS_MAX * VGA_LINES_MAX);
+    kwmemset((void *) VGA_MMIO_ADDR, ((uint16_t) color << 8) | c, VGA_COLUMNS_MAX * VGA_LINES_MAX);
 }

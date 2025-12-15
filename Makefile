@@ -5,31 +5,37 @@
 ## MAKEFILE DELOS
 ##
 
-BOOT_DIR	:= boot
-SRC_DIR		:= src
-BUILD_DIR	:= build
-INCLUDE_DIR	:= include
+BOOT_DIR	:=	boot
+SRC_DIR		:=	src
+BUILD_DIR	:=	build
+INCLUDE_DIR	:=	include
 
-BOOT_FILE	:= $(BOOT_DIR)/bootsector.s
-ENTRY_FILE	:= $(BOOT_DIR)/kernel_entry.s
-ZERO_FILE 	:= $(BOOT_DIR)/padding_zeroes.s
+BOOT_FILE	:=	$(BOOT_DIR)/bootsector.s
+ENTRY_FILE	:=	$(BOOT_DIR)/kernel_entry.s
+ZERO_FILE 	:=	$(BOOT_DIR)/padding_zeroes.s
 
 # Recursive function to find files
-rwildcard = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
-SRC_C := $(call rwildcard,$(SRC_DIR)/,*.c)
-SRC_S := $(call rwildcard,$(SRC_DIR)/,*.s)
-OBJ_C := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/$(SRC_DIR)/%.o,$(SRC_C))
-OBJ_S := $(patsubst $(SRC_DIR)/%.s,$(BUILD_DIR)/$(SRC_DIR)/%.o,$(SRC_S))
+rwildcard	=	$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+SRC_C		:=	$(call rwildcard,$(SRC_DIR)/,*.c)
+SRC_S		:=	$(call rwildcard,$(SRC_DIR)/,*.s)
+OBJ_C		:=	$(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/$(SRC_DIR)/%.o,$(SRC_C))
+OBJ_S		:=	$(patsubst $(SRC_DIR)/%.s,$(BUILD_DIR)/$(SRC_DIR)/%.o,$(SRC_S))
 
-OS_BIN		:= $(BUILD_DIR)/delos.bin
+OS_BIN		:=	$(BUILD_DIR)/delos.bin
 
-NASM		:= nasm
-CC		:= i386-elf-gcc
-LD		:= i386-elf-ld
-QEMU		:= qemu-system-i386
+NASM		:=	nasm
+CC		:=	i386-elf-gcc
+LD		:=	i386-elf-ld
+QEMU		:=	qemu-system-i386
 
-CFLAGS		:= -ffreestanding -m32 -g -c -Wall -Wextra -I$(INCLUDE_DIR)
-LDFLAGS		:= -Ttext 0x10000 --oformat binary
+CFLAGS		:=	-ffreestanding -m32 -g -c -Wall -Wextra \
+          		-fno-pie -fno-pic \
+          		-fno-stack-protector \
+          		-nostdlib -nostdinc \
+          		-O0 \
+          		-I$(INCLUDE_DIR)
+
+LDFLAGS		:=	-m elf_i386 -T linker.ld -nostdlib -static -e _start
 
 # all RULE : do the whole process
 all: prepare $(OS_BIN)

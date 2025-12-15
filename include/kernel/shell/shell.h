@@ -11,7 +11,7 @@
 #ifndef KERNEL_SHELL_H_
     #define KERNEL_SHELL_H_
 
-#define KERNEL_SHELL_BUFFER_SIZE 512
+    #define KERNEL_SHELL_BUFFER_SIZE 512
 
 /**
  * @brief The shell command structure definition.
@@ -24,7 +24,7 @@ typedef struct shell_command_s {
 /**
  * @brief All shell commands.
  */
-extern shell_command_t shell_commands[];
+extern const shell_command_t shell_commands[];
 
 /**
  * @brief Start the shell and waiting for user prompt.

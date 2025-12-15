@@ -10,9 +10,9 @@
 #ifndef KERNEL_MISC_PANIC_H_
     #define KERNEL_MISC_PANIC_H_
 
-#ifndef KPANIC
-    #define KPANIC(msg) kpanic(msg, __FILE__, __LINE__)
-#endif /* ifndef KPANIC */
+    #ifndef KPANIC
+        #define KPANIC(msg) kpanic(msg, __FILE__, __LINE__)
+    #endif /* ifndef KPANIC */
 
 /**
  * @brief Print a kernel panic message and stop the kernel by infinite loop.
