@@ -11,6 +11,7 @@
 #include "kernel/arch/i386/interruption/pit.h"
 #include "kernel/shell/shell.h"
 #include "kernel/tty/tty.h"
+#include "utils/asm/hlt.h"
 #include "defines.h"
 
 /**
@@ -32,6 +33,6 @@ kmain(void)
     KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.\n");
     kshell_start();
 
-    while (1);
+    KHLT_DO();
     return;
 }

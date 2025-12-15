@@ -8,6 +8,7 @@
 #include "kernel/arch/i386/interruption/interruption.h"
 #include "utils/kstdlib/kstring.h"
 #include "kernel/tty/tty.h"
+#include "utils/asm/hlt.h"
 #include "defines.h"
 
 /**
@@ -96,5 +97,5 @@ kpanic(const char *msg, const char *file, uint32_t line)
                  VGA_TEXT_PANIC_COLOR);
     ktty_cursor_set_visibility(KO_FALSE);
 
-    while (1);
+    KHLT_DO();
 }

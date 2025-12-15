@@ -4,8 +4,7 @@
 - [x] Zero the entire IDT with `kmemset(idt, 0, sizeof(idt))` (src/kernel/arch/i386/interruption/idt.c).
 - [x] Add index bounds checks in `kidt_set_entry`, `kisr_register_handler`, `kisr_handler` to stay within `IDT_SIZE` (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr_handler.c).
 - [ ] Add default handlers for CPU exceptions 0–31 (#GP, #PF, #DF, etc.) and register them in the IDT (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr/*).
-- [ ] Send EOI to both PICs for IRQ >= 8 (extend PIC_CALL_EOI) (include/kernel/arch/i386/interruption/pic.h).
-- [ ] Replace the infinite busy loop in `kmain` with an idle `hlt` loop or idle task (src/kernel/kernel.c).
+- [x] Replace the infinite busy loop in `kmain` with an idle `hlt` loop or idle task (src/kernel/kernel.c).
 - [ ] Guard `kpit_timer_init` against `frequency == 0` / too high; clamp divisor to 16 bits (src/kernel/arch/i386/interruption/pit.c).
 - [ ] Add null-pointer checks before dereferencing in shell/TTY/panic paths (grep for `NULL` comparisons) (multiple files).
 - [ ] Ensure `kvga_putc_at` silently drops out-of-bounds writes; add tests/logging guard (src/drivers/video/vga.c).
@@ -105,13 +104,10 @@
 ## Tooling / CI / docs
 - [ ] Add a Makefile target to check toolchain deps (`nasm`, `i386-elf-gcc/ld`, `qemu`) and fail clearly if missing (Makefile).
 - [ ] Provide headless qemu run target + simple autotest script (capture serial/TTY) (Makefile + scripts).
-- [ ] Add formatting/linting (`clang-format`, `clang-tidy` or `cppcheck`) targets.
-- [ ] Expand README with build/run steps, toolchain setup, boot flow (real -> protected), memory map, shell commands, and debug tips (README.md).
 - [ ] Extend `.gitignore` for qemu logs, core dumps, future artifacts (.gitignore).
 - [ ] Document how to add a new shell command using `src/kernel/shell/misc/shell_command.example`.
-- [ ] Add a CONTRIBUTING.md with coding style, branch naming, PR checklist.
+- [x] Add a CONTRIBUTING.md with coding style, branch naming, PR checklist.
 - [ ] Add issue/PR templates with sections for testing and screenshots/logs.
 - [ ] Add a `make docs` target that prints available targets and main commands.
 - [ ] Add a script to embed git commit hash and build time into a header (e.g., generated `include/version.h`).
 - [ ] Add CI matrix for multiple toolchain versions (if CI is hooked later).
-- [ ] Add a `.editorconfig` for basic formatting consistency.

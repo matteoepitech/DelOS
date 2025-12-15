@@ -7,8 +7,8 @@
 
 #include "types.h"
 
-#ifndef IO_PORT_H_
-    #define IO_PORT_H_
+#ifndef UTILS_ASM_IO_PORT_H_
+    #define UTILS_ASM_IO_PORT_H_
 
 /**
  * @brief Output port call to a port and his value.
@@ -42,4 +42,4 @@ inb(uint16_t port)
     return r;
 }
 
-#endif /* ifndef IO_PORT_H_ */
+#endif /* ifndef UTILS_ASM_IO_PORT_H_ */
