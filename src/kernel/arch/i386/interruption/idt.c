@@ -92,8 +92,7 @@ IRQ_DECLARE_HANDLER(irq_keyboard_press);
  * @brief The global variable containing every exceptions ISR for IDT.
  *        TODO: Setup every interruptions.
  */
-static const idt_registration_t idt_exceptions_registration[] =
-{
+static const idt_registration_t idt_exceptions_registration[] = {
     {0,  isr0,  isr_div_zero},
     {1,  isr1,  isr_debug_exception},
     //{2,  isr2,  isr_nmi},
@@ -129,8 +128,7 @@ static const idt_registration_t idt_exceptions_registration[] =
 };
 
 
-static const idt_registration_t idt_hardware_irq_registration[] =
-{
+static const idt_registration_t idt_hardware_irq_registration[] = {
     {32, irq0, irq_timer},
     {33, irq1, irq_keyboard_press},
 };
@@ -150,7 +148,7 @@ idt_entry_t idt[IDT_SIZE];
 /**
  * @brief Register an IDT entry, this function can take hardware/exception ISR.
  *
- * @param entry	 The entry to the IDT registration
+ * @param entry  The entry to the IDT registration
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
