@@ -5,7 +5,7 @@
 ## MAKEFILE DELOS
 ##
 
-ARCH := i386
+ARCH		:=	i386
 
 BOOT_DIR	:=	boot
 SRC_DIR		:=	src
