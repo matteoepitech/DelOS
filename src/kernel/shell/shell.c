@@ -31,12 +31,19 @@ const shell_command_t shell_commands[] = {
 static uint8_t
 try_execute_shell_command(char *buffer)
 {
+    if (!*buffer) {
+        return KO_FALSE;
+    }
     for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {
         if (kstrcmp(buffer, shell_commands[i].command) != 0)
             continue;
-        shell_commands[i].func(1, &buffer);
+        return shell_commands[i].func(1, &buffer);
     }
-    return 1;
+    // TODO: Use a KPRINTF_TTY() macro;
+    KDEBUG_TTY("Command not found: ");
+    KDEBUG_TTY(buffer);
+    KDEBUG_TTY("\n");
+    return OK_TRUE;
 }
 
 /**
