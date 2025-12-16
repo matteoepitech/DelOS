@@ -66,7 +66,7 @@ kpanic(const char *msg, const char *file, uint32_t line)
     const char *kernel_bottom_msg = "System halted - Please submit this to Del";
     char line_buffer[128];
 
-    kstop_interruption_extern();
+    kinterruption_extern_stop();
     ktty_fill(' ', VGA_TEXT_PANIC_COLOR);
     ktty_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_panic_msg) / 2),
                  VGA_LINES_MAX / 2 - 5,
@@ -97,5 +97,5 @@ kpanic(const char *msg, const char *file, uint32_t line)
                  VGA_TEXT_PANIC_COLOR);
     ktty_cursor_set_visibility(KO_FALSE);
 
-    KHLT_DO();
+	KHLT_HARD_DO();
 }

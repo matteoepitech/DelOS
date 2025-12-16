@@ -14,10 +14,10 @@
 ## Shell / input / TTY
 - [x] Implement basic argv/argc parsing (split on space/tab) and return an error code when a command is unknown (src/kernel/shell/shell.c).
 - [ ] Implement basic argv/argc parsing for handle quotes (src/kernel/shell/shell.c).
-- [ ] Print "command not found" on unknown commands; stop after executing one matched command (src/kernel/shell/shell.c).
+- [x] Print "command not found" on unknown commands; stop after executing one matched command (src/kernel/shell/shell.c).
 - [ ] Add `clear`, `uptime`/`ticks`, `mem` placeholder, and `panic-test` commands (src/kernel/shell/commands/).
 - [ ] Handle Shift/CapsLock and 0xE0 extended scancodes; cleanly switch keyboard layouts (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
-- [ ] Make `kkeyboard_getchar` CPU-friendly (e.g., `hlt` in loop with interrupts enabled) (src/kernel/misc/keyboard.c).
+- [x] Make `kkeyboard_getchar` CPU-friendly (e.g., `hlt` in loop with interrupts enabled) (src/kernel/misc/keyboard.c).
 - [ ] Wrap `KDEBUG_TTY`/`KERROR_TTY` macros in `do { } while (0)` to avoid side effects (include/kernel/tty/tty.h).
 - [ ] Align `ktty_puts_at` signature (char * vs int8_t *) between header and implementation; preserve passed color on newline handling (src/kernel/tty/tty.c, include/kernel/tty/tty.h).
 - [ ] Fix scroll/backspace to stay in bounds and properly erase previous char (src/kernel/tty/tty.c).

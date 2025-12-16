@@ -5,7 +5,9 @@
 ** Keyboard source file
 */
 
+#include "kernel/arch/i386/interruption/interruption.h"
 #include "kernel/misc/keyboard.h"
+#include "utils/asm/hlt.h"
 
 /**
  * @brief Get a character from the keyboard circular buffer.
@@ -19,7 +21,9 @@ kkeyboard_getchar(void)
     int8_t character = kkeyboard_pop();
 
     while (character == -1) {
-        character = kkeyboard_pop();
+    	kinterruption_extern_start();
+    	KHLT_DO();
+    	character = kkeyboard_pop();
     }
     return (uint8_t) character;
 }

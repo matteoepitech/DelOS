@@ -22,17 +22,17 @@
 void
 kmain(void)
 {
-    kstop_interruption_extern();
+    kinterruption_extern_stop();
     kpic_remap();
     kidt_create_ptr(&idt_ptr);
     kidt_load_cpu(&idt_ptr);
-    kstart_interruption_extern();
+    kinterruption_extern_start();
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
 
     KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.\n");
     kshell_start();
 
-    KHLT_DO();
+	KHLT_HARD_DO();
     return;
 }

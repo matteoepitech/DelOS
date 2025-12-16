@@ -26,9 +26,7 @@ static inline void
 make_hlt(void)
 {
     // AT&T syntax used by GCC
-    while (1) {
-        __asm__ volatile ("hlt" ::);
-    }
+    __asm__ volatile ("hlt" ::);
 }
 
 /**

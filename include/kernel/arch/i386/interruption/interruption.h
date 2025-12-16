@@ -14,7 +14,7 @@
  *        This only manage the external interruptions like IRQs.
  */
 void
-kstop_interruption_extern(void);
+kinterruption_extern_stop(void);
 
 /**
  * @brief Start the interruptions by setting the interruption flag.
@@ -22,6 +22,6 @@ kstop_interruption_extern(void);
  *        This only manage the external interruptions like IRQs.
  */
 void
-kstart_interruption_extern(void);
+kinterruption_extern_start(void);
 
 #endif /* ifndef KERNEL_INTERRUPTION_H_ */

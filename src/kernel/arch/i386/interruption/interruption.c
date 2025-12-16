@@ -13,7 +13,7 @@
  *        This only manage the external interruptions like IRQs.
  */
 void
-kstop_interruption_extern(void)
+kinterruption_extern_stop(void)
 {
     __asm__ volatile ("cli");
 }
@@ -24,7 +24,7 @@ kstop_interruption_extern(void)
  *        This only manage the external interruptions like IRQs.
  */
 void
-kstart_interruption_extern(void)
+kinterruption_extern_start(void)
 {
     __asm__ volatile ("sti");
 }

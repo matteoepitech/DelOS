@@ -36,6 +36,7 @@ static const uint8_t scancode_to_ascii[128] = {
     #error "Please define KEYBOARD_LAYOUT_AZERTY or KEYBOARD_LAYOUT_QWERTY"
 #endif
 
+/* Keyboard manager using a head/tail management and fixed buffer */
 int8_t keyboard_buffer[KEYBOARD_BUFFER_SIZE] = {0};
 size_t keyboard_head = 0;
 size_t keyboard_tail = 0;
@@ -64,9 +65,11 @@ kkeyboard_push(char c)
 int32_t
 kkeyboard_pop(void)
 {
+	int32_t c = 0;
+
     if (keyboard_head == keyboard_tail)
         return -1;
-    int32_t c = keyboard_buffer[keyboard_tail];
+    c = keyboard_buffer[keyboard_tail];
     keyboard_tail = (keyboard_tail + 1) % KEYBOARD_BUFFER_SIZE;
     return c;
 }

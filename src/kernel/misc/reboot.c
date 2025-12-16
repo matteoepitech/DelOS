@@ -19,7 +19,7 @@ kreboot(void)
 {
     uint8_t tmp = 0x02;
 
-    kstop_interruption_extern();
+    kinterruption_extern_stop();
     while (tmp & 0x02){
         tmp = inb(0x64);
     }
