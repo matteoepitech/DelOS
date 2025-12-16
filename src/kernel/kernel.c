@@ -33,6 +33,6 @@ kmain(void)
     KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.\n");
     kshell_start();
 
-	KHLT_HARD_DO();
+    KHLT_HARD_DO();
     return;
 }
