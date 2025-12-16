@@ -5,10 +5,13 @@
 ## MAKEFILE DELOS
 ##
 
+ARCH := i386
+
 BOOT_DIR	:=	boot
 SRC_DIR		:=	src
 BUILD_DIR	:=	build
 INCLUDE_DIR	:=	include
+LINKER_DIR	:=	linker
 
 BOOT_FILE	:=	$(BOOT_DIR)/bootsector.s
 ENTRY_FILE	:=	$(BOOT_DIR)/kernel_entry.s
@@ -29,13 +32,14 @@ LD		:=	i386-elf-ld
 QEMU		:=	qemu-system-i386
 
 CFLAGS		:=	-ffreestanding -m32 -g -c -Wall -Wextra \
-          		-fno-pie -fno-pic \
-          		-fno-stack-protector \
-          		-nostdlib -nostdinc \
-          		-O0 \
-          		-I$(INCLUDE_DIR)
+			-fno-pie -fno-pic \
+			-fno-stack-protector \
+			-nostdlib -nostdinc \
+			-O0 \
+			-I$(INCLUDE_DIR)
 
-LDFLAGS		:=	-m elf_i386 -T linker.ld -nostdlib -static
+LDFLAGS		:=	-m elf_i386 -T $(LINKER_DIR)/kernel_$(ARCH).ld \
+			-nostdlib -static
 
 # all RULE : do the whole process
 all: prepare $(OS_BIN)
