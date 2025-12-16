@@ -12,7 +12,8 @@
 - [ ] Make `kreboot` timeout and fail gracefully if controller never clears bit 1 (src/kernel/misc/reboot.c).
 
 ## Shell / input / TTY
-- [ ] Implement basic argv/argc parsing (split on space/tab, handle quotes) and return an error code when a command is unknown (src/kernel/shell/shell.c).
+- [x] Implement basic argv/argc parsing (split on space/tab) and return an error code when a command is unknown (src/kernel/shell/shell.c).
+- [ ] Implement basic argv/argc parsing for handle quotes (src/kernel/shell/shell.c).
 - [ ] Print "command not found" on unknown commands; stop after executing one matched command (src/kernel/shell/shell.c).
 - [ ] Add `clear`, `uptime`/`ticks`, `mem` placeholder, and `panic-test` commands (src/kernel/shell/commands/).
 - [ ] Handle Shift/CapsLock and 0xE0 extended scancodes; cleanly switch keyboard layouts (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).

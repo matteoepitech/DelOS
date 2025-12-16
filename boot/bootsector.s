@@ -30,7 +30,7 @@ mov es, ax              ; set ES segment
 xor bx, bx              ; offset = 0, so ES:BX = 0x1000:0x0000 = 0x10000
 
 mov ah, 0x02            ; read storage from disk interuption id
-mov al, 0x14            ; we will read 20 sector (MAY INCREASE THIS, this is the kernel ~ size)
+mov al, 0x30            ; we will read 48 sector (MAY INCREASE THIS, this is the kernel ~ size)
 mov ch, 0x00            ; cylinder number 0
 mov dh, 0x00            ; head number 0
 mov cl, 0x02            ; sector number 2 (after the bootsector)

@@ -1,10 +1,11 @@
 /*
-** EPITECH PROJECT, 2025
+** DELOS PROJECT, 2025
 ** src/kernel/shell/shell
 ** File description:
 ** Shell source file
 */
 
+#include "kernel/shell/parser/arguments.h"
 #include "utils/kstdlib/kstring.h"
 #include "kernel/misc/keyboard.h"
 #include "kernel/shell/shell.h"
@@ -31,14 +32,21 @@ const shell_command_t shell_commands[] = {
 static uint8_t
 try_execute_shell_command(char *buffer)
 {
+	char *argv[SHELL_ARGV_MAX_COUNT] = {0};
+	uint32_t argc = 0;
+
     if (!*buffer) {
         return KO_FALSE;
     }
+    argc = kshell_parse_get_argc(buffer);
+    kshell_parse_get_argv(buffer, argv);
+    kshell_parse_formatting_buffer(buffer);
     for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {
         if (kstrcmp(buffer, shell_commands[i].command) != 0)
             continue;
-        return shell_commands[i].func(1, &buffer);
+        return shell_commands[i].func(argc, argv);
     }
+
     // TODO: Use a KPRINTF_TTY() macro;
     KDEBUG_TTY("Command not found: ");
     KDEBUG_TTY(buffer);
