@@ -35,7 +35,7 @@ CFLAGS		:=	-ffreestanding -m32 -g -c -Wall -Wextra \
           		-O0 \
           		-I$(INCLUDE_DIR)
 
-LDFLAGS		:=	-m elf_i386 -T linker.ld -nostdlib -static -e _start
+LDFLAGS		:=	-m elf_i386 -T linker.ld -nostdlib -static
 
 # all RULE : do the whole process
 all: prepare $(OS_BIN)
