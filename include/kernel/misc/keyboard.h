@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** DELOS PROJECT, 2025
 ** include/kernel/misc/keyboard
 ** File description:
 ** Keyboard header file

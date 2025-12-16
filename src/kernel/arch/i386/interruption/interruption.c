@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** DELOS PROJECT, 2025
 ** src/kernel/arch/i386/interruption/interruption
 ** File description:
 ** Interruption source file

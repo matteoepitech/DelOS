@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** DELOS PROJECT, 2025
 ** include/kernel/shell/shell
 ** File description:
 ** Shell header file

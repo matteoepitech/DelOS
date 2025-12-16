@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** DELOS PROJECT, 2025
 ** include/utils/kstring
 ** File description:
 ** Kstring header file

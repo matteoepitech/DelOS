@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** DELOS PROJECT, 2025
 ** src/kernel/misc/keyboard
 ** File description:
 ** Keyboard source file
@@ -21,9 +21,9 @@ kkeyboard_getchar(void)
     int8_t character = kkeyboard_pop();
 
     while (character == -1) {
-    	kinterruption_extern_start();
-    	KHLT_DO();
-    	character = kkeyboard_pop();
+        kinterruption_extern_start();
+        KHLT_DO();
+        character = kkeyboard_pop();
     }
     return (uint8_t) character;
 }
