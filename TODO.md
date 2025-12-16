@@ -5,7 +5,7 @@
 - [x] Add index bounds checks in `kidt_set_entry`, `kisr_register_handler`, `kisr_handler` to stay within `IDT_SIZE` (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr_handler.c).
 - [ ] Add default handlers for CPU exceptions 0–31 (#GP, #PF, #DF, etc.) and register them in the IDT (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr/*).
 - [x] Replace the infinite busy loop in `kmain` with an idle `hlt` loop or idle task (src/kernel/kernel.c).
-- [ ] Guard `kpit_timer_init` against `frequency == 0` / too high; clamp divisor to 16 bits (src/kernel/arch/i386/interruption/pit.c).
+- [x] Guard `kpit_timer_init` against `frequency == 0` / too high; clamp divisor to 16 bits (src/kernel/arch/i386/interruption/pit.c).
 - [ ] Add null-pointer checks before dereferencing in shell/TTY/panic paths (grep for `NULL` comparisons) (multiple files).
 - [ ] Ensure `kvga_putc_at` silently drops out-of-bounds writes; add tests/logging guard (src/drivers/video/vga.c).
 - [ ] Add sanity checks for PIT divisor overflows and log the actual divisor (src/kernel/arch/i386/interruption/pit.c).

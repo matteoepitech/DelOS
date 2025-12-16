@@ -6,6 +6,7 @@
 */
 
 #include "kernel/arch/i386/interruption/pit.h"
+#include "kernel/misc/panic.h"
 #include "utils/asm/io_port.h"
 
 // @brief The ticks count of since start of the kernel.
@@ -29,9 +30,14 @@ volatile uint32_t seconds_count = 0;
 void
 kpit_timer_init(uint32_t frequency)
 {
-    uint32_t divisor = PIT_FREQUENCY / frequency;
+    uint16_t divisor = 0;
 
+    if (frequency <= 0) {
+        KPANIC("A bad PIT frequency has been passed.");
+        return;
+    }
+    divisor = PIT_FREQUENCY / frequency;
     outb(PIT_COMMAND_PORT, 0x36);
-    outb(PIT_DATA_PORT, (uint8_t) (divisor & 0xFF));
-    outb(PIT_DATA_PORT, (uint8_t) ((divisor >> 8) & 0xFF));
+    outb(PIT_DATA_PORT, (uint8_t) (divisor));
+    outb(PIT_DATA_PORT, (uint8_t) (divisor >> 8));
 }
