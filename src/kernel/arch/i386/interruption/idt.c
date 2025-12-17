@@ -226,7 +226,7 @@ kidt_load_cpu(idt_ptr_t *ptr)
         return KO_FALSE;
     }
     if (ptr->_base == NULL || ptr->_limit == 0) {
-        KERROR_TTY("IDT's pointer is not created. Aborting...");
+        //KERROR_TTY("IDT's pointer is not created. Aborting...");
         return KO_FALSE;
     }
     if (idt_load_all_isr() == KO_FALSE) {
@@ -235,7 +235,7 @@ kidt_load_cpu(idt_ptr_t *ptr)
     __asm__ volatile ("lidt %0" : : "m"(*ptr));
     __asm__ volatile ("sidt %0" : "=m"(idt_ptr_check));
     if (idt_ptr_check._base == NULL) {
-        KERROR_TTY("IDT is not loaded correctly.")
+        //KERROR_TTY("IDT is not loaded correctly.")
         return KO_FALSE;
     }
     return OK_TRUE;

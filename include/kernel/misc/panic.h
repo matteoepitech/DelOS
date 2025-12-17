@@ -18,8 +18,8 @@
  * @brief Print a kernel panic message and stop the kernel by infinite loop.
  *
  * @param msg    The optionnal message (can be NULL)
- * @param file	 The file where the panic come from
- * @param line	 The line where the panic come from
+ * @param file   The file where the panic come from
+ * @param line   The line where the panic come from
  */
 void
 kpanic(const char *msg, const char *file, uint32_t line);

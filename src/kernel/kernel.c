@@ -10,6 +10,7 @@
 #include "kernel/arch/i386/interruption/pic.h"
 #include "kernel/arch/i386/interruption/pit.h"
 #include "kernel/shell/shell.h"
+#include "utils/misc/print.h"
 #include "kernel/tty/tty.h"
 #include "utils/asm/hlt.h"
 #include "defines.h"
@@ -30,7 +31,7 @@ kmain(void)
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
 
-    KDEBUG_TTY("$> Welcome to Del'OS Kernel Space.\n");
+    KPRINTF_INFO("Welcome to Del'OS Kernel space.");
     kshell_start();
 
     KHLT_HARD_DO();

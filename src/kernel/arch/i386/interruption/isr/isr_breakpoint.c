@@ -6,6 +6,7 @@
 */
 
 #include "kernel/arch/i386/interruption/isr.h"
+#include "utils/misc/print.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 
@@ -17,5 +18,5 @@
 void
 isr_breakpoint(UNUSED registers_t *regs)
 {
-    KDEBUG_TTY("Got a breakpoint");
+    KPRINTF_OK("A breakpoint has been triggered.");
 }

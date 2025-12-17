@@ -9,6 +9,7 @@
 #include "utils/kstdlib/kstring.h"
 #include "kernel/misc/keyboard.h"
 #include "kernel/shell/shell.h"
+#include "utils/misc/print.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 
@@ -32,8 +33,8 @@ const shell_command_t shell_commands[] = {
 static uint8_t
 try_execute_shell_command(char *buffer)
 {
-	char *argv[SHELL_ARGV_MAX_COUNT] = {0};
-	uint32_t argc = 0;
+    char *argv[SHELL_ARGV_MAX_COUNT] = {0};
+    uint32_t argc = 0;
 
     if (!*buffer) {
         return KO_FALSE;
@@ -46,11 +47,7 @@ try_execute_shell_command(char *buffer)
             continue;
         return shell_commands[i].func(argc, argv);
     }
-
-    // TODO: Use a KPRINTF_TTY() macro;
-    KDEBUG_TTY("Command not found: ");
-    KDEBUG_TTY(buffer);
-    KDEBUG_TTY("\n");
+    KPRINTF_INFO("Command not found: %s", buffer);
     return OK_TRUE;
 }
 

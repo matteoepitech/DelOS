@@ -7,6 +7,7 @@
 
 #include "kernel/arch/i386/interruption/pit.h"
 #include "kernel/shell/shell.h"
+#include "utils/misc/print.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 
@@ -21,12 +22,7 @@
 uint8_t
 kshell_timer(UNUSED int argc, UNUSED char *argv[])
 {
-    KDEBUG_TTY("Timer informations:\n");
-    KDEBUG_TTY("  - Ticks count = ");
-    KDEBUG_TTY_NUMBER(ticks_count);
-    KDEBUG_TTY("\n");
-    KDEBUG_TTY("  - Seconds count = ");
-    KDEBUG_TTY_NUMBER(seconds_count);
-    KDEBUG_TTY("\n");
+    ktty_puts("Timer informations:\n", VGA_TEXT_DEFAULT_COLOR);
+    kprintf(VGA_TEXT_DEFAULT_COLOR, "  - Ticks count = %d\n  - Seconds count = %d\n", ticks_count, seconds_count);
     return KO_FALSE;
 }

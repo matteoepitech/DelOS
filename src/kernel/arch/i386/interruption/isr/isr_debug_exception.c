@@ -6,6 +6,7 @@
 */
 
 #include "kernel/arch/i386/interruption/isr.h"
+#include "utils/misc/print.h"
 #include "kernel/tty/tty.h"
 
 /**
@@ -26,6 +27,6 @@
 void
 isr_debug_exception(registers_t *regs)
 {
-    KDEBUG_TTY("Debug exception.");
+    KPRINTF_OK("Debug step activated on an instruction.");
     DEACTIVATE_TRAP_FLAG(regs);
 }

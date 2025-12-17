@@ -7,6 +7,7 @@
 
 #include "kernel/misc/reboot.h"
 #include "kernel/shell/shell.h"
+#include "utils/misc/print.h"
 #include "kernel/tty/tty.h"
 #include "defines.h"
 
@@ -21,7 +22,7 @@
 uint8_t
 kshell_reboot(UNUSED int argc, UNUSED char *argv[])
 {
-    KDEBUG_TTY("Reboot time.\n");
+    KPRINTF_WARN("DelOS is trying to reboot...");
     kreboot();
     return KO_FALSE;
 }

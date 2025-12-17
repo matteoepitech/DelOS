@@ -18,7 +18,6 @@
 - [ ] Add `clear`, `uptime`/`ticks`, `mem` placeholder, and `panic-test` commands (src/kernel/shell/commands/).
 - [ ] Handle Shift/CapsLock and 0xE0 extended scancodes; cleanly switch keyboard layouts (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
 - [x] Make `kkeyboard_getchar` CPU-friendly (e.g., `hlt` in loop with interrupts enabled) (src/kernel/misc/keyboard.c).
-- [ ] Wrap `KDEBUG_TTY`/`KERROR_TTY` macros in `do { } while (0)` to avoid side effects (include/kernel/tty/tty.h).
 - [ ] Align `ktty_puts_at` signature (char * vs int8_t *) between header and implementation; preserve passed color on newline handling (src/kernel/tty/tty.c, include/kernel/tty/tty.h).
 - [ ] Fix scroll/backspace to stay in bounds and properly erase previous char (src/kernel/tty/tty.c).
 - [ ] Handle INT_MIN in `ktty_put_number` and add hex output helper (src/kernel/tty/tty_others.c).
@@ -94,7 +93,7 @@
 
 ## Debug / observability
 - [ ] Extend `kpanic`/`KPANIC` to dump registers, int number, and context (src/kernel/misc/panic.c, src/kernel/arch/i386/interruption/isr_handler.c).
-- [ ] Add a small logging helper (levels, colors) instead of raw `KDEBUG_TTY` (include/kernel/tty/tty.h).
+- [x] Add a small logging helper (levels, colors) instead of raw `KDEBUG_TTY` (include/kernel/tty/tty.h).
 - [ ] Add shell test commands: `int3`, divide-by-zero, and `dump-idt` (src/kernel/shell/commands/).
 - [ ] Add `trace interrupts on/off` to log int numbers in `kisr_handler` (src/kernel/arch/i386/interruption/isr_handler.c).
 - [ ] Add a configurable debug level flag (bitmask) settable via a shell command (config header + shell command).

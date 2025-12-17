@@ -20,11 +20,11 @@
 uint8_t
 kshell_help(UNUSED int argc, UNUSED char *argv[])
 {
-    KDEBUG_TTY("All available commands:\n");
+    ktty_puts("All available commands:\n", VGA_TEXT_DEFAULT_COLOR);
     for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {
-        KDEBUG_TTY("  - ");
-        KDEBUG_TTY(shell_commands[i].command);
-        KDEBUG_TTY("\n");
+        ktty_puts("  - ", VGA_TEXT_DEFAULT_COLOR);
+        ktty_puts(shell_commands[i].command, VGA_TEXT_DEFAULT_COLOR);
+        ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);
     }
     return KO_FALSE;
 }
