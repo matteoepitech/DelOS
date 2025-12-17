@@ -105,4 +105,15 @@ kshell_uptime(UNUSED uint32_t argc, UNUSED char *argv[]);
 uint8_t
 kshell_timer(UNUSED uint32_t argc, UNUSED char *argv[]);
 
+/**
+ * @brief Command for shutdown.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_shutdown(UNUSED uint32_t argc, UNUSED char *argv[]);
+
 #endif /* ifndef KERNEL_SHELL_H_ */

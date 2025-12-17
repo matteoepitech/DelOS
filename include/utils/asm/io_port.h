@@ -11,7 +11,7 @@
     #define UTILS_ASM_IO_PORT_H_
 
 /**
- * @brief Output port call to a port and his value.
+ * @brief Output port call to a port and his value. Byte version (1 byte)
  *
  * @param port          The port to write on
  * @param val           The value
@@ -25,7 +25,21 @@ outb(uint16_t port, uint8_t val)
 }
 
 /**
- * @brief Input port call to a port.
+ * @brief Output port call to a port and his value. Word intel/ISA version (2 bytes)
+ *
+ * @param port          The port to write on
+ * @param val           The value
+ */
+static inline void
+outw(uint16_t port, uint16_t val)
+{
+    // AT&T syntax used by GCC
+    // outw source, destination
+    __asm__ volatile ("outw %0, %1" : : "a"(val), "Nd"(port));
+}
+
+/**
+ * @brief Input port call to a port. Byte version (1 byte)
  *
  * @param port          The port to read on
  *
