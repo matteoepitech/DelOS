@@ -83,4 +83,15 @@ kshell_help(UNUSED int argc, UNUSED char *argv[]);
 uint8_t
 kshell_timer(UNUSED int argc, UNUSED char *argv[]);
 
+/**
+ * @brief Command for clear.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_clear(UNUSED int argc, UNUSED char *argv[]);
+
 #endif /* ifndef KERNEL_SHELL_H_ */
