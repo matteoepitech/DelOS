@@ -15,7 +15,7 @@
 - [x] Implement basic argv/argc parsing (split on space/tab) and return an error code when a command is unknown (src/kernel/shell/shell.c).
 - [ ] Implement basic argv/argc parsing for handle quotes (src/kernel/shell/shell.c).
 - [x] Print "command not found" on unknown commands; stop after executing one matched command (src/kernel/shell/shell.c).
-- [ ] Add `clear`, `uptime`/`ticks`, `mem` placeholder, and `panic-test` commands (src/kernel/shell/commands/).
+- [x] Add `clear`, `uptime`/`timer`, and `panic-test` commands (src/kernel/shell/commands/).
 - [ ] Handle Shift/CapsLock and 0xE0 extended scancodes; cleanly switch keyboard layouts (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
 - [x] Make `kkeyboard_getchar` CPU-friendly (e.g., `hlt` in loop with interrupts enabled) (src/kernel/misc/keyboard.c).
 - [ ] Align `ktty_puts_at` signature (char * vs int8_t *) between header and implementation; preserve passed color on newline handling (src/kernel/tty/tty.c, include/kernel/tty/tty.h).

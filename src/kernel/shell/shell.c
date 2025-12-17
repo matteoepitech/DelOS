@@ -21,6 +21,7 @@ const shell_command_t shell_commands[] = {
     {"reboot", &kshell_reboot},
     {"clear", &kshell_clear},
     {"uptime", &kshell_uptime},
+    {"timer", &kshell_timer},
     {NULL, NULL}
 };
 

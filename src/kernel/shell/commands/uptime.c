@@ -29,6 +29,6 @@ kshell_uptime(UNUSED uint32_t argc, UNUSED char *argv[])
     uint32_t ticks = ((ticks_count % PIT_TARGET_FREQUENCY) * 100) / PIT_TARGET_FREQUENCY;
     uint32_t minutes = seconds_count / UPTIME_SECONDS_PER_MINUTE;
 
-    KPRINTF_INFO("Uptime: %d minutes and %d.%02d seconds.", minutes, seconds, ticks);
+    KPRINTF_INFO("uptime: %dm and %d.%02ds", minutes, seconds, ticks);
     return KO_FALSE;
 }

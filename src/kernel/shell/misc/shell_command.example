@@ -18,7 +18,7 @@
  * @return The final code of the operation.
  */
 uint8_t
-kshell_XX(UNUSED int argc, UNUSED char *argv[])
+kshell_XX(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     // TODO: Add your command stuff here...
     return KO_FALSE;
