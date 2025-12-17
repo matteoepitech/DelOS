@@ -45,7 +45,7 @@ ktty_putc(char c, uint8_t color)
             return;
             
         case '\n':
-            if (ktty_cursor_pos._y == VGA_LINES_MAX - 1) {
+            if (ktty_cursor_pos._y >= VGA_LINES_MAX - 1) {
                 kvga_scroll_line();
                 ktty_cursor_set(0, VGA_LINES_MAX - 1);
             } else {
@@ -56,9 +56,6 @@ ktty_putc(char c, uint8_t color)
         default:
             ktty_putc_at(ktty_cursor_pos._x, ktty_cursor_pos._y, c, color);
             ktty_cursor_add(1, 0);
-            if (ktty_cursor_pos._x >= VGA_COLUMNS_MAX) {
-                ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);
-            }
             return;
     }
 }
