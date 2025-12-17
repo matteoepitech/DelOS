@@ -5,6 +5,7 @@
 ** Shell header file
 */
 
+#include "kernel/shell/parser/arguments.h"
 #include "defines.h"
 #include "types.h"
 
@@ -25,6 +26,17 @@ typedef struct shell_command_s {
  * @brief All shell commands.
  */
 extern const shell_command_t shell_commands[];
+
+/**
+ * @brief Execute the command
+ *
+ * @param argc               The ARGC
+ * @param char *argv[16]     The ARGV
+ *
+ * @return The final exit code of the operation.
+ */
+uint8_t
+kshell_execute_command(uint32_t argc, char *argv[SHELL_ARGV_MAX_COUNT]);
 
 /**
  * @brief Start the shell and waiting for user prompt.

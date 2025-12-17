@@ -24,14 +24,14 @@ const shell_command_t shell_commands[] = {
 };
 
 /**
- * @brief Try to execute a command using the buffer.
+ * @brief Setup a command using the buffer and run the command.
  *
  * @param buffer                The buffer of the user prompt
  *
  * @return The final exit code of the operation.
  */
 static uint8_t
-try_execute_shell_command(char *buffer)
+setup_run_shell_command(char *buffer)
 {
     char *argv[SHELL_ARGV_MAX_COUNT] = {0};
     uint32_t argc = 0;
@@ -40,14 +40,38 @@ try_execute_shell_command(char *buffer)
         return KO_FALSE;
     }
     argc = kshell_parse_get_argc(buffer);
-    kshell_parse_get_argv(buffer, argv);
     kshell_parse_formatting_buffer(buffer);
+    kshell_parse_get_argv(buffer, argv);
+    return kshell_execute_command(argc, argv);
+}
+
+/**
+ * @brief Print the shell prompt. THAT IT.
+ */
+static
+void print_shell_prompt(void)
+{
+    KPRINTF_DATE();
+    ktty_puts("$> ", VGA_TEXT_DEFAULT_COLOR);
+}
+
+/**
+ * @brief Execute the command
+ *
+ * @param argc               The ARGC
+ * @param char *argv[16]     The ARGV
+ *
+ * @return The final exit code of the operation.
+ */
+uint8_t
+kshell_execute_command(uint32_t argc, char *argv[SHELL_ARGV_MAX_COUNT])
+{
     for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {
-        if (kstrcmp(buffer, shell_commands[i].command) != 0)
+        if (kstrcmp(argv[0], shell_commands[i].command) != 0)
             continue;
         return shell_commands[i].func(argc, argv);
     }
-    KPRINTF_INFO("Command not found: %s", buffer);
+    KPRINTF_WARN("Command not found: %s", argv[0]);
     return OK_TRUE;
 }
 
@@ -63,7 +87,8 @@ kshell_start(void)
     char buffer[KERNEL_SHELL_BUFFER_SIZE];
     uint32_t index = 0;
 
-    ktty_puts("$> ", VGA_TEXT_PROMPT_COLOR);
+    KPRINTF_OK("Shell has been started.");
+    print_shell_prompt();
     while (OK_TRUE) {
         uint8_t c = kkeyboard_getchar();
 
@@ -71,8 +96,8 @@ kshell_start(void)
             case '\n':
                 buffer[index] = '\0';
                 ktty_puts("\n", VGA_TEXT_DEFAULT_COLOR);
-                try_execute_shell_command(buffer);
-                ktty_puts("$> ", VGA_TEXT_PROMPT_COLOR);
+                setup_run_shell_command(buffer);
+                print_shell_prompt();
                 index = 0;
                 break;
 

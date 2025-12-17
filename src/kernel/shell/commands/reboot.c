@@ -8,7 +8,6 @@
 #include "kernel/misc/reboot.h"
 #include "kernel/shell/shell.h"
 #include "utils/misc/print.h"
-#include "kernel/tty/tty.h"
 #include "defines.h"
 
 /**

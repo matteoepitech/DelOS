@@ -18,5 +18,5 @@
 void
 isr_breakpoint(UNUSED registers_t *regs)
 {
-    KPRINTF_OK("A breakpoint has been triggered.");
+    KPRINTF_DEBUG("A breakpoint has been triggered.");
 }

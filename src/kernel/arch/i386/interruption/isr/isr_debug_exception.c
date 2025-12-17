@@ -27,6 +27,6 @@
 void
 isr_debug_exception(registers_t *regs)
 {
-    KPRINTF_OK("Debug step activated on an instruction.");
+    KPRINTF_DEBUG("Debug step activated on an instruction.");
     DEACTIVATE_TRAP_FLAG(regs);
 }

@@ -8,6 +8,7 @@
 #include "kernel/arch/i386/interruption/pit.h"
 #include "utils/kstdlib/kstdio.h"
 #include "drivers/video/vga.h"
+#include "kernel/tty/tty.h"
 
 #ifndef UTILS_MISC_PRINT_H_
     #define UTILS_MISC_PRINT_H_
@@ -41,11 +42,21 @@
             ktty_putc(' ', VGA_TEXT_DEFAULT_COLOR); \
         } while (0)
 
+    #define _KPRINTF_LABEL_DEBUG()                   \
+        do {                                         \
+            _KPRINTF_LABEL_OPEN();                   \
+            _KPRINTF_LABEL_SPACES();                 \
+            ktty_puts("DEBUG", VGA_TEXT_DEBUG_COLOR);\
+            _KPRINTF_LABEL_SPACES();                 \
+            _KPRINTF_LABEL_CLOSE();                  \
+            ktty_putc(' ', VGA_TEXT_DEFAULT_COLOR);  \
+        } while (0)
+
     #define _KPRINTF_LABEL_OK()                     \
         do {                                        \
             _KPRINTF_LABEL_OPEN();                  \
             _KPRINTF_LABEL_SPACES();                \
-            ktty_puts("OK", VGA_TEXT_DEFAULT_COLOR);\
+            ktty_puts("OK", VGA_TEXT_SUCCESS_COLOR);\
             _KPRINTF_LABEL_SPACES();                \
             _KPRINTF_LABEL_CLOSE();                 \
             ktty_putc(' ', VGA_TEXT_DEFAULT_COLOR); \
@@ -101,6 +112,21 @@
             do {                                        \
                 KPRINTF_DATE();                         \
                 _KPRINTF_LABEL_WARN();                  \
+                kprintf(VGA_TEXT_DEFAULT_COLOR, format, ##__VA_ARGS__); \
+                ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);\
+            } while (0)
+    #endif
+
+    /**
+     * @brief Print DEBUG level kernel log message
+     *
+     * Used for verbose/diagnostic messages during development.
+     */
+    #ifndef KPRINTF_DEBUG
+        #define KPRINTF_DEBUG(format, ...)              \
+            do {                                        \
+                KPRINTF_DATE();                         \
+                _KPRINTF_LABEL_DEBUG();                 \
                 kprintf(VGA_TEXT_DEFAULT_COLOR, format, ##__VA_ARGS__); \
                 ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);\
             } while (0)
