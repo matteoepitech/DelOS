@@ -18,7 +18,7 @@
  * @return The length of it until a zero terminated byte.
  */
 size_t
-kstrlen(const int8_t *string);
+kstrlen(const char *string);
 
 /**
  * @brief Get the difference between the first non equal character.

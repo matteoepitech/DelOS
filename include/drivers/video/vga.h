@@ -88,7 +88,7 @@
  * @param color         The color
  */
 void
-kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color);
+kvga_putc_at(uint8_t x, uint8_t y, char c, uint8_t color);
 
 /**
  * @brief Refresh the cursor position using the new_position parameter.
@@ -123,6 +123,6 @@ kvga_scroll_line(void);
  * @param color         The color
  */
 void
-kvga_fill(uint8_t c, uint8_t color);
+kvga_fill(char c, uint8_t color);
 
 #endif /* ifndef DRIVER_VIDEO_VGA_H_ */

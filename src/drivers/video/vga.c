@@ -6,9 +6,9 @@
 */
 
 #include "utils/kstdlib/kmemory.h"
+#include "drivers/video/vga.h"
 #include "utils/asm/io_port.h"
 #include "kernel/tty/tty.h"
-#include "drivers/video/vga.h"
 
 /**
  * @brief Print a character on the screen at a certain coordinates using VGA.
@@ -19,7 +19,7 @@
  * @param color         The color
  */
 void
-kvga_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
+kvga_putc_at(uint8_t x, uint8_t y, char c, uint8_t color)
 {
     if (x >= VGA_COLUMNS_MAX || y >= VGA_LINES_MAX) {
         return;
@@ -92,7 +92,7 @@ kvga_scroll_line(void)
  * @param color         The color
  */
 void
-kvga_fill(uint8_t c, uint8_t color)
+kvga_fill(char c, uint8_t color)
 {
     kwmemset((void *) VGA_MMIO_ADDR, ((uint16_t) color << 8) | c, VGA_COLUMNS_MAX * VGA_LINES_MAX);
 }

@@ -15,7 +15,7 @@
  * @return The length of it until a zero terminated byte.
  */
 size_t
-kstrlen(const int8_t *string)
+kstrlen(const char *string)
 {
     size_t len = 0;
 

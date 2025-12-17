@@ -31,7 +31,7 @@ extern point8_t ktty_cursor_pos;
  * @param color         The color
  */
 void
-ktty_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color);
+ktty_putc_at(uint8_t x, uint8_t y, char c, uint8_t color);
 
 /**
  * @brief Print a character array on the screen at a certain coordinates.
@@ -53,7 +53,7 @@ ktty_puts_at(uint8_t x, uint8_t y, const char *const string, uint8_t color);
  * @param color         The color
  */
 void
-ktty_putc(uint8_t c, uint8_t color);
+ktty_putc(char c, uint8_t color);
 
 /**
  * @brief Print a character array on the screen at the TTY cursor position.
@@ -62,7 +62,7 @@ ktty_putc(uint8_t c, uint8_t color);
  * @param color         The color
  */
 void
-ktty_puts(const int8_t *const string, uint8_t color);
+ktty_puts(const char *const string, uint8_t color);
 
 /**
  * @brief Fill the TTY screen of c characters and colors.
@@ -71,7 +71,7 @@ ktty_puts(const int8_t *const string, uint8_t color);
  * @param color         The color
  */
 void
-ktty_fill(uint8_t c, uint8_t color);
+ktty_fill(char c, uint8_t color);
 
 /**
  * @brief Get a copy of the TTY cursor position in a structure of char values.

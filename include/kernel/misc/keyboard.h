@@ -40,7 +40,7 @@ kkeyboard_pop(void);
  *
  * @return The character ascii.
  */
-uint8_t
+char
 kkeyboard_getchar(void);
 
 #endif

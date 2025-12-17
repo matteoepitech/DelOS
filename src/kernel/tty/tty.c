@@ -19,7 +19,7 @@
  * @param color         The color
  */
 void
-ktty_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
+ktty_putc_at(uint8_t x, uint8_t y, char c, uint8_t color)
 {
     kvga_putc_at(x, y, c, color);
 }
@@ -32,7 +32,7 @@ ktty_putc_at(uint8_t x, uint8_t y, uint8_t c, uint8_t color)
  * @param color         The color
  */
 void
-ktty_putc(uint8_t c, uint8_t color)
+ktty_putc(char c, uint8_t color)
 {
     switch (c) {
         case '\b':
@@ -73,7 +73,7 @@ ktty_putc(uint8_t c, uint8_t color)
  * @param color         The color
  */
 void
-ktty_puts_at(uint8_t x, uint8_t y, const int8_t *const string, uint8_t color)
+ktty_puts_at(uint8_t x, uint8_t y, const char *const string, uint8_t color)
 {
     uint8_t current_x = x;
     uint8_t current_y = y;
@@ -95,7 +95,7 @@ ktty_puts_at(uint8_t x, uint8_t y, const int8_t *const string, uint8_t color)
  * @param color         The color
  */
 void
-ktty_puts(const int8_t *const string, uint8_t color)
+ktty_puts(const char *const string, uint8_t color)
 {
     for (int i = 0; *(string + i); i++) {
         ktty_putc(*(string + i), color);
@@ -109,7 +109,7 @@ ktty_puts(const int8_t *const string, uint8_t color)
  * @param color         The color
  */
 void
-ktty_fill(uint8_t c, uint8_t color)
+ktty_fill(char c, uint8_t color)
 {
     kvga_fill(c, color);
 }

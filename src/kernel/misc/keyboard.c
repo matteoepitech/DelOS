@@ -15,15 +15,15 @@
  *
  * @return The character ascii.
  */
-uint8_t
+char
 kkeyboard_getchar(void)
 {
-    int8_t character = kkeyboard_pop();
+    char character = kkeyboard_pop();
 
     while (character == -1) {
         kinterruption_extern_start();
         KHLT_DO();
         character = kkeyboard_pop();
     }
-    return (uint8_t) character;
+    return (char) character;
 }
