@@ -19,7 +19,7 @@
  * @return The final code of the operation.
  */
 uint8_t
-kshell_reboot(UNUSED int argc, UNUSED char *argv[])
+kshell_reboot(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     KPRINTF_WARN("DelOS is trying to reboot...");
     kreboot();

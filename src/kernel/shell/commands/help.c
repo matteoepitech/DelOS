@@ -18,7 +18,7 @@
  * @return The final code of the operation.
  */
 uint8_t
-kshell_help(UNUSED int argc, UNUSED char *argv[])
+kshell_help(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     KPRINTF_INFO("All available commands:");
     for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {

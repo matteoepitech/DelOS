@@ -17,10 +17,10 @@
  * @brief All shell commands.
  */
 const shell_command_t shell_commands[] = {
-    {"help", kshell_help},
-    {"reboot", kshell_reboot},
-    {"timer", kshell_timer},
-    {"clear", kshell_clear},
+    {"help", &kshell_help},
+    {"reboot", &kshell_reboot},
+    {"clear", &kshell_clear},
+    {"uptime", &kshell_uptime},
     {NULL, NULL}
 };
 

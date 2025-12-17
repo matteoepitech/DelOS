@@ -19,7 +19,7 @@
  */
 typedef struct shell_command_s {
     char *command;
-    uint8_t (*func)(int argc, char *argv[]);
+    uint8_t (*func)(uint32_t argc, char *argv[]);
 } shell_command_t;
 
 /**
@@ -59,7 +59,7 @@ kshell_start(void);
  * @return The final code of the operation.
  */
 uint8_t
-kshell_reboot(UNUSED int argc, UNUSED char *argv[]);
+kshell_reboot(UNUSED uint32_t argc, UNUSED char *argv[]);
 
 /**
  * @brief Command for help.
@@ -70,18 +70,7 @@ kshell_reboot(UNUSED int argc, UNUSED char *argv[]);
  * @return The final code of the operation.
  */
 uint8_t
-kshell_help(UNUSED int argc, UNUSED char *argv[]);
-
-/**
- * @brief Command for timer.
- *
- * @param argc          The number of argument
- * @param argv[]        The array of argument
- *
- * @return The final code of the operation.
- */
-uint8_t
-kshell_timer(UNUSED int argc, UNUSED char *argv[]);
+kshell_help(UNUSED uint32_t argc, UNUSED char *argv[]);
 
 /**
  * @brief Command for clear.
@@ -92,6 +81,17 @@ kshell_timer(UNUSED int argc, UNUSED char *argv[]);
  * @return The final code of the operation.
  */
 uint8_t
-kshell_clear(UNUSED int argc, UNUSED char *argv[]);
+kshell_clear(UNUSED uint32_t argc, UNUSED char *argv[]);
+
+/**
+ * @brief Command for uptime.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_uptime(UNUSED uint32_t argc, UNUSED char *argv[]);
 
 #endif /* ifndef KERNEL_SHELL_H_ */

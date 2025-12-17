@@ -6,7 +6,7 @@
 */
 
 #include "kernel/shell/shell.h"
-#include "kernel/tty/tty.h"
+#include "utils/misc/print.h"
 #include "defines.h"
 
 /**

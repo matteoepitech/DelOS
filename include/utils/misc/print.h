@@ -82,8 +82,11 @@
      * independently of log levels if needed.
      */
     #ifndef KPRINTF_DATE
-        #define KPRINTF_DATE() \
-            kprintf(VGA_TEXT_DATE_COLOR, "[%05d.%02d] ", seconds_count, ticks_count % PIT_TARGET_FREQUENCY)
+        #if PIT_TARGET_FREQUENCY == 100
+            #define KPRINTF_DATE() kprintf(VGA_TEXT_DATE_COLOR, "[%05d.%02d] ", seconds_count, ticks_count % PIT_TARGET_FREQUENCY)
+        #else
+            #define KPRINTF_DATE() kprintf(VGA_TEXT_DATE_COLOR, "[%05d.%03d] ", seconds_count, ticks_count % PIT_TARGET_FREQUENCY)
+        #endif
     #endif
 
     /**

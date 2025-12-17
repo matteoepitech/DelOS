@@ -18,7 +18,7 @@
  * @return The final code of the operation.
  */
 uint8_t
-kshell_clear(UNUSED int argc, UNUSED char *argv[])
+kshell_clear(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     ktty_fill(' ', VGA_TEXT_DEFAULT_COLOR);
     ktty_cursor_set(0, 0);
