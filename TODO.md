@@ -22,7 +22,7 @@
 - [x] Fix scroll/backspace to stay in bounds and properly erase previous char (src/kernel/tty/tty.c).
 - [x] Add tab completion stub (just bell or no-op) and key handling structure for future features (src/kernel/shell/shell.c).
 - [x] Add configurable prompt string and color (store in a global) (src/kernel/shell/shell.c).
-- [ ] Add `repeat <n> <cmd>` command to loop a command for stress testing (src/kernel/shell/commands/repeat.c).
+- [x] Add `repeat <n> <cmd>` command to loop a command for stress testing (src/kernel/shell/commands/repeat.c).
 
 ## Boot / interrupts
 - [ ] Compute kernel sector count dynamically instead of hardcoded `0x14` + padding (boot/bootsector.s, boot/padding_zeroes.s, Makefile).
