@@ -12,7 +12,13 @@
 #ifndef KERNEL_SHELL_H_
     #define KERNEL_SHELL_H_
 
-    #define KERNEL_SHELL_BUFFER_SIZE 512
+    #ifndef KERNEL_SHELL_BUFFER_SIZE 
+        #define KERNEL_SHELL_BUFFER_SIZE 512
+    #endif /* ifndef KERNEL_SHELL_BUFFER_SIZE */
+
+    #ifndef KERNEL_SHELL_PROMPT_BASE
+        #define KERNEL_SHELL_PROMPT_BASE "$>"
+    #endif /* ifndef KERNEL_SHELL_PROMPT_BASE */
 
 /**
  * @brief The shell command structure definition.

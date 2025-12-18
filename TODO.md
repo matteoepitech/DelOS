@@ -21,12 +21,8 @@
 - [x] Align `ktty_puts_at` signature (char * vs int8_t *) between header and implementation; preserve passed color on newline handling (src/kernel/tty/tty.c, include/kernel/tty/tty.h).
 - [x] Fix scroll/backspace to stay in bounds and properly erase previous char (src/kernel/tty/tty.c).
 - [x] Add tab completion stub (just bell or no-op) and key handling structure for future features (src/kernel/shell/shell.c).
-- [ ] Add configurable prompt string and color (store in a global) (src/kernel/shell/shell.c).
-- [ ] Add `echo` command with `-n` support (src/kernel/shell/commands/echo.c).
+- [x] Add configurable prompt string and color (store in a global) (src/kernel/shell/shell.c).
 - [ ] Add `repeat <n> <cmd>` command to loop a command for stress testing (src/kernel/shell/commands/repeat.c).
-- [ ] Implement backspace that stops at prompt start (cannot erase `$> `) (src/kernel/shell/shell.c).
-- [ ] Add bell (ASCII 0x07) rendering in TTY (maybe audible via PC speaker later) (src/kernel/tty/tty.c).
-- [ ] Add page/line wrapping tests and simple assertions in TTY code (src/kernel/tty/*).
 
 ## Boot / interrupts
 - [ ] Compute kernel sector count dynamically instead of hardcoded `0x14` + padding (boot/bootsector.s, boot/padding_zeroes.s, Makefile).

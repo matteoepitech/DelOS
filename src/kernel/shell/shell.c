@@ -57,7 +57,7 @@ static
 void print_shell_prompt(void)
 {
     KPRINTF_DATE();
-    ktty_puts("$> ", VGA_TEXT_DEFAULT_COLOR);
+    ktty_puts(KERNEL_SHELL_PROMPT_BASE" ", VGA_TEXT_DEFAULT_COLOR);
 }
 
 /**
