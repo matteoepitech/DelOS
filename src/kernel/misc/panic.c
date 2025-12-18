@@ -101,5 +101,5 @@ kpanic(const char *msg, const char *file, uint32_t line)
                  VGA_TEXT_PANIC_COLOR);
     ktty_cursor_set_visibility(KO_FALSE);
 
-    KHLT_HARD_DO();
+    KHLT_HARD_DO_NO_MSG();
 }
