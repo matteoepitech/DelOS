@@ -1,8 +1,8 @@
 /*
 ** DELOS PROJECT, 2025
-** src/utils/string/strlen
+** src/utils/string/kstrlen
 ** File description:
-** strlen source file
+** kstrlen source file
 */
 
 #include "utils/kstdlib/kstring.h"

@@ -20,8 +20,7 @@
 - [x] Make `kkeyboard_getchar` CPU-friendly (e.g., `hlt` in loop with interrupts enabled) (src/kernel/misc/keyboard.c).
 - [x] Align `ktty_puts_at` signature (char * vs int8_t *) between header and implementation; preserve passed color on newline handling (src/kernel/tty/tty.c, include/kernel/tty/tty.h).
 - [x] Fix scroll/backspace to stay in bounds and properly erase previous char (src/kernel/tty/tty.c).
-- [ ] Add tab completion stub (just bell or no-op) and key handling structure for future features (src/kernel/shell/shell.c).
-- [ ] Add command aliases table support (e.g., `ls` -> `help`) (src/kernel/shell/shell.c).
+- [x] Add tab completion stub (just bell or no-op) and key handling structure for future features (src/kernel/shell/shell.c).
 - [ ] Add configurable prompt string and color (store in a global) (src/kernel/shell/shell.c).
 - [ ] Add `echo` command with `-n` support (src/kernel/shell/commands/echo.c).
 - [ ] Add `repeat <n> <cmd>` command to loop a command for stress testing (src/kernel/shell/commands/repeat.c).

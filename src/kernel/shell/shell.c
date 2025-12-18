@@ -5,6 +5,7 @@
 ** Shell source file
 */
 
+#include "kernel/shell/parser/autocomplete.h"
 #include "kernel/shell/parser/arguments.h"
 #include "utils/kstdlib/kstring.h"
 #include "kernel/misc/keyboard.h"
@@ -109,6 +110,10 @@ kshell_start(void)
                     ktty_putc('\b', VGA_TEXT_DEFAULT_COLOR);
                     index--;
                 }
+                break;
+
+            case '\t':
+                kshell_parse_autocomplete(buffer, &index);
                 break;
 
             default:
