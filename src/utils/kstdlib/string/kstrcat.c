@@ -6,6 +6,7 @@
 */
 
 #include "utils/kstdlib/kstring.h"
+#include "defines.h"
 
 /**
  * @brief Concat the string b into the string a.
@@ -21,6 +22,9 @@ kstrcat(char *restrict string_a, const char *restrict string_b)
 {
     char *dest = string_a;
 
+    if (string_a == NULL || string_b == NULL) {
+        return NULL;
+    }
     for (; *string_a; string_a++);
     while (*string_b) {
         *string_a = *string_b;

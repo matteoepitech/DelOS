@@ -8,6 +8,7 @@
 #include "utils/kstdlib/kstring.h"
 #include "drivers/video/vga.h"
 #include "kernel/tty/tty.h"
+#include "defines.h"
 
 /**
  * @brief Print a character on the screen at a certain coordinates.
@@ -75,6 +76,9 @@ ktty_puts_at(uint8_t x, uint8_t y, const char *const string, uint8_t color)
     uint8_t current_x = x;
     uint8_t current_y = y;
 
+    if (string == NULL) {
+        return;
+    }
     for (int i = 0; *(string + i); i++) {
         ktty_putc_at(current_x, current_y, *(string + i), color);
         current_x++;
@@ -94,6 +98,9 @@ ktty_puts_at(uint8_t x, uint8_t y, const char *const string, uint8_t color)
 void
 ktty_puts(const char *const string, uint8_t color)
 {
+    if (string == NULL) {
+        return;
+    }
     for (int i = 0; *(string + i); i++) {
         ktty_putc(*(string + i), color);
     }

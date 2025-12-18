@@ -1,11 +1,12 @@
 /*
 ** DELOS PROJECT, 2025
-** src/utils/kstdlib/memory/memcpy
+** src/utils/kstdlib/memory/kmemcpy
 ** File description:
-** memcpy source file
+** kmemcpy source file
 */
 
 #include "utils/kstdlib/kmemory.h"
+#include "defines.h"
 
 /**
  * @brief Kernel memcpy.
@@ -21,6 +22,9 @@ kmemcpy(void *restrict dst, const void *restrict src, size_t n)
 {
     void *ret = dst;
 
+    if (dst == NULL || src == NULL) {
+        return NULL;
+    }
     while (n) {
         *(uint8_t *) dst = *(uint8_t *) src;
         dst++;

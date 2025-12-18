@@ -1,11 +1,12 @@
 /*
 ** DELOS PROJECT, 2025
-** src/utils/kstdlib/memory/memmove
+** src/utils/kstdlib/memory/kmemmove
 ** File description:
-** memmove source file
+** kmemmove source file
 */
 
 #include "utils/kstdlib/kmemory.h"
+#include "defines.h"
 
 /**
  * @brief Kernel memmove.
@@ -24,6 +25,9 @@ kmemmove(void *dst, const void *src, size_t n)
     uint8_t *d = dst;
     void *ret = dst;
 
+    if (dst == NULL || src == NULL) {
+        return NULL;
+    }
     if (s < d) {
         d += n - 1;
         s += n - 1;

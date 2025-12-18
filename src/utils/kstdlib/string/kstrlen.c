@@ -6,6 +6,7 @@
 */
 
 #include "utils/kstdlib/kstring.h"
+#include "defines.h"
 
 /**
  * @brief Get the length of a string.
@@ -19,6 +20,9 @@ kstrlen(const char *string)
 {
     size_t len = 0;
 
+    if (string == NULL) {
+        return 0;
+    }
     while (*string) {
         string++;
         len++;

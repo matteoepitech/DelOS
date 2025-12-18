@@ -40,7 +40,7 @@ setup_run_shell_command(char *buffer)
     char *argv[SHELL_ARGV_MAX_COUNT] = {0};
     uint32_t argc = 0;
 
-    if (!*buffer) {
+    if (buffer == NULL || !*buffer) {
         return KO_FALSE;
     }
     argc = kshell_parse_get_argc(buffer);
@@ -70,6 +70,9 @@ void print_shell_prompt(void)
 uint8_t
 kshell_execute_command(uint32_t argc, char *argv[SHELL_ARGV_MAX_COUNT])
 {
+    if (argv == NULL || argv[0] == NULL) {
+        return KO_FALSE;
+    }
     for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {
         if (kstrcmp(argv[0], shell_commands[i].command) != 0)
             continue;

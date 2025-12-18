@@ -29,6 +29,9 @@ kuitoa(uint32_t value, uint32_t base, char *buffer, uint8_t uppercase)
     uint32_t i = 0;
     uint32_t j = 0;
 
+    if (buffer == NULL) {
+        return 0;
+    }
     if (value == 0) {
         buffer[0] = '0';
         buffer[1] = '\0';
@@ -58,6 +61,9 @@ kitoa(int32_t value, char *buffer)
 {
     uint32_t len = 0;
 
+    if (buffer == NULL) {
+        return 0;
+    }
     if (value < 0) {
         buffer[0] = '-';
         len = 1 + kuitoa((uint32_t) -value, 10, buffer + 1, KO_FALSE);
@@ -85,8 +91,12 @@ kprint_padded(char *str, uint32_t len, uint32_t width, char pad_char, uint8_t co
     uint32_t padding = 0;
     char pad[2] = {pad_char, '\0'};
 
-    if (width > len)
+    if (str == NULL) {
+        return 0;
+    }
+    if (width > len) {
         padding = width - len;
+    }
     if (str[0] == '-' && pad_char == '0' && padding > 0) {
         ktty_puts("-", color);
         count++;
@@ -114,6 +124,9 @@ kprint_padded(char *str, uint32_t len, uint32_t width, char pad_char, uint8_t co
 static void
 kparse_format(char *format, uint32_t *i, uint32_t *width, uint8_t *pad_zero)
 {
+    if (format == NULL || i == NULL || width == NULL || pad_zero == NULL) {
+        return;
+    }
     *width = 0;
     *pad_zero = KO_FALSE;
     if (format[*i] == '0') {
@@ -148,9 +161,13 @@ khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
     char c = 0;
     char pad_char = ' ';
 
+    if (format == NULL || i == NULL || va == NULL) {
+        return 0;
+    }
     kparse_format(format, i, &width, &pad_zero);
-    if (pad_zero == OK_TRUE)
+    if (pad_zero == OK_TRUE) {
         pad_char = '0';
+    }
     switch (format[*i]) {
         case 'd':
             value = KVA_ARG(*va, int32_t);
@@ -252,8 +269,9 @@ kprintf(uint8_t color, char *format, ...)
     uint32_t count = 0;
     char c[2] = {0, 0};
 
-    if (format == NULL)
+    if (format == NULL) {
         return 0;
+    }
     while (format[i]) {
         if (format[i] == '%' && format[i + 1]) {
             i++;

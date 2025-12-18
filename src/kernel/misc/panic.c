@@ -15,15 +15,18 @@
  * @brief Format the location of the panic.
  *        TODO: Remove this function and replace it using a ksprintf function.
  *
- * @param buffer	 Buffer to put the string to
- * @param file  	 The file string name
- * @param line  	 The line number
+ * @param buffer     Buffer to put the string to
+ * @param file       The file string name
+ * @param line       The line number
  */
 static void
 format_location(char *buffer, const char *file, uint32_t line)
 {
     uint32_t i = 0;
 
+    if (buffer == NULL || file == NULL) {
+        return;
+    }
     while (file[i] != '\0') {
         buffer[i] = file[i];
         i++;
@@ -54,8 +57,8 @@ format_location(char *buffer, const char *file, uint32_t line)
  * @brief Print a kernel panic message and stop the kernel by infinite loop.
  *
  * @param msg    The optionnal message (can be NULL)
- * @param file	 The file where the panic come from
- * @param line	 The line where the panic come from
+ * @param file   The file where the panic come from
+ * @param line   The line where the panic come from
  */
 void
 kpanic(const char *msg, const char *file, uint32_t line)
@@ -66,6 +69,7 @@ kpanic(const char *msg, const char *file, uint32_t line)
     const char *kernel_bottom_msg = "System halted - Please submit this to Del";
     char line_buffer[128];
 
+    file = file == NULL ? "(unknown)" : file;
     kinterruption_extern_stop();
     ktty_fill(' ', VGA_TEXT_PANIC_COLOR);
     ktty_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_panic_msg) / 2),
@@ -97,5 +101,5 @@ kpanic(const char *msg, const char *file, uint32_t line)
                  VGA_TEXT_PANIC_COLOR);
     ktty_cursor_set_visibility(KO_FALSE);
 
-	KHLT_HARD_DO();
+    KHLT_HARD_DO();
 }

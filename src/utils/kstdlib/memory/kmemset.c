@@ -6,6 +6,7 @@
 */
 
 #include "utils/kstdlib/kmemory.h"
+#include "defines.h"
 
 /**
  * @brief Kernel memset.
@@ -23,6 +24,9 @@ kmemset(void *addr, uint8_t byte, size_t len)
     // TODO: add 4 bytes aligned memset
     uint8_t *ptr = (uint8_t *) addr;
 
+    if (addr == NULL) {
+        return NULL;
+    }
     while (len) {
         *ptr = byte;
         ptr++;
@@ -46,6 +50,9 @@ kwmemset(void *addr, uint16_t word, size_t len)
 {
     uint16_t *ptr = (uint16_t *) addr;
 
+    if (addr == NULL) {
+        return NULL;
+    }
     while (len) {
         *ptr = word;
         ptr++;
