@@ -17,7 +17,7 @@
 - [x] Print "command not found" on unknown commands; stop after executing one matched command (src/kernel/shell/shell.c).
 - [x] Add `clear`, `uptime`/`timer`, and `panic-test` commands (src/kernel/shell/commands/).
 - [x] Handle Shift (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
-- [ ] Handle CapsLock (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
+- [x] Handle CapsLock (src/kernel/arch/i386/interruption/irq/irq_keyboard_press.c, include/kernel/misc/keyboard.h).
 - [ ] Add switch layout keyboard configuration command (src/kernel/shell/commands/*.c)
 - [x] Make `kkeyboard_getchar` CPU-friendly (e.g., `hlt` in loop with interrupts enabled) (src/kernel/misc/keyboard.c).
 - [x] Align `ktty_puts_at` signature (char * vs int8_t *) between header and implementation; preserve passed color on newline handling (src/kernel/tty/tty.c, include/kernel/tty/tty.h).

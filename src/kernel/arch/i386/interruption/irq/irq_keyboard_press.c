@@ -65,11 +65,16 @@ static const uint8_t scancode_to_ascii_shift[128] = {
     #define KEY_RIGHT_SHIFT 0x36
 #endif /* ifndef KEY_SHIFTS */
 
+#ifndef KEY_CAPS_LOCK
+    #define KEY_CAPS_LOCK 0x3A
+#endif /* ifndef KEY_CAPS_LOCK */
+
 /* Keyboard manager using a head/tail management and fixed buffer */
 int8_t keyboard_buffer[KEYBOARD_BUFFER_SIZE] = {0};
 size_t keyboard_head = 0;
 size_t keyboard_tail = 0;
 bool32_t shift_pressed = KO_FALSE;
+bool32_t caps_lock_activated = KO_FALSE;
 
 /**
  * @brief Push the ascii character to the circular buffer.
@@ -118,13 +123,15 @@ irq_keyboard_press(UNUSED registers_t *regs)
         if (code == KEY_LEFT_SHIFT || code == KEY_RIGHT_SHIFT) {
             shift_pressed = OK_TRUE;
         } else {
-            if (shift_pressed == KO_FALSE) {
-                if (scancode_to_ascii[code] != 0x00) {
-                    kkeyboard_push(scancode_to_ascii[code]);
-                }
-            } else {
+            if (code == KEY_CAPS_LOCK) {
+                caps_lock_activated = caps_lock_activated ^ 1;
+            } else if ((shift_pressed == OK_TRUE) ^ caps_lock_activated) {
                 if (scancode_to_ascii_shift[code] != 0x00) {
                     kkeyboard_push(scancode_to_ascii_shift[code]);
+                }
+            } else {
+                if (scancode_to_ascii[code] != 0x00) {
+                    kkeyboard_push(scancode_to_ascii[code]);
                 }
             }
         }
