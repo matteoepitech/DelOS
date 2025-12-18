@@ -100,17 +100,8 @@ void kshell_parse_get_argv(char *buffer, char *argv[SHELL_ARGV_MAX_COUNT])
     if (buffer == NULL || argv == NULL) {
         return;
     }
-    for (bool32_t in_a_word = KO_FALSE; *buffer; buffer++) {
-        while (kshell_parse_is_delimiter(*buffer)) {
-            in_a_word = KO_FALSE;
-            buffer++;
-        }
-        if (in_a_word == KO_FALSE && *buffer != '\0') {
-            in_a_word = OK_TRUE;
-            if (index >= SHELL_ARGV_MAX_COUNT)
-                break;
-            argv[index] = buffer;
-            index++;
-        }
+    for (; *buffer; index++) {
+        argv[index] = buffer;
+        buffer += kstrlen(buffer) + 1;
     }
 }
