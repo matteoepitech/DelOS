@@ -116,4 +116,15 @@ kshell_timer(UNUSED uint32_t argc, UNUSED char *argv[]);
 uint8_t
 kshell_shutdown(UNUSED uint32_t argc, UNUSED char *argv[]);
 
+/**
+ * @brief Command for panic_test.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_panic_test(UNUSED uint32_t argc, UNUSED char *argv[]);
+
 #endif /* ifndef KERNEL_SHELL_H_ */
