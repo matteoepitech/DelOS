@@ -27,6 +27,7 @@ const shell_command_t shell_commands[] = {
     {"panictest", &kshell_panic_test},
     {"repeat", &kshell_repeat},
     {"loadkeys", &kshell_loadkeys},
+    {"debug", &kshell_debug},
     {NULL, NULL}
 };
 
