@@ -5,6 +5,7 @@
 ** debug command source file
 */
 
+#include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -20,5 +21,6 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
+    kearly_malloc(32);
     return KO_FALSE;
 }

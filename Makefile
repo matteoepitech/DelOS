@@ -59,9 +59,9 @@ $(BUILD_DIR)/kernel_entry.o: $(ENTRY_FILE)
 	@$(NASM) -f elf32 $< -o $@
 
 # $(BUILD_DIR)/padding_zeroes.bin RULE : create the padding for the bin
-$(BUILD_DIR)/padding_zeroes.bin: $(ZERO_FILE)
-	@echo "Creating padding..."
-	@$(NASM) -f bin $< -o $@
+$(BUILD_DIR)/padding_zeroes.o: $(ZERO_FILE)
+	@echo "Assembling padding..."
+	@$(NASM) -f elf32 $< -o $@
 
 # Compilation des fichiers C
 $(BUILD_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
@@ -76,12 +76,12 @@ $(BUILD_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.s
 	@$(NASM) -f elf32 $< -o $@
 
 # Link du kernel
-$(BUILD_DIR)/full_kernel.bin: $(BUILD_DIR)/kernel_entry.o $(OBJ_C) $(OBJ_S)
+$(BUILD_DIR)/full_kernel.bin: $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/padding_zeroes.o $(OBJ_C) $(OBJ_S)
 	@echo "Linking kernel..."
 	@$(LD) $(LDFLAGS) -o $@ $^
 
 # $(OS_BIN) RULE : create the final $(OS_BIN) file
-$(OS_BIN): $(BUILD_DIR)/boot_sector.bin $(BUILD_DIR)/full_kernel.bin $(BUILD_DIR)/padding_zeroes.bin
+$(OS_BIN): $(BUILD_DIR)/boot_sector.bin $(BUILD_DIR)/full_kernel.bin
 	@echo "Creating OS image..."
 	@cat $^ > $@
 	@echo "Build complete: $@"

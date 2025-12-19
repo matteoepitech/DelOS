@@ -26,6 +26,10 @@ SECTIONS
         *(.bss.*)
     }
 
+    .padding : {
+        *(.padding)
+    }
+
     /* @brief Start of the early heap used in the early_allocator section. */
     _kernel_start_early_heap = .;
 }

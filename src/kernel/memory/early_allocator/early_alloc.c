@@ -26,6 +26,6 @@ kearly_malloc(uint32_t bytes)
     if (bytes <= 0) {
         return NULL;
     }
-    KPRINTF_DEBUG("%p", _kernel_start_early_heap);
+    KPRINTF_DEBUG("%p", (void *) &_kernel_start_early_heap);
     return NULL;
 }
