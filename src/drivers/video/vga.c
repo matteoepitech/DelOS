@@ -5,10 +5,10 @@
 ** VGA Source file
 */
 
-#include "utils/kstdlib/kmemory.h"
-#include "drivers/video/vga.h"
-#include "utils/asm/io_port.h"
-#include "kernel/tty/tty.h"
+#include <utils/kstdlib/kmemory.h>
+#include <utils/asm/io_port.h>
+#include <drivers/video/vga.h>
+#include <kernel/tty/tty.h>
 
 /**
  * @brief Print a character on the screen at a certain coordinates using VGA.

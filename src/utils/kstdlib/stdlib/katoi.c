@@ -5,9 +5,9 @@
 ** katoi source file
 */
 
-#include "utils/kstdlib/kstring.h"
-#include "utils/kstdlib/kctype.h"
-#include "defines.h"
+#include <utils/kstdlib/kstring.h>
+#include <utils/kstdlib/kctype.h>
+#include <defines.h>
 
 /**
  * @brief Get an integer from a buffer.

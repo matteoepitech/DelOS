@@ -5,8 +5,8 @@
 ** interruption description table header file
 */
 
-#include "kernel/arch/i386/interruption/isr.h"
-#include "types.h"
+#include <kernel/arch/i386/interruption/isr.h>
+#include <types.h>
 
 #ifndef KERNEL_INTERRUPTION_IDT_H_
     #define KERNEL_INTERRUPTION_IDT_H_

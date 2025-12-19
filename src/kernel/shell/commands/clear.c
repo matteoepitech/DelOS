@@ -5,9 +5,9 @@
 ** clear command source file
 */
 
-#include "kernel/shell/shell.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/shell/shell.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /**
  * @brief Command for clear.

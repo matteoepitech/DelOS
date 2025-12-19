@@ -5,7 +5,7 @@
 ** Kctype header file
 */
 
-#include "types.h"
+#include <types.h>
 
 #ifndef UTILS_KSTDLIB_KCTYPE_H_
     #define UTILS_KSTDLIB_KCTYPE_H_

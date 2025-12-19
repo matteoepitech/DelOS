@@ -5,7 +5,7 @@
 ** Panic header file
 */
 
-#include "types.h"
+#include <types.h>
 
 #ifndef KERNEL_MISC_PANIC_H_
     #define KERNEL_MISC_PANIC_H_

@@ -5,8 +5,8 @@
 ** kstrlen source file
 */
 
-#include "utils/kstdlib/kstring.h"
-#include "defines.h"
+#include <utils/kstdlib/kstring.h>
+#include <defines.h>
 
 /**
  * @brief Get the length of a string.

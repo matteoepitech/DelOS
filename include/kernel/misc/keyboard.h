@@ -5,7 +5,7 @@
 ** Keyboard header file
 */
 
-#include "types.h"
+#include <types.h>
 
 #ifndef KERNEL_MISC_KEYBOARD_H_
     #define KERNEL_MISC_KEYBOARD_H_

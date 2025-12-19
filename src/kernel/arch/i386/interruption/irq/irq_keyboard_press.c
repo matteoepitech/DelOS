@@ -5,13 +5,13 @@
 ** IRQ keyboard press (IRQ1)
 */
 
-#include "kernel/arch/i386/interruption/pic.h"
-#include "kernel/arch/i386/interruption/isr.h"
-#include "kernel/misc/keyboard.h"
-#include "utils/asm/io_port.h"
-#include "utils/misc/print.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/arch/i386/interruption/pic.h>
+#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/misc/keyboard.h>
+#include <utils/asm/io_port.h>
+#include <utils/misc/print.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 #ifndef KEY_IS_PRESSED
     #define KEY_IS_PRESSED(x) (!(x & 0x80))

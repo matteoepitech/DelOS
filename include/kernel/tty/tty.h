@@ -5,8 +5,8 @@
 ** TTY header file
 */
 
-#include "drivers/video/vga.h"
-#include "math/2d/point.h"
+#include <drivers/video/vga.h>
+#include <math/2d/point.h>
 
 #ifndef KERNEL_TTY_H_
     #define KERNEL_TTY_H_

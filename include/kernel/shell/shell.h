@@ -5,9 +5,9 @@
 ** Shell header file
 */
 
-#include "kernel/shell/parser/arguments.h"
-#include "defines.h"
-#include "types.h"
+#include <kernel/shell/parser/arguments.h>
+#include <defines.h>
+#include <types.h>
 
 #ifndef KERNEL_SHELL_H_
     #define KERNEL_SHELL_H_

@@ -5,7 +5,7 @@
 ** Autocomplete header file
 */
 
-#include "types.h"
+#include <types.h>
 
 #ifndef KERNEL_SHELL_PARSER_AUTOCOMPLETE_H_
     #define KERNEL_SHELL_PARSER_AUTOCOMPLETE_H_

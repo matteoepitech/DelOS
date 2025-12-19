@@ -5,10 +5,10 @@
 ** ISR breakpoint
 */
 
-#include "kernel/arch/i386/interruption/isr.h"
-#include "utils/misc/print.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/arch/i386/interruption/isr.h>
+#include <utils/misc/print.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /**
  * @brief ISR breapoint.

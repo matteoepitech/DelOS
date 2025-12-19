@@ -5,11 +5,11 @@
 ** repeat command source file
 */
 
-#include "utils/kstdlib/kstdlib.h"
-#include "utils/kstdlib/kstring.h"
-#include "kernel/shell/shell.h"
-#include "utils/misc/print.h"
-#include "defines.h"
+#include <utils/kstdlib/kstdlib.h>
+#include <utils/kstdlib/kstring.h>
+#include <kernel/shell/shell.h>
+#include <utils/misc/print.h>
+#include <defines.h>
 
 #ifndef REPEAT_HELP_MSG
     #define REPEAT_HELP_MSG "usage: repeat [-d | --details] <n> <cmd> <args>..."

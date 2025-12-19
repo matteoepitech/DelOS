@@ -5,10 +5,10 @@
 ** Kernel logging and formatted output utilities
 */
 
-#include "kernel/arch/i386/interruption/pit.h"
-#include "utils/kstdlib/kstdio.h"
-#include "drivers/video/vga.h"
-#include "kernel/tty/tty.h"
+#include <kernel/arch/i386/interruption/pit.h>
+#include <utils/kstdlib/kstdio.h>
+#include <drivers/video/vga.h>
+#include <kernel/tty/tty.h>
 
 #ifndef UTILS_MISC_PRINT_H_
     #define UTILS_MISC_PRINT_H_

@@ -5,10 +5,10 @@
 ** panic_test command source file
 */
 
-#include "kernel/shell/shell.h"
-#include "kernel/misc/panic.h"
-#include "utils/misc/print.h"
-#include "defines.h"
+#include <kernel/shell/shell.h>
+#include <kernel/misc/panic.h>
+#include <utils/misc/print.h>
+#include <defines.h>
 
 /**
  * @brief Command for panic_test.

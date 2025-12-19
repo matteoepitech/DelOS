@@ -5,10 +5,10 @@
 ** TTY source file
 */
 
-#include "utils/kstdlib/kstring.h"
-#include "drivers/video/vga.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <utils/kstdlib/kstring.h>
+#include <drivers/video/vga.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /**
  * @brief Print a character on the screen at a certain coordinates.

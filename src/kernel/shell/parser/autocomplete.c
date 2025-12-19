@@ -5,10 +5,10 @@
 ** Autcomplete shell parsing source file
 */
 
-#include "kernel/shell/parser/autocomplete.h"
-#include "utils/kstdlib/kstring.h"
-#include "utils/misc/print.h"
-#include "kernel/shell/shell.h"
+#include <kernel/shell/parser/autocomplete.h>
+#include <utils/kstdlib/kstring.h>
+#include <utils/misc/print.h>
+#include <kernel/shell/shell.h>
 
 /**
  * @brief Continue by searching the first occurence for the autocomplete.

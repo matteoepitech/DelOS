@@ -5,11 +5,11 @@
 ** Panic source file
 */
 
-#include "kernel/arch/i386/interruption/interruption.h"
-#include "utils/kstdlib/kstring.h"
-#include "kernel/tty/tty.h"
-#include "utils/asm/hlt.h"
-#include "defines.h"
+#include <kernel/arch/i386/interruption/interruption.h>
+#include <utils/kstdlib/kstring.h>
+#include <kernel/tty/tty.h>
+#include <utils/asm/hlt.h>
+#include <defines.h>
 
 /**
  * @brief Format the location of the panic.

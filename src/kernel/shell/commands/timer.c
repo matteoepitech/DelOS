@@ -5,9 +5,9 @@
 ** timer command source file
 */
 
-#include "kernel/shell/shell.h"
-#include "utils/misc/print.h"
-#include "defines.h"
+#include <kernel/shell/shell.h>
+#include <utils/misc/print.h>
+#include <defines.h>
 
 /**
  * @brief Command for timer.

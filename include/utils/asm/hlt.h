@@ -5,8 +5,8 @@
 ** HLT header file
 */
 
-#include "utils/misc/print.h"
-#include "kernel/tty/tty.h"
+#include <utils/misc/print.h>
+#include <kernel/tty/tty.h>
 
 #ifndef UTILS_ASM_HLT_H_
     #define UTILS_ASM_HLT_H_

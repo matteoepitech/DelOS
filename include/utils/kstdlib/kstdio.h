@@ -5,7 +5,7 @@
 ** Kstdio header file
 */
 
-#include "types.h"
+#include <types.h>
 
 #ifndef UTILS_KSTDLIB_KSTDIO_H_
     #define UTILS_KSTDLIB_KSTDIO_H_

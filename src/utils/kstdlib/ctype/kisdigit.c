@@ -5,7 +5,7 @@
 ** kisdigit source file
 */
 
-#include "utils/kstdlib/kctype.h"
+#include <utils/kstdlib/kctype.h>
 
 /**
  * @brief Check if a specific character is a digit (0 <= digit >= 9).

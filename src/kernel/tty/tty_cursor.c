@@ -5,10 +5,10 @@
 ** TTY cursor source file
 */
 
-#include "defines.h"
-#include "utils/asm/io_port.h"
-#include "drivers/video/vga.h"
-#include "kernel/tty/tty.h"
+#include <defines.h>
+#include <utils/asm/io_port.h>
+#include <drivers/video/vga.h>
+#include <kernel/tty/tty.h>
 
 /**
  * @brief Variable tty_cursor_pos contain a structure for representing the

@@ -5,8 +5,8 @@
 ** kstrcat source file
 */
 
-#include "utils/kstdlib/kstring.h"
-#include "defines.h"
+#include <utils/kstdlib/kstring.h>
+#include <defines.h>
 
 /**
  * @brief Concat the string b into the string a.

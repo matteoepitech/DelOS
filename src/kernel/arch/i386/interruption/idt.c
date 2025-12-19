@@ -5,12 +5,12 @@
 ** Interruption descriptor table source file
 */
 
-#include "kernel/arch/i386/interruption/idt.h"
-#include "kernel/arch/i386/interruption/isr.h"
-#include "kernel/arch/i386/interruption/irq.h"
-#include "utils/kstdlib/kmemory.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/arch/i386/interruption/idt.h>
+#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/arch/i386/interruption/irq.h>
+#include <utils/kstdlib/kmemory.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /* ISR Declarations for stubs */
 ISR_DECLARE_STUB(0);

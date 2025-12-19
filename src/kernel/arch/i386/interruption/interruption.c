@@ -5,7 +5,7 @@
 ** Interruption source file
 */
 
-#include "kernel/arch/i386/interruption/interruption.h"
+#include <kernel/arch/i386/interruption/interruption.h>
 
 /**
  * @brief Stop the interruptions by clearing the interruption flag.

@@ -5,10 +5,10 @@
 ** Reboot command source file
 */
 
-#include "kernel/misc/reboot.h"
-#include "kernel/shell/shell.h"
-#include "utils/misc/print.h"
-#include "defines.h"
+#include <kernel/misc/reboot.h>
+#include <kernel/shell/shell.h>
+#include <utils/misc/print.h>
+#include <defines.h>
 
 /**
  * @brief Command for reboot.

@@ -5,12 +5,12 @@
 ** Interruption service routine source file and for IRQs
 */
 
-#include "kernel/arch/i386/interruption/idt.h"
-#include "kernel/arch/i386/interruption/isr.h"
-#include "kernel/misc/panic.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
-#include "types.h"
+#include <kernel/arch/i386/interruption/idt.h>
+#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/misc/panic.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
+#include <types.h>
 
 /**
  * @brief Variable for the ISR functions pointer.

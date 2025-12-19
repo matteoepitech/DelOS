@@ -5,8 +5,8 @@
 ** kmemmove source file
 */
 
-#include "utils/kstdlib/kmemory.h"
-#include "defines.h"
+#include <utils/kstdlib/kmemory.h>
+#include <defines.h>
 
 /**
  * @brief Kernel memmove.

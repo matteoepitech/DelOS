@@ -5,7 +5,7 @@
 ** VGA Header file
 */
 
-#include "math/2d/point.h"
+#include <math/2d/point.h>
 
 #ifndef DRIVER_VIDEO_VGA_H_
     #define DRIVER_VIDEO_VGA_H_

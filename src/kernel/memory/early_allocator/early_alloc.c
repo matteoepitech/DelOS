@@ -5,4 +5,4 @@
 ** early allocator source file (bump allocator)
 */
 
-#include "kernel/memory/early_allocator/early_alloc.h"
+#include <kernel/memory/early_allocator/early_alloc.h>

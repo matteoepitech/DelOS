@@ -5,10 +5,10 @@
 ** uptime command source file
 */
 
-#include "kernel/shell/shell.h"
-#include "utils/misc/print.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/shell/shell.h>
+#include <utils/misc/print.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 #ifndef UPTIME_SECONDS_PER_MINUTE
     #define UPTIME_SECONDS_PER_MINUTE 60

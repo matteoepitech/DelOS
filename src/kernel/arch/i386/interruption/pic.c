@@ -5,8 +5,8 @@
 ** PIC source file
 */
 
-#include "kernel/arch/i386/interruption/pic.h"
-#include "utils/asm/io_port.h"
+#include <kernel/arch/i386/interruption/pic.h>
+#include <utils/asm/io_port.h>
 
 /**
  * @brief Remap the whole PIC interface to permit no collision between the ISR and IRQ.

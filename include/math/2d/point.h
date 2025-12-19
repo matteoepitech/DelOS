@@ -5,7 +5,7 @@
 ** Math point header file
 */
 
-#include "types.h"
+#include <types.h>
 
 #ifndef MATH_2D_POINT_H_
     #define MATH_2D_POINT_H_

@@ -5,14 +5,14 @@
 ** Shell source file
 */
 
-#include "kernel/shell/parser/autocomplete.h"
-#include "kernel/shell/parser/arguments.h"
-#include "utils/kstdlib/kstring.h"
-#include "kernel/misc/keyboard.h"
-#include "kernel/shell/shell.h"
-#include "utils/misc/print.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/shell/parser/autocomplete.h>
+#include <kernel/shell/parser/arguments.h>
+#include <utils/kstdlib/kstring.h>
+#include <kernel/misc/keyboard.h>
+#include <kernel/shell/shell.h>
+#include <utils/misc/print.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /**
  * @brief All shell commands.

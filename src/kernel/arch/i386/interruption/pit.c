@@ -5,9 +5,9 @@
 ** PIT source file
 */
 
-#include "kernel/arch/i386/interruption/pit.h"
-#include "kernel/misc/panic.h"
-#include "utils/asm/io_port.h"
+#include <kernel/arch/i386/interruption/pit.h>
+#include <kernel/misc/panic.h>
+#include <utils/asm/io_port.h>
 
 // @brief The ticks count of since start of the kernel.
 volatile uint32_t ticks_count = 0;

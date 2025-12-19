@@ -5,9 +5,9 @@
 ** Keyboard source file
 */
 
-#include "kernel/arch/i386/interruption/interruption.h"
-#include "kernel/misc/keyboard.h"
-#include "utils/asm/hlt.h"
+#include <kernel/arch/i386/interruption/interruption.h>
+#include <kernel/misc/keyboard.h>
+#include <utils/asm/hlt.h>
 
 /* WARN: Requires i8042-compatible keyboard controller (PS/2 legacy mode). */
 

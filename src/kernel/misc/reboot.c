@@ -5,11 +5,11 @@
 ** Reboot source file
 */
 
-#include "kernel/arch/i386/interruption/interruption.h"
-#include "kernel/misc/reboot.h"
-#include "kernel/misc/panic.h"
-#include "utils/asm/io_port.h"
-#include "types.h"
+#include <kernel/arch/i386/interruption/interruption.h>
+#include <kernel/misc/reboot.h>
+#include <kernel/misc/panic.h>
+#include <utils/asm/io_port.h>
+#include <types.h>
 
 /**
  * @brief Helper function for rebooting the machine.

@@ -5,11 +5,11 @@
 ** IRQ timer (IRQ0)
 */
 
-#include "kernel/arch/i386/interruption/isr.h"
-#include "kernel/arch/i386/interruption/pic.h"
-#include "kernel/arch/i386/interruption/pit.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/arch/i386/interruption/pic.h>
+#include <kernel/arch/i386/interruption/pit.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /**
  * @brief IRQ timer.

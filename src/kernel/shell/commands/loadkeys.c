@@ -5,11 +5,11 @@
 ** loadkeys command source file
 */
 
-#include "utils/kstdlib/kstring.h"
-#include "kernel/misc/keyboard.h"
-#include "kernel/shell/shell.h"
-#include "utils/misc/print.h"
-#include "defines.h"
+#include <utils/kstdlib/kstring.h>
+#include <kernel/misc/keyboard.h>
+#include <kernel/shell/shell.h>
+#include <utils/misc/print.h>
+#include <defines.h>
 
 /**
  * @brief Command for loadkeys.

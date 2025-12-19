@@ -5,12 +5,12 @@
 ** Arguments shell parsing source file
 */
 
-#include "kernel/shell/parser/arguments.h"
-#include "utils/kstdlib/kmemory.h"
-#include "utils/kstdlib/kstring.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
-#include "types.h"
+#include <kernel/shell/parser/arguments.h>
+#include <utils/kstdlib/kmemory.h>
+#include <utils/kstdlib/kstring.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
+#include <types.h>
 
 /**
  * @brief Check if a character is a delimiter or not for the parsing.

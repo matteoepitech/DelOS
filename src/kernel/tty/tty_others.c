@@ -5,9 +5,9 @@
 ** TTY others like numbers, decimals, hexadecimals source file
 */
 
-#include "utils/kstdlib/kstring.h"
-#include "drivers/video/vga.h"
-#include "kernel/tty/tty.h"
+#include <utils/kstdlib/kstring.h>
+#include <drivers/video/vga.h>
+#include <kernel/tty/tty.h>
 
 /**
  * @brief Print a number on the screen at the TTY cursor position.

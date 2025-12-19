@@ -5,10 +5,10 @@
 ** ISR div zero
 */
 
-#include "kernel/arch/i386/interruption/isr.h"
-#include "kernel/misc/panic.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/misc/panic.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /**
  * @brief ISR division by zero.

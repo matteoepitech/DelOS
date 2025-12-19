@@ -5,15 +5,15 @@
 ** Kernel Source file main
 */
 
-#include "kernel/arch/i386/interruption/interruption.h"
-#include "kernel/arch/i386/interruption/idt.h"
-#include "kernel/arch/i386/interruption/pic.h"
-#include "kernel/arch/i386/interruption/pit.h"
-#include "kernel/shell/shell.h"
-#include "utils/misc/print.h"
-#include "kernel/tty/tty.h"
-#include "utils/asm/hlt.h"
-#include "defines.h"
+#include <kernel/arch/i386/interruption/interruption.h>
+#include <kernel/arch/i386/interruption/idt.h>
+#include <kernel/arch/i386/interruption/pic.h>
+#include <kernel/arch/i386/interruption/pit.h>
+#include <kernel/shell/shell.h>
+#include <utils/misc/print.h>
+#include <kernel/tty/tty.h>
+#include <utils/asm/hlt.h>
+#include <defines.h>
 
 /**
  * @brief Kernel main entry point.

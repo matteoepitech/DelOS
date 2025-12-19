@@ -5,11 +5,11 @@
 ** Kprintf source file
 */
 
-#include "utils/kstdlib/kstdarg.h"
-#include "utils/kstdlib/kstring.h"
-#include "utils/kstdlib/kstdio.h"
-#include "kernel/tty/tty.h"
-#include "defines.h"
+#include <utils/kstdlib/kstdarg.h>
+#include <utils/kstdlib/kstring.h>
+#include <utils/kstdlib/kstdio.h>
+#include <kernel/tty/tty.h>
+#include <defines.h>
 
 /**
  * @brief Convert an unsigned integer to string in given base.
