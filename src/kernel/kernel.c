@@ -6,6 +6,7 @@
 */
 
 #include <kernel/arch/i386/interruption/interruption.h>
+#include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/arch/i386/interruption/idt.h>
 #include <kernel/arch/i386/interruption/pic.h>
 #include <kernel/arch/i386/interruption/pit.h>
@@ -30,6 +31,7 @@ kmain(void)
     kinterruption_extern_start();
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
+    kearly_malloc_init();
 
     KPRINTF_OK("Welcome to Del'OS Kernel space.");
     kshell_start();

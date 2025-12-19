@@ -31,5 +31,5 @@ SECTIONS
     }
 
     /* @brief Start of the early heap used in the early_allocator section. */
-    _kernel_start_early_heap = .;
+    _kernel_early_heap_start_sym = .;
 }
