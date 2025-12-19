@@ -20,4 +20,16 @@
 int32_t
 katoi(const char *buffer);
 
+/**
+ * @brief Get the first number in a string.
+ *
+ * @param str    The string to parse
+ * @param base   The base to parse the number, 0 if you don't know
+ * @param ok     Put 1 in this addr space if worked, 0 otherwise
+ *
+ * @return The parsed number in a base.
+ */
+int32_t
+kstrtol(const char *str, int32_t base, int32_t *ok);
+
 #endif /* ifndef UTILS_KSTDLIB_KSTDLIB_H_ */

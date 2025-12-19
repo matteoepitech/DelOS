@@ -166,4 +166,15 @@ kshell_loadkeys(uint32_t argc, char *argv[]);
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[]);
 
+/**
+ * @brief Command for dump_mem.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_dump_mem(uint32_t argc, char *argv[]);
+
 #endif /* ifndef KERNEL_SHELL_H_ */

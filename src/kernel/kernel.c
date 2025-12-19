@@ -16,6 +16,8 @@
 #include <utils/asm/hlt.h>
 #include <defines.h>
 
+#include <kernel/misc/keyboard.h>
+
 /**
  * @brief Kernel main entry point.
  *        This function is located at 0x10000 in the memory.

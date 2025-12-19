@@ -33,13 +33,13 @@ kshell_repeat(uint32_t argc, char *argv[])
     char **cmd_argv = NULL;
 
     if (argc < 3) {
-        KPRINTF_ERROR(REPEAT_HELP_MSG);
+        KPRINTF_ERROR("%s", REPEAT_HELP_MSG);
         return OK_TRUE;
     }
     if (kstrcmp(argv[1], "-d") == 0 || kstrcmp(argv[1], "--details") == 0) {
         details = OK_TRUE;
         if (argc < 4) {
-            KPRINTF_ERROR(REPEAT_HELP_MSG);
+            KPRINTF_ERROR("%s", REPEAT_HELP_MSG);
             return OK_TRUE;
         }
         repeat_times = katoi(argv[2]);

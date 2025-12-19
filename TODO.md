@@ -51,7 +51,7 @@
 - [ ] Add safe `ARRAY_SIZE` macro for static arrays (include/defines.h).
 
 ## New features (bite-sized)
-- [ ] Add a `heap` allocator placeholder: a bump allocator with a simple API `kalloc(size)`/`kfree` no-op to unblock future features (new file `src/kernel/mem/heap.c`, header under `include/kernel/mem/heap.h`).
+- [x] Add a `heap` allocator placeholder: a bump allocator with a simple API no-op to unblock future features (new file `src/kernel/mem/heap.c`, header under `include/kernel/mem/heap.h`).
 - [ ] Implement a simple serial driver (COM1) for logging: init, putc, puts (src/drivers/serial/serial.c, include/drivers/serial/serial.h).
 - [ ] Add a kernel printf-lite (`kprintf`) supporting %s/%d/%x/%c routed to TTY (src/utils/kstdlib/kprintf.c, header in include/utils/kstdlib/kprintf.h).
 - [ ] Introduce a basic timer-based scheduler stub: task struct + ready queue placeholder, tick hook increments a per-task runtime counter (src/kernel/sched/*).
@@ -83,7 +83,7 @@
 - [ ] Add `trace on/off` flag to log all shell input/output for debugging (src/kernel/shell/shell.c).
 - [ ] Add serial console mirror option (duplicate TTY output to serial) (shell or TTY config).
 - [ ] Add a `logo` command with ASCII art stored in a const table (src/kernel/shell/commands/logo.c).
-- [ ] Add `dump-mem <addr> <len>` command (hex/ASCII) guarded for safe ranges (src/kernel/shell/commands/dump_mem.c).
+- [x] Add `dump-mem <addr> <len>` command (hex/ASCII) guarded for safe ranges (src/kernel/shell/commands/dump_mem.c).
 - [ ] Add `fill-mem <addr> <len> <byte>` command with range checks (src/kernel/shell/commands/fill_mem.c).
 - [ ] Add `cmp-mem <addr1> <addr2> <len>` command for quick memory comparisons (src/kernel/shell/commands/cmp_mem.c).
 

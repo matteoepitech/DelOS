@@ -28,6 +28,7 @@ const shell_command_t shell_commands[] = {
     {"repeat", &kshell_repeat},
     {"loadkeys", &kshell_loadkeys},
     {"debug", &kshell_debug},
+    {"dumpmem", &kshell_dump_mem},
     {NULL, NULL}
 };
 
