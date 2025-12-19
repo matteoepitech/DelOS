@@ -49,9 +49,11 @@ prepare:
 	@mkdir -p $(BUILD_DIR)
 
 # $(BUILD_DIR)/boot_sector.bin RULE : create the boot sector for the bin
-$(BUILD_DIR)/boot_sector.bin: $(BOOT_FILE)
-	@echo "Assembling bootloader..."
-	@$(NASM) -I $(BOOT_DIR) -f bin $< -o $@
+$(BUILD_DIR)/boot_sector.bin: $(BOOT_FILE) $(BUILD_DIR)/full_kernel.bin
+	@kernel_size_bytes=$$(wc -c < $(BUILD_DIR)/full_kernel.bin); \
+	kernel_sectors=$$((($$kernel_size_bytes + 511) / 512)); \
+	echo "Assembling bootloader (kernel sectors: $$kernel_sectors)..."; \
+	$(NASM) -I $(BOOT_DIR) -f bin $< -o $@ -DKERNEL_SECTORS=$$kernel_sectors
 
 # $(BUILD_DIR)/kernel_entry.o RULE : create the kernel entry
 $(BUILD_DIR)/kernel_entry.o: $(ENTRY_FILE)

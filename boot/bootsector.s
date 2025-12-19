@@ -6,6 +6,11 @@ org 0x7c00
 ; ======================================================
 [bits 16]
 
+%ifndef KERNEL_SECTORS
+    ; fallback value, normally replaced at build time with the real kernel size
+    %define KERNEL_SECTORS 0x30
+%endif
+
 KERNEL_LOCATION equ 0x10000
 KERNEL_BASE_POINTER equ 0x90000
 CODE_SEG        equ code_descriptor - GDT_Start ; = 0x08 which is 1 * 8, so the CPU know it's the index number 1 for the code segment
@@ -30,7 +35,7 @@ mov es, ax              ; set ES segment
 xor bx, bx              ; offset = 0, so ES:BX = 0x1000:0x0000 = 0x10000
 
 mov ah, 0x02            ; read storage from disk interuption id
-mov al, 0x30            ; we will read 48 sector (MAY INCREASE THIS, this is the kernel ~ size)
+mov al, KERNEL_SECTORS  ; number of kernel sectors to read (set at build time)
 mov ch, 0x00            ; cylinder number 0
 mov dh, 0x00            ; head number 0
 mov cl, 0x02            ; sector number 2 (after the bootsector)

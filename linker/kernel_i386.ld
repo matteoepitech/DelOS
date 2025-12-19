@@ -16,14 +16,18 @@ SECTIONS
     }
 
     .data : ALIGN(4096) {
+        _data_start = .;
         *(.data)
         *(.data.*)
+        _data_end = .;
     }
 
     .bss : ALIGN(4096) {
+        _bss_start = .;
         *(COMMON)
         *(.bss)
         *(.bss.*)
+        _bss_end = .;
     }
 
     .padding : {
