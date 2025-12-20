@@ -9,6 +9,7 @@
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/arch/i386/interruption/idt.h>
 #include <kernel/arch/i386/interruption/pic.h>
+#include <kernel/memory/pmm/pmm.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
 #include <utils/asm/hlt.h>
@@ -30,6 +31,10 @@ kmain(void)
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
     kearly_malloc_init();
+
+    kpmm_init();
+    kpmm_dump();
+
     kshell_start();
 
     kearly_malloc_disable(); // NEVER GOES HERE for the moment

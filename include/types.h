@@ -29,6 +29,11 @@ typedef int int32_t;
 typedef unsigned int uint32_t;
 
 /**
+ * @brief Unsigned integer (8 bytes)
+ */
+typedef unsigned long long uint64_t;
+
+/**
  * @brief Unsigned integer (4 bytes)
  */
 typedef uint32_t size_t;
