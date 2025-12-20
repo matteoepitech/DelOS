@@ -11,8 +11,12 @@
     #define KERNEL_MEMORY_EARLY_ALLOCATOR_H_
 
     // INFO: This value (1024 * 1024) is arbitrary (4 KiB) and can be increased if needed and argumented
+    #ifndef KERNEL_MEMORY_EARLY_SIZE
+        #define KERNEL_MEMORY_EARLY_SIZE (1024 * 4)
+    #endif /* ifndef KERNEL_MEMORY_EARLY_SIZE */
+
     #ifndef KERNEL_MEMORY_EARLY_DEFINE_END
-        #define KERNEL_MEMORY_EARLY_DEFINE_END(start) (start + (1024 * 1024))
+        #define KERNEL_MEMORY_EARLY_DEFINE_END(start) (start + KERNEL_MEMORY_EARLY_SIZE)
     #endif /* ifndef KERNEL_MEMORY_EARLY_DEFINE_END */
 
 /*

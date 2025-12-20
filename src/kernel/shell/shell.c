@@ -99,7 +99,7 @@ kshell_start(void)
     char buffer[KERNEL_SHELL_BUFFER_SIZE];
     uint32_t index = 0;
 
-    KPRINTF_OK("Shell has been started.");
+    KPRINTF_OK("shell: started...");
     print_shell_prompt();
     while (OK_TRUE) {
         uint8_t c = kkeyboard_getchar();

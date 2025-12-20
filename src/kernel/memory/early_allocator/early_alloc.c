@@ -28,6 +28,7 @@ kearly_malloc_init(void)
     if (kernel_early_heap_start == NULL || kernel_early_heap_end == NULL) {
         return KO_FALSE;
     }
+    KPRINTF_OK("early_allocator: early allocator initialized (%d KiB)", KERNEL_MEMORY_EARLY_SIZE / 1024);
     return OK_TRUE;
 }
 
