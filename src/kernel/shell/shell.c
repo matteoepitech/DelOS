@@ -18,18 +18,18 @@
  * @brief All shell commands.
  */
 const shell_command_t shell_commands[] = {
-    {"help", &kshell_help},
-    {"reboot", &kshell_reboot},
-    {"clear", &kshell_clear},
-    {"uptime", &kshell_uptime},
-    {"timer", &kshell_timer},
-    {"shutdown", &kshell_shutdown},
-    {"panictest", &kshell_panic_test},
-    {"repeat", &kshell_repeat},
-    {"loadkeys", &kshell_loadkeys},
-    {"debug", &kshell_debug},
-    {"dumpmem", &kshell_dump_mem},
-    {NULL, NULL}
+    {"help", &kshell_help, "List available commands"},
+    {"reboot", &kshell_reboot, "Reboot the system"},
+    {"clear", &kshell_clear, "Clear the TTY screen"},
+    {"uptime", &kshell_uptime, "Show system uptime"},
+    {"timer", &kshell_timer, "Show timer information"},
+    {"shutdown", &kshell_shutdown, "Shutdown the system"},
+    {"panictest", &kshell_panic_test, "Trigger a kernel panic"},
+    {"repeat", &kshell_repeat, "Repeat a command"},
+    {"loadkeys", &kshell_loadkeys, "Load keyboard layout"},
+    {"debug", &kshell_debug, "Debug using this command (dev only)"},
+    {"dumpmem", &kshell_dump_mem, "Dump memory contents"},
+    {NULL, NULL, NULL}
 };
 
 /**
@@ -78,10 +78,10 @@ kshell_execute_command(uint32_t argc, char *argv[SHELL_ARGV_MAX_COUNT])
     if (argv == NULL || argv[0] == NULL) {
         return KO_FALSE;
     }
-    for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {
-        if (kstrcmp(argv[0], shell_commands[i].command) != 0)
+    for (uint32_t i = 0; shell_commands[i]._command != NULL; i++) {
+        if (kstrcmp(argv[0], shell_commands[i]._command) != 0)
             continue;
-        return shell_commands[i].func(argc, argv);
+        return shell_commands[i]._func(argc, argv);
     }
     KPRINTF_WARN("Command not found: %s", argv[0]);
     return OK_TRUE;

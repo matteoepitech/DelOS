@@ -24,8 +24,9 @@
  * @brief The shell command structure definition.
  */
 typedef struct shell_command_s {
-    char *command;
-    uint8_t (*func)(uint32_t argc, char *argv[]);
+    char *_command;
+    uint8_t (*_func)(uint32_t argc, char *argv[]);
+    char *_desc;
 } shell_command_t;
 
 /**

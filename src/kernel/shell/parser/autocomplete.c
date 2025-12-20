@@ -26,11 +26,11 @@ kshell_parse_autocomplete(char *buffer, uint32_t *length)
     if (buffer == NULL || length == NULL || *length == 0) {
         return -1;
     }
-    for (uint32_t i = 0; shell_commands[i].command != NULL; i++) {
-        if (kstrncmp(buffer, shell_commands[i].command, *length) == 0) {
-            ktty_puts(&shell_commands[i].command[*length], VGA_TEXT_DEFAULT_COLOR);
+    for (uint32_t i = 0; shell_commands[i]._command != NULL; i++) {
+        if (kstrncmp(buffer, shell_commands[i]._command, *length) == 0) {
+            ktty_puts(&shell_commands[i]._command[*length], VGA_TEXT_DEFAULT_COLOR);
             buffer[0] = '\0';
-            kstrcat(buffer, shell_commands[i].command);
+            kstrcat(buffer, shell_commands[i]._command);
             *length = kstrlen(buffer);
             return i;
         }
