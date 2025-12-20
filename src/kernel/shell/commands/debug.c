@@ -30,6 +30,6 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     for (uint32_t i = 0; i < c_string_length + 1; i++) {
         string_dupped[i] = c_string[i];
     }
-    KPRINTF_DEBUG("%s", string_dupped);
+    KPRINTF_DEBUG("%p", string_dupped);
     return KO_FALSE;
 }

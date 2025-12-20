@@ -175,10 +175,12 @@ khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
             return kprint_padded(buffer, len, width, pad_char, color);
         case 'x':
             value = KVA_ARG(*va, uint32_t);
+            ktty_puts("0x", color);
             len = kuitoa(value, 16, buffer, KO_FALSE);
             return kprint_padded(buffer, len, width, pad_char, color);
         case 'X':
             value = KVA_ARG(*va, uint32_t);
+            ktty_puts("0X", color);
             len = kuitoa(value, 16, buffer, OK_TRUE);
             return kprint_padded(buffer, len, width, pad_char, color);
         case 'b':

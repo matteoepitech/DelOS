@@ -20,4 +20,14 @@
 bool32_t
 kisdigit(char c);
 
+/**
+ * @brief Say if a character (byte or more) is actually printable.
+ *
+ * @param character  The character to check if printable
+ *
+ * @return OK_TRUE if printable, KO_FALSE otherwise.
+ */
+bool32_t
+kisprint(int32_t character);
+
 #endif /* ifndef UTILS_KSTDLIB_KCTYPE_H_ */

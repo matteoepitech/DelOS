@@ -7,6 +7,7 @@
 
 #include <utils/kstdlib/kstring.h>
 #include <utils/kstdlib/kstdlib.h>
+#include <utils/kstdlib/kctype.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -18,6 +19,25 @@
     #define DUMP_MEM_LEN_ERROR_MSG "dumpmem: the len parameter need to be greater than 0"
 #endif /* ifndef DUMP_MEM_MSG */
 
+#ifndef DUMP_MEM_MISC
+    #define DUMP_MEM_BYTES_PER_ROW 32
+#endif /* ifndef DUMP_MEM_MISC */
+
+/**
+ * @brief Print the current byte into ascii value.
+ *
+ * @param byte   Print the current byte value if printable. A dot is print if not.
+ */
+static void
+print_byte(uint8_t byte)
+{
+    if (kisprint(byte)) {
+        ktty_putc(byte, VGA_TEXT_DEFAULT_COLOR);
+    } else {
+        ktty_putc('.', VGA_TEXT_DEFAULT_COLOR);
+    }
+}
+
 /**
  * @brief Print the memory for the shell dump_mem command.
  *
@@ -27,7 +47,18 @@
 static void
 dump_mem_formatted(uint8_t *addr, uint32_t len)
 {
-
+    for (uint32_t current_len = 0; current_len < len; current_len++) {
+        if (current_len % DUMP_MEM_BYTES_PER_ROW == 0) {
+            if (current_len > 0) {
+                ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);
+            }
+            KPRINTF_DATE();
+            kprintf(VGA_TEXT_DATE_COLOR, "%08x   ", addr);
+        }
+        print_byte(*addr);
+        addr++;
+    }
+    ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);
 }
 
 /**
