@@ -26,6 +26,7 @@ kearly_malloc(uint32_t bytes)
 {
     void *ptr = NULL;
 
+    bytes = KERNEL_MEMORY_EARLY_ALIGN_UP(bytes);
     if (kernel_early_heap_available == KO_FALSE) {
         KPANIC("Early allocator tried to allocate memory while being disabled.");
         return ptr;

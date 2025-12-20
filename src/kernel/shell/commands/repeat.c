@@ -66,6 +66,5 @@ kshell_repeat(uint32_t argc, char *argv[])
             (((ticks_count - start_ticks) % PIT_TARGET_FREQUENCY) * 1000) / PIT_TARGET_FREQUENCY
         );
     }
-
     return KO_FALSE;
 }

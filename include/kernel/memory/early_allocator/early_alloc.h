@@ -10,10 +10,19 @@
 #ifndef KERNEL_MEMORY_EARLY_ALLOCATOR_H_
     #define KERNEL_MEMORY_EARLY_ALLOCATOR_H_
 
-    // INFO: This value (1024 * 1024) is arbitrary (4 KiB) and can be increased if needed and argumented
+    /* @brief The size of a page in KiB */
+    #ifndef KERNEL_MEMORY_EARLY_PAGE_SIZE
+        #define KERNEL_MEMORY_EARLY_PAGE_SIZE 4096
+    #endif /* ifndef KERNEL_MEMORY_EARLY_PAGE_SIZE */
+
+    /* @brief This value (PAGE_SIZE * 1) is arbitrary (4 KiB) and can be increased if needed and argumented */
     #ifndef KERNEL_MEMORY_EARLY_SIZE
-        #define KERNEL_MEMORY_EARLY_SIZE (1024 * 4)
+        #define KERNEL_MEMORY_EARLY_SIZE (KERNEL_MEMORY_EARLY_PAGE_SIZE * 1)
     #endif /* ifndef KERNEL_MEMORY_EARLY_SIZE */
+
+    #ifndef KERNEL_MEMORY_EARLY_ALIGN_UP
+        #define KERNEL_MEMORY_EARLY_ALIGN_UP(x) (((x) + 7) & ~7)
+    #endif /* ifndef KERNEL_MEMORY_EARLY_ALIGN_UP */
 
     #ifndef KERNEL_MEMORY_EARLY_DEFINE_END
         #define KERNEL_MEMORY_EARLY_DEFINE_END(start) (start + KERNEL_MEMORY_EARLY_SIZE)
