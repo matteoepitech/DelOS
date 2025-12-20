@@ -27,6 +27,12 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     uint32_t c_string_length = kstrlen(c_string);
     char *string_dupped = kearly_malloc(c_string_length + 1);
 
-    KPRINTF_DEBUG("%p", string_dupped);
+    if (string_dupped[0] == 'X') {
+        return OK_TRUE;
+    }
+    if (string_dupped[2] == 'X') {
+        return OK_TRUE;
+    }
+    //KPRINTF_DEBUG("%p", string_dupped);
     return KO_FALSE;
 }

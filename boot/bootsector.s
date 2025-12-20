@@ -42,6 +42,8 @@ mov cl, 0x02            ; sector number 2 (after the bootsector)
 mov dl, [BOOT_DISK_ID]  ; drive number, the same as the bootsector owner
 int 0x13                ; interuption for reading disk storage
 
+%include "a20.s"        ; enable the A20 bit line
+
 ; change the video mode
 mov ah, 0x0             ; change video mode interuption id
 mov al, 0x3             ; desired video mode (text mode)
@@ -77,7 +79,22 @@ start_protected_mode:
     mov ebp, KERNEL_BASE_POINTER
     mov esp, ebp
 
+check_a20:              ; code taken from https://wiki.osdev.org/A20_Line
+    pushad
+    mov edi,0x112345    ; odd megabyte address.
+    mov esi,0x012345    ; even megabyte address.
+    mov [esi], esi      ; making sure that both addresses contain diffrent values.
+    mov [edi], edi      ; if A20 line is cleared the two pointers would point to the address 0x012345 that would contain 0x112345 (edi)
+    cmpsd               ; compare addresses to see if the're equivalent.
+    popad               ;
+    je shutdown_now     ; if not equivalent we shutdown the OS
+
     jmp KERNEL_LOCATION ; jump to the kernel
+
+shutdown_now:
+    mov dx, 0x604
+    mov ax, 0x2000
+    out dx, ax
 
 ; ======================================================
 ; DATA
