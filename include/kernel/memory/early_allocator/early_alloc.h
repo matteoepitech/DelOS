@@ -33,6 +33,12 @@ extern uint8_t _kernel_early_heap_start_sym;
 extern uint8_t *kernel_early_heap_start;
 extern uint8_t *kernel_early_heap_end;
 
+/*
+ * @brief This variable is at OK_TRUE when init and KO_FALSE when disable.
+ *        That means the usage of the bump allocator is usable or not.
+ */
+extern bool32_t kernel_early_heap_available;
+
 /**
  * @brief Init the cursors for start and end of the early_allocator.
  *
@@ -42,8 +48,17 @@ bool32_t
 kearly_malloc_init(void);
 
 /**
+ * @brief Disable the early allocator usage.
+ *        WARN: After using this function the allocation will never be allowed using this allocator.
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kearly_malloc_disable(void);
+
+/**
  * @brief Basically a malloc() implementation for kernel purpose only in early stage.
- *        WARN: Do not use this allocator.
+ *        WARN: Only use this allocator for pre-stuff things.
  *        INFO: This allocator is using a bump allocator / watermark algorithm.
  *              It contains a reference to the current ptr and just add the bytes to move.
  *              It not contains a free function since the size of the "heap" is "pre-used".

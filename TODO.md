@@ -53,7 +53,7 @@
 ## New features (bite-sized)
 - [x] Add a `heap` allocator placeholder: a bump allocator with a simple API no-op to unblock future features (new file `src/kernel/mem/heap.c`, header under `include/kernel/mem/heap.h`).
 - [ ] Implement a simple serial driver (COM1) for logging: init, putc, puts (src/drivers/serial/serial.c, include/drivers/serial/serial.h).
-- [ ] Add a kernel printf-lite (`kprintf`) supporting %s/%d/%x/%c routed to TTY (src/utils/kstdlib/kprintf.c, header in include/utils/kstdlib/kprintf.h).
+- [x] Add a kernel printf-lite (`kprintf`) supporting %s/%d/%x/%c routed to TTY (src/utils/kstdlib/kprintf.c, header in include/utils/kstdlib/kprintf.h).
 - [ ] Introduce a basic timer-based scheduler stub: task struct + ready queue placeholder, tick hook increments a per-task runtime counter (src/kernel/sched/*).
 - [ ] Add a page frame allocator stub (bitmap over a fixed region) with `pfa_alloc`/`pfa_free` prototypes, even if not fully wired (src/kernel/mem/pfa.c, include/kernel/mem/pfa.h).
 - [ ] Create a minimal ELF loader stub that validates ELF header and logs the entry point (src/kernel/loader/elf.c, include/kernel/loader/elf.h).

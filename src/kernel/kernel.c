@@ -9,14 +9,10 @@
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/arch/i386/interruption/idt.h>
 #include <kernel/arch/i386/interruption/pic.h>
-#include <kernel/arch/i386/interruption/pit.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
-#include <kernel/tty/tty.h>
 #include <utils/asm/hlt.h>
 #include <defines.h>
-
-#include <kernel/misc/keyboard.h>
 
 /**
  * @brief Kernel main entry point.
@@ -35,6 +31,8 @@ kmain(void)
     ktty_cursor_set_visibility(OK_TRUE);
     kearly_malloc_init();
     kshell_start();
+
+    kearly_malloc_disable(); // NEVER GOES HERE for the moment
 
     KHLT_HARD_DO();
     return;
