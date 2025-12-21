@@ -8,6 +8,7 @@
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/misc/panic.h>
+#include <utils/misc/bitops.h>
 #include <utils/misc/print.h>
 #include <defines.h>
 #include <types.h>
@@ -16,24 +17,6 @@
 uint8_t *kpmm_bitmap = NULL;
 uint32_t kpmm_bitmap_byte_amout = 0;
 uint32_t kpmm_pages_amount = 0;
-
-/**
- * @brief Check if there is a free bit in a byte.
- *
- * @param byte   The byte to check
- *
- * @return The index if worked, -1 if no free.
- */
-static int32_t
-byte_has_free_bit(uint8_t byte)
-{
-    for (uint8_t i = 0; i < 8; i++) {
-        if ((byte & (1 << i)) == 0) {
-            return i;
-        }
-    }
-    return -1;
-}
 
 /**
  * @brief Get the next bitmap concerning the next free page.
@@ -51,7 +34,7 @@ kpmm_bitmap_get_next(void)
         return KO_FALSE;
     }
     for (uint32_t i = 0; i < kpmm_bitmap_byte_amout; i++) {
-        bit_tmp = byte_has_free_bit(kpmm_bitmap[i]);
+        bit_tmp = kbyte_has_free_bit(kpmm_bitmap[i]);
         if (bit_tmp >= 0) {
             return (i * 8) + bit_tmp;
         }
