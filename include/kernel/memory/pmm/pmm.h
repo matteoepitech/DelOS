@@ -48,6 +48,26 @@ uint64_t
 kpmm_bitmap_get_next(void);
 
 /**
+ * @brief Get the next bitmap concerning the next free page for n bitmap.
+ *
+ * @return The index of the bitmap concerning the next page.
+ *         If you get 8 then it's the 8th bits in the kpmm_bitmap pointer to.
+ */
+uint64_t
+kpmm_bitmap_get_n_continuous(uint32_t n);
+
+
+/**
+ * @brief Get the physical address of the page of the bitmap index.
+ *
+ * @param bitmap_bit_i   The index of bitmap
+ *
+ * @return The pointer to the start of the page where the bitmap index linked to.
+ */
+void *
+kpmm_bitmap_get_page_addr(uint64_t bitmap_bit_i);
+
+/**
  * @brief Set the value on the bitmap index bit.
  *
  * @param bitmap_bit_i   The index of the bitmap bit
@@ -57,5 +77,15 @@ kpmm_bitmap_get_next(void);
  */
 bool32_t
 kpmm_bitmap_set_value(uint64_t bitmap_bit_i, bool32_t being_used);
+
+/**
+ * @brief Allocate some pages in the physical address space.
+ *
+ * @param page_count     The number of pages allocated
+ *
+ * @return The pointer to the start of all pages allocated.
+ */
+void *
+kpmm_alloc_pages(uint32_t page_count);
 
 #endif /* ifndef KERNEL_MEMORY_PMM_H_ */

@@ -61,6 +61,54 @@ kpmm_bitmap_get_next(void)
 }
 
 /**
+ * @brief Get the next bitmap concerning the next free page for n bitmap.
+ *
+ * @return The index of the bitmap concerning the next page.
+ *         If you get 8 then it's the 8th bits in the kpmm_bitmap pointer to.
+ */
+uint64_t
+kpmm_bitmap_get_n_continuous(uint32_t n)
+{
+    int32_t bit_tmp = 0;
+    uint32_t current_continous = 0;
+
+    if (kpmm_bitmap == NULL) {
+        KPANIC("Trying to get the next bitmap with no bitmap allocated.");
+        return KO_FALSE;
+    }
+    for (uint32_t i = 0; i < kpmm_bitmap_byte_amout; i++) {
+        for (uint8_t j = 0; j < 8; j++) {
+            if ((kpmm_bitmap[i] & (1 << j)) == 0) {
+                if (current_continous == 0) {
+                    bit_tmp = (i * 8 + j);
+                }
+                current_continous++;
+                if (current_continous >= n) {
+                    return bit_tmp;
+                }
+            } else {
+                current_continous = 0;
+            }
+        }
+    }
+    KPANIC("Didn't found any free space for N bitmap bit.");
+    return KO_FALSE;
+}
+
+/**
+ * @brief Get the physical address of the page of the bitmap index.
+ *
+ * @param bitmap_bit_i   The index of bitmap
+ *
+ * @return The pointer to the start of the page where the bitmap index linked to.
+ */
+void *
+kpmm_bitmap_get_page_addr(uint64_t bitmap_bit_i)
+{
+
+}
+
+/**
  * @brief Set the value on the bitmap index bit.
  *
  * @param bitmap_bit_i   The index of the bitmap bit
