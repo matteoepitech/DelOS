@@ -6,6 +6,7 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
+#include <kernel/memory/pmm/pmm.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -23,16 +24,11 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    char *c_string = "123";
-    uint32_t c_string_length = kstrlen(c_string);
-    char *string_dupped = kearly_malloc(c_string_length + 1);
+    uint32_t bit = kpmm_bitmap_get_next();
+    kpmm_bitmap_set_value(bit, OK_TRUE);
+    uint32_t bit_2 = kpmm_bitmap_get_next();
+    kpmm_bitmap_set_value(bit_2, OK_TRUE);
 
-    if (string_dupped[0] == 'X') {
-        return OK_TRUE;
-    }
-    if (string_dupped[2] == 'X') {
-        return OK_TRUE;
-    }
-    //KPRINTF_DEBUG("%p", string_dupped);
+    KPRINTF_DEBUG("First: %d\nSecond: %d", bit, bit_2);
     return KO_FALSE;
 }

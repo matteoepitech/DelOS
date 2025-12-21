@@ -79,22 +79,37 @@ start_protected_mode:
     mov ebp, KERNEL_BASE_POINTER
     mov esp, ebp
 
-check_a20:              ; code taken from https://wiki.osdev.org/A20_Line
+check_a20:
     pushad
-    mov edi,0x112345    ; odd megabyte address.
-    mov esi,0x012345    ; even megabyte address.
-    mov [esi], esi      ; making sure that both addresses contain diffrent values.
-    mov [edi], edi      ; if A20 line is cleared the two pointers would point to the address 0x012345 that would contain 0x112345 (edi)
-    cmpsd               ; compare addresses to see if the're equivalent.
-    popad               ;
-    je shutdown_now     ; if not equivalent we shutdown the OS
+    mov edi, 0x112345    ; odd megabyte address (1MB + 0x12345)
+    mov esi, 0x012345    ; even megabyte address (0x12345)
 
-    jmp KERNEL_LOCATION ; jump to the kernel
+    mov eax, [esi]
+    push eax
+    mov eax, [edi]
+    push eax
+
+    mov dword [esi], 0x00000000
+    mov dword [edi], 0xFFFFFFFF
+
+    mov eax, [esi]
+    mov ebx, [edi]
+    cmp eax, ebx
+
+    pop eax
+    mov [edi], eax
+    pop eax
+    mov [esi], eax
+
+    popad
+    je shutdown_now      ; If equal, then A20 is OFF
+    jmp KERNEL_LOCATION
 
 shutdown_now:
     mov dx, 0x604
     mov ax, 0x2000
     out dx, ax
+    hlt
 
 ; ======================================================
 ; DATA

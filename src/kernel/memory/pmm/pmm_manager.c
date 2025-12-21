@@ -12,11 +12,6 @@
 #include <defines.h>
 #include <types.h>
 
-/* @brief This variable is the pointer to the bitmap of pages for the PMM, allocated using early_allocator */
-uint8_t *kpmm_bitmap = NULL;
-uint32_t kpmm_bitmap_byte_amout = 0;
-uint32_t kpmm_pages_amount = 0;
-
 /**
  * @brief Init the PMM using the early_allocator and calculating amount of bitmaps needed.
  *

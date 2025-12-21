@@ -38,4 +38,24 @@ kpmm_init(void);
 void
 kpmm_dump(void);
 
+/**
+ * @brief Get the next bitmap concerning the next free page.
+ *
+ * @return The index of the bitmap concerning the next page.
+ *         If you get 8 then it's the 8th bits in the kpmm_bitmap pointer to.
+ */
+uint64_t
+kpmm_bitmap_get_next(void);
+
+/**
+ * @brief Set the value on the bitmap index bit.
+ *
+ * @param bitmap_bit_i   The index of the bitmap bit
+ * @param being_used     If true then used, false then free
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kpmm_bitmap_set_value(uint64_t bitmap_bit_i, bool32_t being_used);
+
 #endif /* ifndef KERNEL_MEMORY_PMM_H_ */
