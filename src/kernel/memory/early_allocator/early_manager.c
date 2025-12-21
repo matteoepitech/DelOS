@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/memory/early_allocator/early_manage
+** src/kernel/memory/early_allocator/early_manager
 ** File description:
 ** early manage source file (bump allocator)
 */

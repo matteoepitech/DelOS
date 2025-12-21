@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/memory/pmm/pmm_manage
+** src/kernel/memory/pmm/pmm_manager
 ** File description:
 ** Physical memory manager management source file
 */
@@ -51,10 +51,10 @@ kpmm_dump(void)
         KPRINTF_ERROR("pmm dump: bitmap is NULL (initialization failed/missing)");
         return;
     }
-    KPRINTF_DEBUG("pmm dump: dump informations:");
-    KPRINTF_DEBUG("  Reported RAM size        : %d bytes (%d MiB)", ram_bytes, RAM_MIB_AMOUNT);
-    KPRINTF_DEBUG("  PMM page size            : %d bytes", KERNEL_MEMORY_PMM_PAGE_SIZE);
-    KPRINTF_DEBUG("  Total pages calculated   : %d", kpmm_pages_amount);
-    KPRINTF_DEBUG("  Bitmap size allocated    : %d bytes", kpmm_bitmap_byte_amout);
-    KPRINTF_DEBUG("  Bitmap address           : %p", kpmm_bitmap);
+    KPRINTF_INFO("pmm dump: dump informations:");
+    KPRINTF_INFO("  Reported RAM size        : %d bytes (%d MiB)", ram_bytes, RAM_MIB_AMOUNT);
+    KPRINTF_INFO("  PMM page size            : %d bytes", KERNEL_MEMORY_PMM_PAGE_SIZE);
+    KPRINTF_INFO("  Total pages calculated   : %d", kpmm_pages_amount);
+    KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_byte_amout);
+    KPRINTF_INFO("  Bitmap address           : %p", kpmm_bitmap);
 }
