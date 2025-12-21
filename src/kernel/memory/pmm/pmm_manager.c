@@ -52,4 +52,5 @@ kpmm_dump(void)
     KPRINTF_INFO("  Total pages calculated   : %d", kpmm_pages_amount);
     KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_byte_amout);
     KPRINTF_INFO("  Bitmap address           : %p", kpmm_bitmap);
+    KPRINTF_INFO("  PMM start address        : %p", (void *) KERNEL_MEMORY_PMM_START_ADDR);
 }

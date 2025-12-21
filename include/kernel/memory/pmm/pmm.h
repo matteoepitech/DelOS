@@ -13,6 +13,10 @@
     #ifndef KERNEL_MEMORY_PMM_PAGE_SIZE
         #define KERNEL_MEMORY_PMM_PAGE_SIZE 4096
     #endif /* ifndef KERNEL_MEMORY_PMM_PAGE_SIZE */
+
+    #ifndef KERNEL_MEMORY_PMM_START_ADDR
+        #define KERNEL_MEMORY_PMM_START_ADDR 0x100000
+    #endif /* ifndef KERNEL_MEMORY_PMM_START_ADDR */
    
     // WARN:This will be removed and be automatically calculated using the BIOS firmware interruptions
     #define RAM_MIB_AMOUNT 4
@@ -22,7 +26,8 @@
  *
  *        INFO: This is a symbol located at the start of the physical "heap" and can be used using &.
  */
-extern uint8_t _kernel_pmm_heap_start_sym;
+//extern uint8_t _kernel_pmm_heap_start_sym;  INFO: This is not being used since we have a problem where the PMM start is below some MMIO.
+//                                                  If we use it back we need to add it back in the linker script.
 
 /* @brief This variable is the pointer to the bitmap of pages for the PMM, allocated using early_allocator */
 extern uint8_t *kpmm_bitmap;

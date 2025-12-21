@@ -45,7 +45,4 @@ SECTIONS
 
     /* @brief End of the early heap */
     _kernel_early_heap_end_sym = .;
-
-    /* @brief Start of the physical space heap */
-    _kernel_pmm_heap_start_sym = .;
 }
