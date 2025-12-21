@@ -31,9 +31,7 @@ kmain(void)
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
     kearly_malloc_init();
-
     kpmm_init();
-    kpmm_dump();
 
     kshell_start();
 

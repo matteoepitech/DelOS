@@ -28,7 +28,8 @@ const shell_command_t shell_commands[] = {
     {"repeat", &kshell_repeat, "Repeat a command"},
     {"loadkeys", &kshell_loadkeys, "Load keyboard layout"},
     {"debug", &kshell_debug, "Debug using this command (dev only)"},
-    {"dumpmem", &kshell_dump_mem, "Dump memory contents"},
+    {"memdump", &kshell_mem_dump, "Dump memory contents"},
+    {"pmmdump", &kshell_pmm_dump, "Dump physical memory manager"},
     {NULL, NULL, NULL}
 };
 
