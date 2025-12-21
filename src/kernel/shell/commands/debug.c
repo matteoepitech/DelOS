@@ -24,11 +24,11 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    uint32_t bit = kpmm_bitmap_get_next();
-    kpmm_bitmap_set_value(bit, OK_TRUE);
-    uint32_t bit_2 = kpmm_bitmap_get_next();
-    kpmm_bitmap_set_value(bit_2, OK_TRUE);
+    char *string_mem = kpmm_alloc_pages(2); // 8192 bytes
 
-    KPRINTF_DEBUG("First: %d\nSecond: %d", bit, bit_2);
+    for (int i = 0; i < 8192; i++) {
+        string_mem[i] = 'K';
+    }
+    KPRINTF_DEBUG("The string mem addr: %p", string_mem);
     return KO_FALSE;
 }

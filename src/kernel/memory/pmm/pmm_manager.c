@@ -40,7 +40,7 @@ kpmm_init(void)
 void
 kpmm_dump(void)
 {
-    uint64_t ram_bytes = (uint64_t) RAM_MIB_AMOUNT * 1024ULL * 1024ULL; // WARN: will be removed see pmm.h for the reason
+    uint32_t ram_bytes = (uint64_t) RAM_MIB_AMOUNT * 1024ULL * 1024ULL; // WARN: will be removed see pmm.h for the reason
 
     if (kpmm_bitmap == NULL) {
         KPRINTF_ERROR("pmm dump: bitmap is NULL (initialization failed/missing)");
