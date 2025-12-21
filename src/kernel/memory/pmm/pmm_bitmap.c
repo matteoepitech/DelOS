@@ -85,10 +85,10 @@ kpmm_bitmap_get_n_continuous(uint32_t n)
  *
  * @return The pointer to the start of the page where the bitmap index linked to.
  */
-void *
+inline void *
 kpmm_bitmap_get_page_addr(uint64_t bitmap_bit_i)
 {
-
+    return (((uint8_t *) &_kernel_pmm_heap_start_sym) + (bitmap_bit_i * KERNEL_MEMORY_PMM_PAGE_SIZE));
 }
 
 /**

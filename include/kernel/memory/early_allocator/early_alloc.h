@@ -32,7 +32,7 @@
  * @brief This symbol comes from the linker script which place it next to the end of the code space.
  *        Basically: .text -> .rodata -> .data -> .bss -> _kernel_start_early_heap pointer
  *
- *        INFO: This is a symbol located at the start of the "heap" and can be used using &.
+ *        INFO: This is a symbol located at the start of the early "heap" and can be used using &.
  */
 extern uint8_t _kernel_early_heap_start_sym;
 

@@ -17,6 +17,13 @@
     // WARN:This will be removed and be automatically calculated using the BIOS firmware interruptions
     #define RAM_MIB_AMOUNT 4
 
+/*
+ * @brief This symbol comes from the linker script which place it next to the end of the code space.
+ *
+ *        INFO: This is a symbol located at the start of the physical "heap" and can be used using &.
+ */
+extern uint8_t _kernel_pmm_heap_start_sym;
+
 /* @brief This variable is the pointer to the bitmap of pages for the PMM, allocated using early_allocator */
 extern uint8_t *kpmm_bitmap;
 extern uint32_t kpmm_bitmap_byte_amout;
@@ -64,7 +71,7 @@ kpmm_bitmap_get_n_continuous(uint32_t n);
  *
  * @return The pointer to the start of the page where the bitmap index linked to.
  */
-void *
+inline void *
 kpmm_bitmap_get_page_addr(uint64_t bitmap_bit_i);
 
 /**
