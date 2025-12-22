@@ -24,11 +24,10 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    char *string_mem = kpmm_alloc_pages(2); // 8192 bytes
-
-    for (int i = 0; i < 8192; i++) {
-        string_mem[i] = 'K';
-    }
-    KPRINTF_DEBUG("The string mem addr: %p", string_mem);
+    char *string_mem = kpmm_alloc_pages(1);
+    KPRINTF_DEBUG("Allocating ID %p", string_mem);
+    kpmm_free_pages(string_mem, 1);
+    char *string_mem_2 = kpmm_alloc_pages(1);
+    KPRINTF_DEBUG("Allocating ID %p", string_mem_2);
     return KO_FALSE;
 }

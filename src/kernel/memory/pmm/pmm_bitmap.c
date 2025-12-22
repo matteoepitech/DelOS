@@ -15,7 +15,7 @@
 
 /* @brief This variable is the pointer to the bitmap of pages for the PMM, allocated using early_allocator */
 uint8_t *kpmm_bitmap = NULL;
-uint32_t kpmm_bitmap_byte_amout = 0;
+uint32_t kpmm_bitmap_bytes_amout = 0;
 uint32_t kpmm_pages_amount = 0;
 
 /**
@@ -33,7 +33,7 @@ kpmm_bitmap_get_next(void)
         KPANIC("Trying to get the next bitmap with no bitmap allocated.");
         return KO_FALSE;
     }
-    for (uint32_t i = 0; i < kpmm_bitmap_byte_amout; i++) {
+    for (uint32_t i = 0; i < kpmm_bitmap_bytes_amout; i++) {
         bit_tmp = kbyte_has_free_bit(kpmm_bitmap[i]);
         if (bit_tmp >= 0) {
             return (i * 8) + bit_tmp;
@@ -59,7 +59,7 @@ kpmm_bitmap_get_n_continuous(uint32_t n)
         KPANIC("Trying to get the next bitmap with no bitmap allocated.");
         return KO_FALSE;
     }
-    for (uint32_t i = 0; i < kpmm_bitmap_byte_amout; i++) {
+    for (uint32_t i = 0; i < kpmm_bitmap_bytes_amout; i++) {
         for (uint8_t j = 0; j < 8; j++) {
             if ((kpmm_bitmap[i] & (1 << j)) == 0) {
                 if (current_continous == 0) {
@@ -105,7 +105,7 @@ kpmm_bitmap_set_value(uint64_t bitmap_bit_i, bool32_t being_used)
     uint32_t byte_i = bitmap_bit_i / 8U;
     uint32_t bit_i = bitmap_bit_i % 8U;
 
-    if (byte_i >= kpmm_bitmap_byte_amout) {
+    if (byte_i >= kpmm_bitmap_bytes_amout) {
         KPANIC("Trying to set the bitmap bit value to something while being not allocated.");
         return KO_FALSE;
     }

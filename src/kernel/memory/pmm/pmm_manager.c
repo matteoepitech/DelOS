@@ -23,8 +23,8 @@ kpmm_init(void)
     uint64_t ram_bytes = (uint64_t) RAM_MIB_AMOUNT * 1024ULL * 1024ULL; // WARN: will be removed see pmm.h for the reason
 
     kpmm_pages_amount = ram_bytes / KERNEL_MEMORY_PMM_PAGE_SIZE;
-    kpmm_bitmap_byte_amout = (kpmm_pages_amount + 7) / 8;
-    kpmm_bitmap = kearly_malloc(kpmm_bitmap_byte_amout);
+    kpmm_bitmap_bytes_amout = (kpmm_pages_amount + 7) / 8;
+    kpmm_bitmap = kearly_malloc(kpmm_bitmap_bytes_amout);
     if (kpmm_bitmap == NULL) {
         KPANIC("The PMM failed to initialize due to the early allocator failure.");
         return KO_FALSE;
@@ -50,7 +50,7 @@ kpmm_dump(void)
     KPRINTF_INFO("  Reported RAM size        : %d bytes (%d MiB)", ram_bytes, RAM_MIB_AMOUNT);
     KPRINTF_INFO("  PMM page size            : %d bytes", KERNEL_MEMORY_PMM_PAGE_SIZE);
     KPRINTF_INFO("  Total pages calculated   : %d", kpmm_pages_amount);
-    KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_byte_amout);
+    KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_bytes_amout);
     KPRINTF_INFO("  Bitmap address           : %p", kpmm_bitmap);
     KPRINTF_INFO("  PMM start address        : %p", (void *) KERNEL_MEMORY_PMM_START_ADDR);
 }

@@ -18,13 +18,13 @@
 void *
 kpmm_alloc_pages(uint32_t page_count)
 {
-    uint32_t bitmap_start = 0;
+    uint64_t bitmap_start = 0;
 
     if (page_count == 0) {
         return NULL;
     }
     bitmap_start = kpmm_bitmap_get_n_continuous(page_count);
-    for (uint32_t i = 0; i < page_count; i++) {
+    for (uint64_t i = 0; i < page_count; i++) {
         kpmm_bitmap_set_value(bitmap_start + i, OK_TRUE);
     }
     return kpmm_bitmap_get_page_addr(bitmap_start);

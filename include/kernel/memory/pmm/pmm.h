@@ -31,7 +31,7 @@
 
 /* @brief This variable is the pointer to the bitmap of pages for the PMM, allocated using early_allocator */
 extern uint8_t *kpmm_bitmap;
-extern uint32_t kpmm_bitmap_byte_amout;
+extern uint32_t kpmm_bitmap_bytes_amout;
 extern uint32_t kpmm_pages_amount;
 
 /**
@@ -99,5 +99,16 @@ kpmm_bitmap_set_value(uint64_t bitmap_bit_i, bool32_t being_used);
  */
 void *
 kpmm_alloc_pages(uint32_t page_count);
+
+/**
+ * @brief Free some pages N times.
+ *
+ * @param page_ptr       The start of the pointer of pages
+ * @param page_count     The count of pages we need to free since the ptr
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kpmm_free_pages(void *page_ptr, uint32_t page_count);
 
 #endif /* ifndef KERNEL_MEMORY_PMM_H_ */
