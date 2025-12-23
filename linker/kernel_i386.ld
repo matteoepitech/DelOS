@@ -41,7 +41,7 @@ SECTIONS
     /* INFO: If you changed this you absolutely need to modify the define : KERNEL_MEMORY_EARLY_PAGE_SIZE
      *       Located in the file : early_allocator.h
      */
-    . += 4096;
+    . += 1024 * 256;
 
     /* @brief End of the early heap */
     _kernel_early_heap_end_sym = .;

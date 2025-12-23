@@ -12,7 +12,7 @@
 
     /* @brief The size of a page in KiB */
     #ifndef KERNEL_MEMORY_EARLY_PAGE_SIZE
-        #define KERNEL_MEMORY_EARLY_PAGE_SIZE 4096
+        #define KERNEL_MEMORY_EARLY_PAGE_SIZE (1024 * 256)
     #endif /* ifndef KERNEL_MEMORY_EARLY_PAGE_SIZE */
 
     /* @brief This value (PAGE_SIZE * 1) is arbitrary (4 KiB) and can be increased if needed and argumented */

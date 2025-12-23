@@ -42,6 +42,7 @@ mov cl, 0x02            ; sector number 2 (after the bootsector)
 mov dl, [BOOT_DISK_ID]  ; drive number, the same as the bootsector owner
 int 0x13                ; interuption for reading disk storage
 
+%include "e820.s"       ; get the RAM (e820 entries) from BIOS
 %include "a20.s"        ; enable the A20 bit line
 
 ; change the video mode

@@ -17,6 +17,7 @@
 uint8_t *kpmm_bitmap = NULL;
 uint32_t kpmm_bitmap_bytes_amout = 0;
 uint32_t kpmm_pages_amount = 0;
+uint32_t kpmm_free_pages_amount = 0;
 
 /**
  * @brief Get the next bitmap concerning the next free page.
@@ -88,7 +89,7 @@ kpmm_bitmap_get_n_continuous(uint32_t n)
 inline void *
 kpmm_bitmap_get_page_addr(uint64_t bitmap_bit_i)
 {
-    return (((uint8_t *) KERNEL_MEMORY_PMM_START_ADDR) + (bitmap_bit_i * KERNEL_MEMORY_PMM_PAGE_SIZE));
+    return ((void *) (uint32_t) (bitmap_bit_i * KERNEL_MEMORY_PMM_PAGE_SIZE));
 }
 
 /**
