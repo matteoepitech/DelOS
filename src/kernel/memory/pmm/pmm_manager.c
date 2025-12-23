@@ -29,17 +29,17 @@ kpmm_free_pages_from_e820(void)
         if (E820_INFO->_entries_buffer[i]._type != E820_TYPE_FREE)
             continue;
         base = E820_INFO->_entries_buffer[i]._base;
-        end  = base + E820_INFO->_entries_buffer[i]._length;
+        end = base + E820_INFO->_entries_buffer[i]._length;
         if (end <= 0x100000)
             continue;
         if (base < 0x100000)
             base = 0x100000;
         base = ALIGN_UP(base, KERNEL_MEMORY_PMM_PAGE_SIZE);
-        end  = ALIGN_DOWN(end, KERNEL_MEMORY_PMM_PAGE_SIZE);
+        end = ALIGN_DOWN(end, KERNEL_MEMORY_PMM_PAGE_SIZE);
         if (base >= end)
             continue;
         start_pfn = base / KERNEL_MEMORY_PMM_PAGE_SIZE;
-        end_pfn   = end  / KERNEL_MEMORY_PMM_PAGE_SIZE;
+        end_pfn = end / KERNEL_MEMORY_PMM_PAGE_SIZE;
         for (uint64_t pfn = start_pfn; pfn < end_pfn; pfn++) {
             if (pfn == 0)
                 continue;
