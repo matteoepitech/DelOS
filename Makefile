@@ -41,7 +41,10 @@ CFLAGS		:=	-ffreestanding -m32 -g -c -Wall -Wextra \
 			-I$(INCLUDE_DIR)
 
 LDFLAGS		:=	-m32 -T $(LINKER_DIR)/kernel_$(ARCH).ld \
-			-nostdlib -static -flto
+			-nostdlib \
+			-static \
+			-flto \
+			-ffreestanding
 
 # all RULE : do the whole process
 all: prepare $(OS_BIN)

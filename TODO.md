@@ -27,9 +27,9 @@
 - [x] Add `repeat <n> <cmd>` command to loop a command for stress testing (src/kernel/shell/commands/repeat.c).
 
 ## Boot / interrupts
-- [ ] Compute kernel sector count dynamically instead of hardcoded `0x14` + padding (boot/bootsector.s, boot/padding_zeroes.s, Makefile).
+- [x] Compute kernel sector count dynamically instead of hardcoded `0x14` + padding (boot/bootsector.s, boot/padding_zeroes.s, Makefile).
 - [ ] Check `int 0x13` return status and print a readable disk error before continuing (boot/bootsector.s).
-- [ ] Enable A20 line before jumping to protected mode (boot/bootsector.s).
+- [x] Enable A20 line before jumping to protected mode (boot/bootsector.s).
 - [ ] Replace magic numbers (KERNEL_LOCATION, KERNEL_BASE_POINTER, PIC offsets) with documented defines (boot/bootsector.s, boot/extra/gdt.s, include/kernel/arch/i386/interruption/pic.h).
 - [ ] Add a double-fault handler and a fallback IDT/GDT to avoid triple faults (src/kernel/arch/i386/interruption/idt.c, src/kernel/arch/i386/interruption/isr/*).
 - [ ] Add NMI (Non Maskable Interrupt) disable/enable helpers and ensure NMI masking where needed (new helper + boot/bootsector.s).
@@ -55,7 +55,7 @@
 - [ ] Implement a simple serial driver (COM1) for logging: init, putc, puts (src/drivers/serial/serial.c, include/drivers/serial/serial.h).
 - [x] Add a kernel printf-lite (`kprintf`) supporting %s/%d/%x/%c routed to TTY (src/utils/kstdlib/kprintf.c, header in include/utils/kstdlib/kprintf.h).
 - [ ] Introduce a basic timer-based scheduler stub: task struct + ready queue placeholder, tick hook increments a per-task runtime counter (src/kernel/sched/*).
-- [ ] Add a page frame allocator stub (bitmap over a fixed region) with `pfa_alloc`/`pfa_free` prototypes, even if not fully wired (src/kernel/mem/pfa.c, include/kernel/mem/pfa.h).
+- [x] Add a page frame allocator stub (bitmap over a fixed region) with `pfa_alloc`/`pfa_free` prototypes, even if not fully wired (src/kernel/mem/pfa.c, include/kernel/mem/pfa.h).
 - [ ] Create a minimal ELF loader stub that validates ELF header and logs the entry point (src/kernel/loader/elf.c, include/kernel/loader/elf.h).
 - [ ] Add a `version` command that prints git commit (if embedded) or a hardcoded version string plus build date (src/kernel/shell/commands/version.c).
 - [ ] Add a `banner` command that reprints the welcome banner without reboot (src/kernel/shell/commands/banner.c).
@@ -101,7 +101,6 @@
 - [ ] Add a Makefile target to check toolchain deps (`nasm`, `i386-elf-gcc/ld`, `qemu`) and fail clearly if missing (Makefile).
 - [ ] Provide headless qemu run target + simple autotest script (capture serial/TTY) (Makefile + scripts).
 - [ ] Extend `.gitignore` for qemu logs, core dumps, future artifacts (.gitignore).
-- [ ] Document how to add a new shell command using `src/kernel/shell/misc/shell_command.example`.
 - [x] Add a CONTRIBUTING.md with coding style, branch naming, PR checklist.
 - [ ] Add issue/PR templates with sections for testing and screenshots/logs.
 - [ ] Add a `make docs` target that prints available targets and main commands.

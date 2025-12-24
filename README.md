@@ -9,7 +9,7 @@ DelOS is a tiny 32-bit educational x86 operating system designed for learning OS
 ## Requirements
 
 - `nasm` - Netwide Assembler
-- `i386-elf-gcc` / `i386-elf-ld` (32-bit cross-compiler)
+- `i386-elf-gcc` (32-bit cross-compiler)
 - `qemu-system-i386` - x86 emulator
 - `make` - Build automation
 
