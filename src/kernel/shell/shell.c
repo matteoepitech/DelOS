@@ -30,6 +30,7 @@ const shell_command_t shell_commands[] = {
     {"debug", &kshell_debug, "Debug using this command (dev only)"},
     {"memdump", &kshell_mem_dump, "Dump memory contents"},
     {"pmmdump", &kshell_pmm_dump, "Dump physical memory manager"},
+    {"bitmapdump", &kshell_bitmap_dump, "Dump the bitmap values"},
     {NULL, NULL, NULL}
 };
 

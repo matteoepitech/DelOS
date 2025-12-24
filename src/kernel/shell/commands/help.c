@@ -47,7 +47,7 @@ kshell_help(UNUSED uint32_t argc, UNUSED char *argv[])
     uint32_t len = 0;
     uint32_t max_len = get_max_command_name_length();
 
-    KPRINTF_INFO("Available commands:");
+    KPRINTF_INFO("%s", "Available commands:");
     for (uint32_t i = 0; shell_commands[i]._command != NULL; i++) {
         cmd = shell_commands[i]._command;
         desc = shell_commands[i]._desc;

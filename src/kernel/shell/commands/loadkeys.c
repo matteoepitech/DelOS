@@ -23,7 +23,7 @@ uint8_t
 kshell_loadkeys(uint32_t argc, char *argv[])
 {
     if (argc < 2) {
-        KPRINTF_ERROR("usage: loadkeys <fr/us>");
+        KPRINTF_ERROR("%s", "usage: loadkeys <fr/us>");
         return OK_TRUE;
     }
     if (kstrcmp(argv[1], "fr") == 0) {

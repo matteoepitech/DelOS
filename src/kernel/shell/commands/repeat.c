@@ -51,7 +51,7 @@ kshell_repeat(uint32_t argc, char *argv[])
         cmd_argv = &argv[2];
     }
     if (repeat_times <= 0) {
-        KPRINTF_ERROR("repeat: the n value must be greater than 0");
+        KPRINTF_ERROR("%s", "repeat: the n value must be greater than 0");
         return OK_TRUE;
     }
     if (details == OK_TRUE) {
