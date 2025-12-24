@@ -165,5 +165,77 @@
                 ktty_putc('\n', VGA_TEXT_ERROR_COLOR);  \
             } while (0)
     #endif
+    
+    /**
+     * @brief Print INFO level kernel log message
+     *
+     * Used for general informational messages that do not
+     * represent an error condition.
+     */
+    #ifndef KPRINTFN_INFO
+        #define KPRINTFN_INFO(format, ...)               \
+            do {                                        \
+                KPRINTF_DATE();                         \
+                _KPRINTF_LABEL_INFO();                  \
+                kprintf(VGA_TEXT_DEFAULT_COLOR, format, ##__VA_ARGS__); \
+            } while (0)
+    #endif
+
+    /**
+     * @brief Print WARN level kernel log message
+     *
+     * Used for recoverable or suspicious situations.
+     */
+    #ifndef KPRINTFN_WARN
+        #define KPRINTFN_WARN(format, ...)               \
+            do {                                        \
+                KPRINTF_DATE();                         \
+                _KPRINTF_LABEL_WARN();                  \
+                kprintf(VGA_TEXT_DEFAULT_COLOR, format, ##__VA_ARGS__); \
+            } while (0)
+    #endif
+
+    /**
+     * @brief Print DEBUG level kernel log message
+     *
+     * Used for verbose/diagnostic messages during development.
+     */
+    #ifndef KPRINTFN_DEBUG
+        #define KPRINTFN_DEBUG(format, ...)              \
+            do {                                        \
+                KPRINTF_DATE();                         \
+                _KPRINTF_LABEL_DEBUG();                 \
+                kprintf(VGA_TEXT_DEFAULT_COLOR, format, ##__VA_ARGS__); \
+            } while (0)
+    #endif
+
+    /**
+     * @brief Print OK level kernel log message
+     *
+     * Used to explicitly confirm successful operations.
+     */
+    #ifndef KPRINTFN_OK
+        #define KPRINTFN_OK(format, ...)                 \
+            do {                                        \
+                KPRINTF_DATE();                         \
+                _KPRINTF_LABEL_OK();                    \
+                kprintf(VGA_TEXT_DEFAULT_COLOR, format, ##__VA_ARGS__); \
+            } while (0)
+    #endif
+
+    /**
+     * @brief Print ERROR level kernel log message
+     *
+     * Used for serious but controlled kernel errors where
+     * the system can continue running.
+     */
+    #ifndef KPRINTFN_ERROR
+        #define KPRINTFN_ERROR(format, ...)              \
+            do {                                        \
+                KPRINTF_DATE();                         \
+                _KPRINTF_LABEL_ERROR();                 \
+                kprintf(VGA_TEXT_ERROR_COLOR, format, ##__VA_ARGS__); \
+            } while (0)
+    #endif
 
 #endif /* UTILS_MISC_PRINT_H_ */

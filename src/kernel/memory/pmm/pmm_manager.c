@@ -16,9 +16,11 @@
 
 /**
  * @brief Free all "not used" page after the init of the e820.
+ *        We use a system of base/end to free only "accurate" region.
+ *        e.g.: since the 0x0 region to 0xXXX is type 1. But you don't want to write on 0x0.
  */
 static void
-kpmm_free_pages_from_e820(void)
+pmm_free_pages_from_e820(void)
 {
     uint64_t start_pfn = 0;
     uint64_t end_pfn = 0;
@@ -75,7 +77,7 @@ kpmm_init(void)
     for (uint64_t i = 0; i < kpmm_pages_amount; i++) {
         kpmm_bitmap_set_value(i, OK_TRUE);
     }
-    kpmm_free_pages_from_e820();
+    pmm_free_pages_from_e820();
     return OK_TRUE;
 }
 
@@ -97,4 +99,21 @@ kpmm_dump(void)
     KPRINTF_INFO("  Free pages amount        : %d/%d", (uint32_t) kpmm_free_pages_amount, (uint32_t) kpmm_pages_amount);
     KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_bytes_amout);
     KPRINTF_INFO("  Bitmap address           : %p", kpmm_bitmap);
+    KPRINTF_INFO("pmm dump: RAM regions from e820 BIOS:");
+    for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {
+        KPRINTFN_INFO("  Addr %08x with length %08x | TYPE: ",
+            (uint32_t) (E820_INFO->_entries_buffer[i]._base),
+            (uint32_t) (E820_INFO->_entries_buffer[i]._length));
+        switch (E820_INFO->_entries_buffer[i]._type) {
+            case E820_TYPE_FREE:
+                kprintf(VGA_TEXT_SUCCESS_COLOR, "Free\n");
+                break;
+            case E820_TYPE_USED:
+                kprintf(VGA_TEXT_ERROR_COLOR, "Used\n");
+                break;
+            default:
+                kprintf(VGA_TEXT_WARN_COLOR, "Other\n");
+                break;
+        }
+    }
 }
