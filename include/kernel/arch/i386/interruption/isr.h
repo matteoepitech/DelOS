@@ -76,7 +76,7 @@ kisr_register_handler(uint8_t index, isr_handler_t func_handler);
  * @param int_no                The interruption number
  * @param err_code              The error code if provided by the CPU
  */
-void
+__attribute__((used)) void
 kisr_handler(registers_t *regs);
 
 #endif /* ifndef KERNEL_INTERRUTPION_ISR_H_ */

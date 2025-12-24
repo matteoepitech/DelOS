@@ -28,18 +28,20 @@ OS_BIN		:=	$(BUILD_DIR)/delos.bin
 
 NASM		:=	nasm
 CC		:=	i386-elf-gcc
-LD		:=	i386-elf-ld
+# LD		:=	i386-elf-ld      Not used, -flto is not supported natively by ld
 QEMU		:=	qemu-system-i386
 
 CFLAGS		:=	-ffreestanding -m32 -g -c -Wall -Wextra \
 			-fno-pie -fno-pic \
 			-fno-stack-protector \
 			-nostdlib -nostdinc \
+			-nostartfiles \
+			-flto \
 			-O0 \
 			-I$(INCLUDE_DIR)
 
-LDFLAGS		:=	-m elf_i386 -T $(LINKER_DIR)/kernel_$(ARCH).ld \
-			-nostdlib -static
+LDFLAGS		:=	-m32 -T $(LINKER_DIR)/kernel_$(ARCH).ld \
+			-nostdlib -static -flto
 
 # all RULE : do the whole process
 all: prepare $(OS_BIN)
@@ -79,8 +81,8 @@ $(BUILD_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.s
 
 # Link du kernel
 $(BUILD_DIR)/full_kernel.bin: $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/padding_zeroes.o $(OBJ_C) $(OBJ_S)
-	@echo "Linking kernel..."
-	@$(LD) $(LDFLAGS) -o $@ $^
+	@echo "Linking kernel... (may take time due to LTO)"
+	@$(CC) $(LDFLAGS) -o $@ $^
 
 # $(OS_BIN) RULE : create the final $(OS_BIN) file
 $(OS_BIN): $(BUILD_DIR)/boot_sector.bin $(BUILD_DIR)/full_kernel.bin
