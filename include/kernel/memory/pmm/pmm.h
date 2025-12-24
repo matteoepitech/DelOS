@@ -5,7 +5,7 @@
 ** Physical memory manager header file
 */
 
-#include <kernel/memory/pmm/e820.h>
+#include <kernel/memory/e820.h>
 #include <types.h>
 
 #ifndef KERNEL_MEMORY_PMM_H_

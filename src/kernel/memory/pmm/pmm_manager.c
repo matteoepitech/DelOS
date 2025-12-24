@@ -6,8 +6,8 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
-#include <kernel/memory/pmm/e820.h>
 #include <kernel/memory/pmm/pmm.h>
+#include <kernel/memory/e820.h>
 #include <kernel/misc/panic.h>
 #include <utils/misc/print.h>
 #include <utils/misc/align.h>
