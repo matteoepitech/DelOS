@@ -5,6 +5,7 @@
 ** debug command source file
 */
 
+#include "types.h"
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/shell/shell.h>
@@ -28,5 +29,10 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     paddr_t paddr = 0x00100000;
 
     kvmm_map_page(vaddr, paddr, 0);
+
+    bool32_t r = kvmm_unmap_page(vaddr);
+    KPRINTF_DEBUG("%s", r == OK_TRUE ? "Free worked" : "Free didn't worked");
+    bool32_t r2 = kvmm_unmap_page(vaddr + 4096);
+    KPRINTF_DEBUG("%s", r2 == OK_TRUE ? "Free worked" : "Free didn't worked");
     return KO_FALSE;
 }

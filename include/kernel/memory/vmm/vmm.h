@@ -105,4 +105,14 @@ kvmm_init(void);
 bool32_t
 kvmm_map_page(vaddr_t vaddr, paddr_t paddr, uint32_t flags);
 
+/**
+ * @brief Unmap a virtual address on the page table referenced by it's address.
+ *
+ * @param vaddr  The address to unmap
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvmm_unmap_page(vaddr_t vaddr);
+
 #endif /* ifndef KERNEL_MEMORY_VMM_H_ */
