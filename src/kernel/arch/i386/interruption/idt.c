@@ -107,7 +107,7 @@ static const idt_registration_t idt_exceptions_registration[] = {
     //{11, isr11, isr_segment_not_present},
     //{12, isr12, isr_stack_segment_fault},
     //{13, isr13, isr_general_protection_fault},
-    //{14, isr14, isr_page_fault},
+    {14, isr14, isr_page_fault},
     //{15, isr15, isr_reserved_15},
     //{16, isr16, isr_x87_floating_point},
     //{17, isr17, isr_alignment_check},
