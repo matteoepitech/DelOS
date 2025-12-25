@@ -7,6 +7,7 @@
 
 #include <kernel/memory/vmm/vmm.h>
 #include <utils/kstdlib/kmemory.h>
+#include <kernel/memory/mmu.h>
 #include <defines.h>
 
 /* @brief The page directory content of the major content of the OS */
@@ -36,5 +37,7 @@ bool32_t kvmm_init(void)
     kvmm_boot_page_directory._entries[0]._present = 1;
     kvmm_boot_page_directory._entries[0]._rw = 1;
     kvmm_boot_page_directory._entries[0]._table_addr = ((uint32_t) &kvmm_boot_first_page_table) >> 12;
+    kmmu_load_cr3((uint32_t) &kvmm_boot_page_directory);
+    kmmu_enable_paging();
     return OK_TRUE;
 }
