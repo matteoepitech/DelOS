@@ -5,6 +5,7 @@
 ** VMM header file
 */
 
+#include <defines.h>
 #include <types.h>
 
 #ifndef KERNEL_MEMORY_VMM_H_
@@ -82,8 +83,14 @@ typedef struct {
     page_directory_entry_t _entries[1024];
 } page_directory_t;
 
-/* @brief The page directory content */
-extern page_directory_t kvmm_page_directory;
+/* @brief The page directory content of the major content of the OS */
+__attribute__((aligned(4096))) extern page_directory_t kvmm_page_directory;
+
+/* @brief The page directory content of the bootstrap kernel phase */
+__attribute__((aligned(4096))) extern page_directory_t kvmm_boot_page_directory;
+
+/* @brief The first page table content of the bootstrap kernel phase | NO need more IG ? */
+__attribute__((aligned(4096))) extern page_table_t kvmm_boot_first_page_table;
 
 /**
  * @brief Init the kvmm 
@@ -103,7 +110,7 @@ kvmm_init(void);
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-kvmm_map_page(vaddr_t vaddr, paddr_t paddr, uint32_t flags);
+kvmm_map_page(vaddr_t vaddr, paddr_t paddr, UNUSED uint32_t flags);
 
 /**
  * @brief Unmap a virtual address on the page table referenced by it's address.

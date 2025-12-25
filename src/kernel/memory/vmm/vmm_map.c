@@ -21,7 +21,7 @@
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-kvmm_map_page(vaddr_t vaddr, paddr_t paddr, uint32_t flags)
+kvmm_map_page(vaddr_t vaddr, paddr_t paddr, UNUSED uint32_t flags)
 {
     uint32_t pde_index = VMM_GET_PDE_INDEX(vaddr);
     uint32_t pte_index = VMM_GET_PTE_INDEX(vaddr);
