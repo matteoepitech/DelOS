@@ -10,6 +10,7 @@
 #include <kernel/arch/i386/interruption/idt.h>
 #include <kernel/arch/i386/interruption/pic.h>
 #include <kernel/memory/pmm/pmm.h>
+#include <kernel/memory/vmm/vmm.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
 #include <utils/asm/hlt.h>
@@ -32,6 +33,7 @@ kmain(void)
     ktty_cursor_set_visibility(OK_TRUE);
     kearly_malloc_init();
     kpmm_init();
+    kvmm_init();
 
     kshell_start();
 

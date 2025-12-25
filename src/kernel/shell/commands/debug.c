@@ -6,7 +6,7 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
-#include <kernel/memory/pmm/pmm.h>
+#include <kernel/memory/vmm/vmm.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -24,10 +24,9 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    char *string_mem = kpmm_alloc_pages(1);
-    KPRINTF_DEBUG("Allocating ID %p", string_mem);
-    kpmm_free_pages(string_mem, 1);
-    char *string_mem_2 = kpmm_alloc_pages(1);
-    KPRINTF_DEBUG("Allocating ID %p", string_mem_2);
+    vaddr_t vaddr = 0xC0100000;
+    paddr_t paddr = 0x00100000;
+
+    kvmm_map_page(vaddr, paddr, 0);
     return KO_FALSE;
 }
