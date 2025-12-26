@@ -41,6 +41,10 @@
     #define PHYS_TO_VIRT(addr) ((uint32_t) (addr) + KERNEL_VIRTUAL_BASE)
 #endif /* ifndef VMM_TRANSLATION */
 
+#ifndef BOOT_PT_POOL_SIZE
+    #define BOOT_PT_POOL_SIZE 8
+#endif /* ifndef BOOT_PT_POOL_SIZE */
+
 /* @brief The address type for a virtual address space */
 typedef uint32_t vaddr_t;
 /* @brief The address type for a physical address space */
@@ -105,6 +109,14 @@ __attribute__((aligned(4096))) extern page_directory_t kvmm_boot_page_directory;
 /* @brief The first page table content of the bootstrap kernel phase | NO need more IG ? */
 __attribute__((aligned(4096))) extern page_table_t kvmm_boot_first_page_table;
 
+/* @brief Variables from the linker script to know the size of the kernel for the page mapping */
+extern uint32_t __kernel_start;
+extern uint32_t __kernel_end;
+extern uint32_t __kernel_physical_start;
+extern uint32_t __kernel_virtual_start;
+extern uint32_t __kernel_size;
+extern uint32_t __kernel_size_pages;
+
 /**
  * @brief Init the kvmm 
  *
@@ -112,6 +124,15 @@ __attribute__((aligned(4096))) extern page_table_t kvmm_boot_first_page_table;
  */
 bool32_t
 kvmm_init(void);
+
+/**
+ * @brief Disable the identity mapping to use the new CR3 which is the base one.
+ *        Address which is virtual and physical at the same time will now be invalidated.
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvmm_disable_identity_mapping(void);
 
 /**
  * @brief Map a virtual address to a physical address.
