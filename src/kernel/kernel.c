@@ -33,7 +33,6 @@ kmain(void)
     ktty_cursor_set_visibility(OK_TRUE);
     kearly_malloc_init();
     kpmm_init();
-    kvmm_init();
 
     kshell_start();
 

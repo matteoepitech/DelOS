@@ -28,6 +28,19 @@
     #define VMM_GET_OFFSET_VAL(vaddr) (vaddr & 0xFFF)
 #endif /* ifndef VMM_GET_OFFSET_VAL */
 
+#ifndef KERNEL_VIRTUAL_BASE
+    #define KERNEL_VIRTUAL_BASE 0xC0000000
+#endif /* ifndef KERNEL_VIRTUAL_BASE */
+
+#ifndef KERNEL_PD_INDEX
+    #define KERNEL_PD_INDEX (KERNEL_VIRTUAL_BASE / (1024 * 4096))
+#endif /* ifndef KERNEL_PD_INDEX */
+
+#ifndef VMM_TRANSLATION
+    #define VIRT_TO_PHYS(addr) ((uint32_t) (addr) - KERNEL_VIRTUAL_BASE)
+    #define PHYS_TO_VIRT(addr) ((uint32_t) (addr) + KERNEL_VIRTUAL_BASE)
+#endif /* ifndef VMM_TRANSLATION */
+
 /* @brief The address type for a virtual address space */
 typedef uint32_t vaddr_t;
 /* @brief The address type for a physical address space */

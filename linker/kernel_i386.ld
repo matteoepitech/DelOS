@@ -1,28 +1,31 @@
 ENTRY(_start)
 OUTPUT_FORMAT(binary)
 
+KERNEL_VIRTUAL_BASE = 0xC0000000;
+KERNEL_PHYSICAL_BASE = 0x00100000;
+
 SECTIONS
 {
-    . = 0x10000;
+    . = KERNEL_VIRTUAL_BASE + KERNEL_PHYSICAL_BASE;
 
-    .text : ALIGN(4096) {
+    .text : AT(KERNEL_PHYSICAL_BASE) ALIGN(4096) {
         *(.text)
         *(.text.*)
     }
 
-    .rodata : ALIGN(4096) {
+    .rodata : AT(ADDR(.rodata) - KERNEL_VIRTUAL_BASE) ALIGN(4096) {
         *(.rodata)
         *(.rodata.*)
     }
 
-    .data : ALIGN(4096) {
+    .data : AT(ADDR(.data) - KERNEL_VIRTUAL_BASE) ALIGN(4096) {
         _data_start = .;
         *(.data)
         *(.data.*)
         _data_end = .;
     }
 
-    .bss : ALIGN(4096) {
+    .bss : AT(ADDR(.bss) - KERNEL_VIRTUAL_BASE) ALIGN(4096) {
         _bss_start = .;
         *(COMMON)
         *(.bss)
@@ -30,19 +33,15 @@ SECTIONS
         _bss_end = .;
     }
 
-    .padding : {
+    .padding : AT(ADDR(.padding) - KERNEL_VIRTUAL_BASE) {
         *(.padding)
     }
 
-    /* @brief Start of the early heap used in the early_allocator section. */
+    /* Early heap section */
     _kernel_early_heap_start_sym = .;
-
-    /* Reserve 4 KiB for early heap (size of early heap) */
-    /* INFO: If you changed this you absolutely need to modify the define : KERNEL_MEMORY_EARLY_PAGE_SIZE
-     *       Located in the file : early_allocator.h
-     */
     . += 1024 * 256;
-
-    /* @brief End of the early heap */
     _kernel_early_heap_end_sym = .;
+
+    _bss_start_phys = _bss_start - KERNEL_VIRTUAL_BASE;
+    _bss_end_phys = _bss_end - KERNEL_VIRTUAL_BASE;
 }

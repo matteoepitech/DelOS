@@ -11,10 +11,11 @@ org 0x7c00
     %define KERNEL_SECTORS 0x30
 %endif
 
-KERNEL_LOCATION equ 0x10000
-KERNEL_BASE_POINTER equ 0x90000
-CODE_SEG        equ code_descriptor - GDT_Start ; = 0x08 which is 1 * 8, so the CPU know it's the index number 1 for the code segment
-DATA_SEG        equ data_descriptor - GDT_Start ; = 0x10 which is 2 * 8, so the CPU know it's the index number 2 for the data segment
+; KERNEL_LOCATION = The base physical address of the start of the kernel in the RAM
+KERNEL_LOCATION     equ 0x100000
+KERNEL_BASE_POINTER equ 0x090000
+CODE_SEG            equ code_descriptor - GDT_Start ; = 0x08 which is 1 * 8, so the CPU know it's the index number 1 for the code segment
+DATA_SEG            equ data_descriptor - GDT_Start ; = 0x10 which is 2 * 8, so the CPU know it's the index number 2 for the data segment
 
 ; BIOS set dl to the loaded disk ID, so we copy it
 mov [BOOT_DISK_ID], dl

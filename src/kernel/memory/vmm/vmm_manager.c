@@ -26,18 +26,25 @@ __attribute__((aligned(4096))) page_table_t kvmm_boot_first_page_table;
  */
 bool32_t kvmm_init(void)
 {
-    kmemset(&kvmm_page_directory, 0, sizeof(kvmm_page_directory));
-    kmemset(&kvmm_boot_first_page_table, 0, sizeof(kvmm_boot_first_page_table));
-    kmemset(&kvmm_boot_page_directory, 0, sizeof(kvmm_boot_page_directory));
+    uint32_t page_table_phys = (uint32_t) &kvmm_boot_first_page_table - KERNEL_VIRTUAL_BASE;
+    uint32_t page_dir_phys = (uint32_t) &kvmm_boot_page_directory - KERNEL_VIRTUAL_BASE;
+    page_directory_t *boot_pd_phys = (page_directory_t *) page_dir_phys;
+    page_table_t *boot_pt_phys = (page_table_t *) page_table_phys;
+
+    kmemset(boot_pd_phys, 0, sizeof(kvmm_boot_page_directory));
+    kmemset(boot_pt_phys, 0, sizeof(kvmm_boot_first_page_table));
     for (uint32_t i = 0; i < 1024; i++) {
-        kvmm_boot_first_page_table._entries[i]._present = 1;
-        kvmm_boot_first_page_table._entries[i]._rw = 1;
-        kvmm_boot_first_page_table._entries[i]._frame = i;
+        boot_pt_phys->_entries[i]._present = 1;
+        boot_pt_phys->_entries[i]._rw = 1;
+        boot_pt_phys->_entries[i]._frame = i;
     }
-    kvmm_boot_page_directory._entries[0]._present = 1;
-    kvmm_boot_page_directory._entries[0]._rw = 1;
-    kvmm_boot_page_directory._entries[0]._table_addr = ((uint32_t) &kvmm_boot_first_page_table) >> 12;
-    kmmu_load_cr3((uint32_t) &kvmm_boot_page_directory);
+    boot_pd_phys->_entries[0]._present = 1;
+    boot_pd_phys->_entries[0]._rw = 1;
+    boot_pd_phys->_entries[0]._table_addr = page_table_phys >> 12;
+    boot_pd_phys->_entries[KERNEL_PD_INDEX]._present = 1;
+    boot_pd_phys->_entries[KERNEL_PD_INDEX]._rw = 1;
+    boot_pd_phys->_entries[KERNEL_PD_INDEX]._table_addr = page_table_phys >> 12;
+    kmmu_load_cr3(page_dir_phys);
     kmmu_enable_paging();
     return OK_TRUE;
 }
