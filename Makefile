@@ -96,7 +96,7 @@ $(OS_BIN): $(BUILD_DIR)/boot_sector.bin $(BUILD_DIR)/full_kernel.bin
 # run RULE : run the OS
 run:
 	@echo "Starting $(OS_BIN)..."
-	@$(QEMU) -drive format=raw,file=$(OS_BIN),index=0,if=floppy -m 128M
+	@$(QEMU) -drive format=raw,file=$(OS_BIN),index=0,media=disk -m 128M
 
 # clean RULE : clean everything in $(BUILD_DIR) directory
 clean:
