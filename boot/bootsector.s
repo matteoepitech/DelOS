@@ -105,6 +105,14 @@ check_a20:
 
     popad
     je shutdown_now      ; If equal, then A20 is OFF
+
+    ; weird stuff to load the kernel from 0x10000 to 0x100000
+    mov esi, 0x00010000
+    mov edi, 0x00100000
+    mov ecx, KERNEL_SECTORS
+    shl ecx, 7
+    rep movsd
+
     jmp KERNEL_LOCATION
 
 shutdown_now:
