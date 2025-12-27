@@ -35,6 +35,7 @@ kmain(void)
     kpmm_init();
 
     kvmm_disable_identity_mapping();
+
     kshell_start();
 
     kearly_malloc_disable(); // NEVER GOES HERE for the moment

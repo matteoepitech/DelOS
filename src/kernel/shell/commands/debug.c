@@ -15,12 +15,11 @@ uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     uint32_t va = 0xC0300000;
-    uint32_t pd_index = va >> 22;           // 768
-    uint32_t pt_index = (va >> 12) & 0x3FF; // 768
-    uint32_t *pt = (uint32_t *)(0xFFC00000 + (pd_index * 4096));
-    uint32_t pte = pt[pt_index];
+    uint32_t pd_index = VMM_GET_PDE_INDEX(va);
+    uint32_t pt_index = VMM_GET_PTE_INDEX(va);
+    uint32_t *pt = (uint32_t *) (0xFFC00000 + (pd_index << 12));
+    page_table_entry_t pte = *(page_table_entry_t *)&pt[pt_index];
 
-    KPRINTF_DEBUG("PTE for 0x%x = 0x%x (present=%d, frame=0x%x)\n",
-        va, pte, pte & 1, pte >> 12);
+    KPRINTF_DEBUG("PTE for %x = %x (present=%d, frame=%x)\n", va, pte, pte._present, pte._frame);
     return OK_TRUE;
 }

@@ -9,6 +9,8 @@
 #include <utils/kstdlib/kmemory.h>
 #include <kernel/misc/panic.h>
 #include <kernel/memory/mmu.h>
+#include <kernel/memory/tlb.h>
+#include <utils/misc/print.h>
 #include <defines.h>
 
 /* @brief The page directory content of the major content of the OS */
@@ -70,6 +72,10 @@ kvmm_boot_map_range(page_directory_t *pd, vaddr_t vstart, paddr_t pstart, uint32
         if (!pd->_entries[pd_index]._present) {
             page_table_t *new_pt = kvmm_boot_alloc_page_table();
             paddr_t pt_phys = VIRT_TO_PHYS(new_pt);   
+
+            if (new_pt == NULL) {
+                KPANIC("Failed to allocate page table!");
+            }
 
             pd->_entries[pd_index]._present = 1;
             pd->_entries[pd_index]._rw = 1;
