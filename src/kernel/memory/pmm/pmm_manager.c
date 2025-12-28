@@ -26,15 +26,28 @@ pmm_free_pages_from_e820(void)
     uint8_t **bitmap_ptr = (uint8_t **) VIRT_TO_PHYS(&kpmm_bitmap);
     uint8_t *bitmap_phys = *bitmap_ptr;
     uint32_t *free_pages_ptr = (uint32_t *) VIRT_TO_PHYS(&kpmm_free_pages_amount);
+    const uint64_t min_free_phys = KERNEL_MEMORY_PMM_MIN_BASE;
 
     *free_pages_ptr = 0;
     for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {
         if (E820_INFO->_entries_buffer[i]._type == E820_TYPE_FREE) {
             uint64_t base = E820_INFO->_entries_buffer[i]._base;
             uint64_t length = E820_INFO->_entries_buffer[i]._length;
-            uint64_t start_page = ALIGN_UP(base, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
-            uint64_t end_page = ALIGN_DOWN(base + length, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+            uint64_t region_start = base;
+            uint64_t region_end = base + length;
 
+            if (region_end <= min_free_phys) {
+                continue;
+            }
+            if (region_start < min_free_phys) {
+                region_start = min_free_phys;
+            }
+            uint64_t start_page = ALIGN_UP(region_start, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+            uint64_t end_page = ALIGN_DOWN(region_end, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+
+            if (end_page <= start_page) {
+                continue;
+            }
             for (uint64_t page = start_page; page < end_page; page++) {
                 uint32_t byte_idx = page / 8;
                 uint32_t bit_idx = page % 8;

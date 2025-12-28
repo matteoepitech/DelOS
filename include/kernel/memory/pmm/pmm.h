@@ -15,6 +15,10 @@
         #define KERNEL_MEMORY_PMM_PAGE_SIZE 4096
     #endif /* ifndef KERNEL_MEMORY_PMM_PAGE_SIZE */
 
+    #ifndef KERNEL_MEMORY_PMM_MIN_BASE
+        #define KERNEL_MEMORY_PMM_MIN_BASE 0x00100000ULL
+    #endif /* ifndef KERNEL_MEMORY_PMM_MIN_BASE */
+
 /*
  * @brief This symbol comes from the linker script which place it next to the end of the code space.
  */
