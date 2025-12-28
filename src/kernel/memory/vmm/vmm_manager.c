@@ -86,7 +86,7 @@ kvmm_setup_identity_mapping(page_directory_t *pd)
     page_table_t *identity_pt = kvmm_alloc_page_table();
 
     if (identity_pt == NULL) {
-        KPANIC("Failed to allocate identity page table.");
+        KPANIC_PHYS("Failed to allocate identity page table.");
         return KO_FALSE;
     }
     kvmm_setup_page_table_entries(identity_pt);
@@ -109,7 +109,7 @@ kvmm_setup_higher_half_mapping(page_directory_t *pd)
     uint32_t kernel_pd_index = KERNEL_PD_INDEX;
 
     if (higher_half_pt == NULL) {
-        KPANIC("Failed to allocate higher half page table.");
+        KPANIC_PHYS("Failed to allocate higher half page table.");
         return KO_FALSE;
     }
     kvmm_setup_page_table_entries(higher_half_pt);

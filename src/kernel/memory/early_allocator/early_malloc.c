@@ -32,11 +32,11 @@ kearly_malloc(uint32_t bytes)
 
     bytes = KERNEL_MEMORY_EARLY_ALIGN_UP(bytes);
     if (*available_ptr == KO_FALSE) {
-        KPANIC("Early allocator tried to allocate memory while being disabled.");
+        KPANIC_PHYS("Early allocator tried to allocate memory while being disabled.");
         return ptr;
     }
     if (*heap_start_ptr == NULL || *heap_end_ptr == NULL) {
-        KPANIC("Early allocator tried to allocate memory while using bad cursors.");
+        KPANIC_PHYS("Early allocator tried to allocate memory while using bad cursors.");
         return ptr;
     }
     if (bytes > (uint32_t) (*heap_end_ptr - *heap_start_ptr)) {
@@ -72,11 +72,11 @@ kearly_malloc_aligned(uint32_t bytes, uint32_t alignment)
     void *ptr = NULL;
 
     if (*available_ptr == KO_FALSE) {
-        KPANIC("Early allocator tried to allocate memory while being disabled.");
+        KPANIC_PHYS("Early allocator tried to allocate memory while being disabled.");
         return ptr;
     }
     if (*heap_start_ptr == NULL || *heap_end_ptr == NULL) {
-        KPANIC("Early allocator tried to allocate memory while using bad cursors.");
+        KPANIC_PHYS("Early allocator tried to allocate memory while using bad cursors.");
         return ptr;
     }
     if (bytes == 0) {

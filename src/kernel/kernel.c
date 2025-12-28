@@ -32,11 +32,11 @@ kmain(void)
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
     kinterruption_extern_start();
+    kearly_malloc_disable();
 
     kshell_start();
 
     /* Should never goes here for the moment */
-    kearly_malloc_disable();
     KHLT_HARD_DO();
     return;
 }

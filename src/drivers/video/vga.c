@@ -108,10 +108,11 @@ kvga_fill(char c, uint8_t color)
 void
 kvga_phys_putc_at(uint8_t x, uint8_t y, char c, uint8_t color)
 {
+    volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
+
     if (x >= VGA_COLUMNS_MAX || y >= VGA_LINES_MAX) {
         return;
     }
-    volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
     vga_phys[(y * VGA_COLUMNS_MAX * 2) + (x * 2)] = c;
     vga_phys[(y * VGA_COLUMNS_MAX * 2) + (x * 2) + 1] = color;
 }
@@ -127,11 +128,12 @@ kvga_phys_putc_at(uint8_t x, uint8_t y, char c, uint8_t color)
 void
 kvga_phys_puts_at(uint8_t x, uint8_t y, const char *string, uint8_t color)
 {
+    volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
+    size_t len = 0;
+
     if (string == NULL) {
         return;
     }
-    volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
-    size_t len = 0;
     while (string[len] != '\0') {
         len++;
     }
@@ -155,6 +157,7 @@ void
 kvga_phys_fill(char c, uint8_t color)
 {
     volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
+
     for (uint32_t i = 0; i < VGA_COLUMNS_MAX * VGA_LINES_MAX; i++) {
         vga_phys[i * 2] = c;
         vga_phys[i * 2 + 1] = color;
