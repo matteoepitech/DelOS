@@ -88,7 +88,8 @@ kpmm_init(void)
 void
 kpmm_dump(void)
 {
-    KPANIC("TODO: change the virt to phys stuff");
+    e820_entry_t *entries = (e820_entry_t *) PHYS_TO_VIRT((uint32_t) E820_INFO_VIRTUAL->_entries_buffer);
+
     if (kpmm_bitmap == NULL) {
         KPRINTF_ERROR("pmm dump: bitmap is NULL (initialization failed/missing)");
         return;
@@ -98,13 +99,13 @@ kpmm_dump(void)
     KPRINTF_INFO("  Total pages calculated   : %d", kpmm_pages_amount);
     KPRINTF_INFO("  Free pages amount        : %d/%d", (uint32_t) kpmm_free_pages_amount, (uint32_t) kpmm_pages_amount);
     KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_bytes_amout);
-    KPRINTF_INFO("  Bitmap address           : %p", kpmm_bitmap);
-    KPRINTF_INFO("pmm dump: RAM regions from e820 BIOS:");
-    for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {
+    KPRINTF_INFO("  Bitmap virtual address   : %p", kpmm_bitmap);
+    KPRINTF_INFO("pmm dump: RAM regions from e820 BIOS: (%d)", E820_INFO_VIRTUAL->_entries_count);
+    for (uint32_t i = 0; i < E820_INFO_VIRTUAL->_entries_count; i++) {
         KPRINTFN_INFO("  Addr %08x with length %08x | TYPE: ",
-            (uint32_t) (E820_INFO->_entries_buffer[i]._base),
-            (uint32_t) (E820_INFO->_entries_buffer[i]._length));
-        switch (E820_INFO->_entries_buffer[i]._type) {
+            (uint32_t) (entries[i]._base),
+            (uint32_t) (entries[i]._length));
+        switch (entries[i]._type) {
             case E820_TYPE_FREE:
                 kprintf(VGA_TEXT_SUCCESS_COLOR, "Free\n");
                 break;

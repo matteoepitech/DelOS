@@ -5,6 +5,7 @@
 ** E820 header file
 */
 
+#include <kernel/memory/vmm/vmm.h>
 #include <types.h>
 
 #ifndef KERNEL_MEMORY_PMM_E820_H_
@@ -32,11 +33,14 @@
         #define E820_TYPE_FREE 1
         #define E820_TYPE_USED 2
     #endif /* ifndef E820_TYPES */
-    
-    /* @brief e820 info filled by the bootloader at E820_INFO_ADDR */
+
     #ifndef E820_INFO
         #define E820_INFO ((volatile e820_memory_info_t *) (E820_INFO_ADDR))
     #endif /* ifndef E820_INFO */
+
+    #ifndef E820_INFO_VIRTUAL
+        #define E820_INFO_VIRTUAL ((volatile e820_memory_info_t *) (PHYS_TO_VIRT(E820_INFO_ADDR)))
+    #endif /* ifndef E820_INFO_VIRTUAL */
 
 /*
  * @brief The structure of an e820 entry.
