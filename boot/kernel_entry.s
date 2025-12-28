@@ -7,6 +7,7 @@
 [extern kmain]
 [extern kvmm_init]
 [extern kearly_malloc_init]
+[extern kgdt_init]
 [extern kvmm_disable_identity_mapping]
 [extern kpmm_init]
 [extern __data_start]
@@ -42,6 +43,7 @@ setup_paging:
 higher_half:
     add esp, KERNEL_VIRTUAL_BASE
     add ebp, KERNEL_VIRTUAL_BASE
+    call kgdt_init
     call kvmm_disable_identity_mapping
 
 enter_kernel:

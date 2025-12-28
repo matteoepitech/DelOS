@@ -31,14 +31,12 @@ kmain(void)
     kidt_load_cpu(&idt_ptr);
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
+    kinterruption_extern_start();
 
-    kinterruption_extern_start(); // THIS IS FUCK
-
-    make_hlt_hard_no_msg(); // Should stop here
     kshell_start();
 
-    kearly_malloc_disable(); // NEVER GOES HERE for the moment
-
+    /* Should never goes here for the moment */
+    kearly_malloc_disable();
     KHLT_HARD_DO();
     return;
 }

@@ -39,7 +39,7 @@
     #endif /* ifndef E820_INFO */
 
 /*
- * @brief The sturcture of an e820 entry.
+ * @brief The structure of an e820 entry.
  *        - base = the base address of the start of the region
  *        - length = the length of the region we are looking at
  *        - type = the type of the region, 1 = free, 2 = used, 3 = ?

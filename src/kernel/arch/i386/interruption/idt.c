@@ -255,13 +255,11 @@ kidt_load_cpu(idt_ptr_t *ptr)
 bool32_t
 kidt_set_entry(uint8_t index, uint32_t addr, uint16_t selector, uint8_t type_attr)
 {
-    uint32_t virt_addr = PHYS_TO_VIRT(addr);
-
     if (addr == NULL) {
         return KO_FALSE;
     }
-    idt[index]._offset_high = (virt_addr & 0xFFFF0000) >> 16;
-    idt[index]._offset_low = virt_addr & 0x0000FFFF;
+    idt[index]._offset_high = (addr & 0xFFFF0000) >> 16;
+    idt[index]._offset_low = addr & 0x0000FFFF;
     idt[index]._selector = selector;
     idt[index]._type_attr = type_attr;
     idt[index]._zero = NULL;
