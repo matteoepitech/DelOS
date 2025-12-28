@@ -35,7 +35,7 @@ extern uint32_t kpmm_free_pages_amount;
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
-bool32_t
+__attribute__((used)) bool32_t
 kpmm_init(void);
 
 /**

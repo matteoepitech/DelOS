@@ -5,125 +5,161 @@
 ** VMM manager source file
 */
 
+#include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/memory/vmm/vmm.h>
+#include <kernel/memory/pmm/pmm.h>
 #include <utils/kstdlib/kmemory.h>
 #include <kernel/misc/panic.h>
 #include <kernel/memory/mmu.h>
 #include <kernel/memory/tlb.h>
 #include <utils/misc/print.h>
+#include <utils/asm/hlt.h>
 #include <defines.h>
 
 /* @brief The page directory content of the major content of the OS */
-__attribute__((aligned(4096))) page_directory_t kvmm_page_directory;
-
-/* @brief The page directory content of the bootstrap kernel phase */
-__attribute__((aligned(4096))) page_directory_t kvmm_boot_page_directory;
-
-/* @brief The first page table content of the bootstrap kernel phase | NO need more IG ? */
-__attribute__((aligned(4096))) page_table_t kvmm_boot_first_page_table;
-
-/* @brief The array of pages for the kernel after identity mapping */
-__attribute__((aligned(4096))) page_table_t kvmm_boot_pt_pool[BOOT_PT_POOL_SIZE];
-static uint32_t kvmm_boot_pt_pool_index = 0;
+page_directory_t *kvmm_page_directory = NULL;
 
 /**
- * @brief Allocate a page table from the boot pool.
- *        This function is used ONLY during boot before paging is enabled.
+ * @brief Allocate a page table using the early allocator with 4096 bytes alignment.
  *
- * @return Pointer to the allocated page table, or NULL if pool exhausted.
+ * @return The pointer to the allocated page table, NULL if allocation failed.
  */
 static page_table_t *
-kvmm_boot_alloc_page_table(void)
+kvmm_alloc_page_table(void)
 {
-    page_table_t *pt = NULL;
+    page_table_t *pt = (page_table_t *) kearly_malloc_aligned(sizeof(page_table_t), 4096);
 
-    if (kvmm_boot_pt_pool_index >= BOOT_PT_POOL_SIZE) {
-        KPANIC("Boot page table pool exhausted!");
+    if (pt == NULL) {
         return NULL;
-    } 
-    pt = &kvmm_boot_pt_pool[kvmm_boot_pt_pool_index++];
-    kmemset(pt, 0, sizeof(page_table_t));
+    }
+    kmemset((uint8_t *)pt, 0, sizeof(page_table_t));
     return pt;
 }
 
 /**
- * @brief Map a range of virtual addresses to physical addresses during boot.
- *        This function is used ONLY during boot before paging is enabled.
- *        It accesses page tables via physical addresses directly.
- *        After boot, use kvmm_map_page() instead.
+ * @brief Setup all entries of a page table to map 4MB of physical memory (0x00000000 - 0x003FFFFF).
+ *        Each entry maps one page (4KB) with present, read/write, and supervisor flags.
  *
- * @param pd      The page directory to map into (physical address).
- * @param vstart  The starting virtual address.
- * @param pstart  The starting physical address.
- * @param size    The size of the region to map in bytes.
- * @param flags   Mapping flags (unused for now).
+ * @param pt  The page table to setup
  */
 static void
-kvmm_boot_map_range(page_directory_t *pd, vaddr_t vstart, paddr_t pstart, uint32_t size, UNUSED uint32_t flags)
+kvmm_setup_page_table_entries(page_table_t *pt)
 {
-    uint32_t num_pages = (size + 0xFFF) >> 12;
-    
-    for (uint32_t i = 0; i < num_pages; i++) {
-        vaddr_t vaddr = vstart + (i << 12);
-        paddr_t paddr = pstart + (i << 12);
-        uint32_t pd_index = vaddr >> 22;
-        uint32_t pt_index = (vaddr >> 12) & 0x3FF;
+    uint32_t phys_addr = 0;
 
-        if (!pd->_entries[pd_index]._present) {
-            page_table_t *new_pt = kvmm_boot_alloc_page_table();
-            paddr_t pt_phys = VIRT_TO_PHYS(new_pt);   
-
-            if (new_pt == NULL) {
-                KPANIC("Failed to allocate page table!");
-            }
-
-            pd->_entries[pd_index]._present = 1;
-            pd->_entries[pd_index]._rw = 1;
-            pd->_entries[pd_index]._table_addr = pt_phys >> 12;
-        }
-        paddr_t pt_phys = pd->_entries[pd_index]._table_addr << 12;
-        page_table_t *pt = (page_table_t *)pt_phys;        
-
-        pt->_entries[pt_index]._present = 1;
-        pt->_entries[pt_index]._rw = 1;
-        pt->_entries[pt_index]._frame = paddr >> 12;
+    for (uint32_t i = 0; i < 1024; i++) {
+        phys_addr = i * 4096;
+        pt->_entries[i]._present = 1;
+        pt->_entries[i]._rw = 1;
+        pt->_entries[i]._user = 0;
+        pt->_entries[i]._frame = phys_addr >> 12;
     }
 }
 
 /**
- * @brief Init the vmm manager with the page directory.
+ * @brief Setup a page directory entry to point to a page table.
+ *
+ * @param entry  The page directory entry to setup
+ * @param pt     The page table to reference
+ */
+static void
+kvmm_setup_page_directory_entry(page_directory_entry_t *entry, page_table_t *pt)
+{
+    entry->_present = 1;
+    entry->_rw = 1;
+    entry->_user = 0;
+    entry->_table_addr = (uint32_t) pt >> 12;
+}
+
+/**
+ * @brief Setup identity mapping for the first 4MB of memory (0x00000000 - 0x003FFFFF).
+ *        This mapping allows the kernel to continue executing after enabling paging.
+ *
+ * @param pd  The page directory
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+static bool32_t
+kvmm_setup_identity_mapping(page_directory_t *pd)
+{
+    page_table_t *identity_pt = kvmm_alloc_page_table();
+
+    if (identity_pt == NULL) {
+        KPANIC("Failed to allocate identity page table.");
+        return KO_FALSE;
+    }
+    kvmm_setup_page_table_entries(identity_pt);
+    kvmm_setup_page_directory_entry(&pd->_entries[0], identity_pt);
+    return OK_TRUE;
+}
+
+/**
+ * @brief Setup higher half mapping for the kernel (0xC0000000 - 0xC03FFFFF -> 0x00000000 - 0x003FFFFF).
+ *        This mapping allows the kernel to run at high virtual addresses.
+ *
+ * @param pd  The page directory
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+static bool32_t
+kvmm_setup_higher_half_mapping(page_directory_t *pd)
+{
+    page_table_t *higher_half_pt = kvmm_alloc_page_table();
+    uint32_t kernel_pd_index = KERNEL_PD_INDEX;
+
+    if (higher_half_pt == NULL) {
+        KPANIC("Failed to allocate higher half page table.");
+        return KO_FALSE;
+    }
+    kvmm_setup_page_table_entries(higher_half_pt);
+    kvmm_setup_page_directory_entry(&pd->_entries[kernel_pd_index], higher_half_pt);
+    return OK_TRUE;
+}
+
+/**
+ * @brief Setup the recursive mapping for the kernel page directory.
+ *        That mean we can access the page directory after the paging enabled easily using this address.
+ *
+ * @param pd  The page directory
+ *
+ * @return OK_TRUE.
+ */
+static bool32_t
+kvmm_setup_recursive_mapping(page_directory_t *pd)
+{
+    pd->_entries[1023]._present = 1;
+    pd->_entries[1023]._rw = 1;
+    pd->_entries[1023]._user = 0;
+    pd->_entries[1023]._table_addr = (uint32_t) pd >> 12;
+    return OK_TRUE;
+}
+
+/**
+ * @brief Init the VMM manager with the page directory.
+ *        Creates identity mapping (0x00000000 - 0x003FFFFF) and higher half mapping (0xC0000000 - 0xC03FFFFF).
+ *        Loads the page directory into CR3 and enables paging.
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 __attribute__((used)) bool32_t
 kvmm_init(void)
 {
-    paddr_t boot_pd_phys = VIRT_TO_PHYS(&kvmm_boot_page_directory);
-    paddr_t real_pd_phys = VIRT_TO_PHYS(&kvmm_page_directory); 
-    page_directory_t *boot_pd = (page_directory_t *) boot_pd_phys;
-    page_directory_t *real_pd = (page_directory_t *) real_pd_phys;
-    uint32_t kernel_virt_start = (uint32_t) &__kernel_start;
-    uint32_t kernel_virt_end = (uint32_t) &__kernel_end;
-    uint32_t kernel_phys_start = (uint32_t) &__kernel_physical_start;
-    uint32_t kernel_size = kernel_virt_end - kernel_virt_start;
-    uint32_t kernel_pd_start = kernel_virt_start >> 22;
-    uint32_t kernel_pd_end = (kernel_virt_end - 1) >> 22;
+    page_directory_t **pd_ptr = (page_directory_t **) VIRT_TO_PHYS(&kvmm_page_directory);
 
-    kmemset(boot_pd, 0, sizeof(page_directory_t));
-    kmemset(real_pd, 0, sizeof(page_directory_t));
-    kvmm_boot_map_range(boot_pd, 0x00000000, 0x00000000, 0x400000, 0);
-    kvmm_boot_map_range(boot_pd, kernel_virt_start, kernel_phys_start, kernel_size, 0);
-    for (uint32_t i = kernel_pd_start; i <= kernel_pd_end; i++) {
-        real_pd->_entries[i] = boot_pd->_entries[i];
+    *pd_ptr = (page_directory_t *) kearly_malloc_aligned(sizeof(page_directory_t), 4096);
+    if (*pd_ptr == NULL) {
+        KPANIC("Failed to allocate page directory.");
+        return KO_FALSE;
     }
-    real_pd->_entries[0] = boot_pd->_entries[0];
-    boot_pd->_entries[1023]._present = 1;
-    boot_pd->_entries[1023]._rw = 1;
-    boot_pd->_entries[1023]._table_addr = boot_pd_phys >> 12;
-    real_pd->_entries[1023]._present = 1;
-    real_pd->_entries[1023]._rw = 1;
-    real_pd->_entries[1023]._table_addr = real_pd_phys >> 12;
-    kmmu_load_cr3(boot_pd_phys);
+    kmemset((uint8_t *) *pd_ptr, 0, sizeof(page_directory_t));
+    if (kvmm_setup_identity_mapping(*pd_ptr) == KO_FALSE) {
+        return KO_FALSE;
+    }
+    if (kvmm_setup_higher_half_mapping(*pd_ptr) == KO_FALSE) {
+        return KO_FALSE;
+    }
+    kvmm_setup_recursive_mapping(*pd_ptr);
+    kmmu_load_cr3((paddr_t) *pd_ptr);
     kmmu_enable_paging();
     return OK_TRUE;
 }
@@ -132,13 +168,11 @@ kvmm_init(void)
  * @brief Disable the identity mapping to use the new CR3 which is the base one.
  *        Address which is virtual and physical at the same time will now be invalidated.
  *
+ *        This is setting back the variable global to the virtual address
+ *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
 kvmm_disable_identity_mapping(void)
 {
-    paddr_t page_dir_phys = VIRT_TO_PHYS(&kvmm_page_directory);
-
-    kmmu_load_cr3(page_dir_phys);
-    return OK_TRUE;
 }

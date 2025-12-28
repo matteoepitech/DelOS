@@ -8,6 +8,7 @@
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <utils/kstdlib/kmemory.h>
+#include <kernel/misc/panic.h>
 #include <kernel/memory/tlb.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -24,27 +25,28 @@
 bool32_t
 kvmm_map_page(vaddr_t vaddr, paddr_t paddr, UNUSED uint32_t flags)
 {
-    uint32_t pde_index = VMM_GET_PDE_INDEX(vaddr);
-    uint32_t pte_index = VMM_GET_PTE_INDEX(vaddr);
-
-    // Creating the page directory entry if not already present
-    if (!kvmm_page_directory._entries[pde_index]._present) {
-        paddr_t new_pt_phys = (uint32_t) kpmm_alloc_pages(1);
-        page_table_t *page_table = (page_table_t *) PHYS_TO_VIRT(new_pt_phys);
-        kwmemset(page_table, 0, 4096);
-        kvmm_page_directory._entries[pde_index]._present = OK_TRUE;
-        kvmm_page_directory._entries[pde_index]._rw = OK_TRUE;
-        kvmm_page_directory._entries[pde_index]._user = KO_FALSE;
-        kvmm_page_directory._entries[pde_index]._table_addr = new_pt_phys >> 12;
-    }
-    // Setup the page table entry in the page table we created
-    page_table_entry_t *page_table = (void *) PHYS_TO_VIRT(kvmm_page_directory._entries[pde_index]._table_addr << 12);
-    page_table[pte_index]._present = OK_TRUE;
-    page_table[pte_index]._rw = OK_TRUE;
-    page_table[pte_index]._user = KO_FALSE;
-    page_table[pte_index]._frame = paddr >> 12;
-    ktlb_invalidate((void *) vaddr);
-    return OK_TRUE;
+    KPANIC("TODO:");
+    // uint32_t pde_index = VMM_GET_PDE_INDEX(vaddr);
+    // uint32_t pte_index = VMM_GET_PTE_INDEX(vaddr);
+    //
+    // // Creating the page directory entry if not already present
+    // if (!kvmm_page_directory._entries[pde_index]._present) {
+    //     paddr_t new_pt_phys = (uint32_t) kpmm_alloc_pages(1);
+    //     page_table_t *page_table = (page_table_t *) PHYS_TO_VIRT(new_pt_phys);
+    //     kwmemset(page_table, 0, 4096);
+    //     kvmm_page_directory._entries[pde_index]._present = OK_TRUE;
+    //     kvmm_page_directory._entries[pde_index]._rw = OK_TRUE;
+    //     kvmm_page_directory._entries[pde_index]._user = KO_FALSE;
+    //     kvmm_page_directory._entries[pde_index]._table_addr = new_pt_phys >> 12;
+    // }
+    // // Setup the page table entry in the page table we created
+    // page_table_entry_t *page_table = (void *) PHYS_TO_VIRT(kvmm_page_directory._entries[pde_index]._table_addr << 12);
+    // page_table[pte_index]._present = OK_TRUE;
+    // page_table[pte_index]._rw = OK_TRUE;
+    // page_table[pte_index]._user = KO_FALSE;
+    // page_table[pte_index]._frame = paddr >> 12;
+    // ktlb_invalidate((void *) vaddr);
+    // return OK_TRUE;
 }
 
 /**
@@ -57,17 +59,18 @@ kvmm_map_page(vaddr_t vaddr, paddr_t paddr, UNUSED uint32_t flags)
 bool32_t
 kvmm_unmap_page(vaddr_t vaddr)
 {
-    uint32_t pde_index = VMM_GET_PDE_INDEX(vaddr);
-    uint32_t pte_index = VMM_GET_PTE_INDEX(vaddr);
-
-    if (!kvmm_page_directory._entries[pde_index]._present) {
-        return KO_FALSE;
-    }
-    page_table_entry_t *page_table = (void *) PHYS_TO_VIRT(kvmm_page_directory._entries[pde_index]._table_addr << 12);
-    if (!page_table[pte_index]._present) {
-        return KO_FALSE;
-    }
-    kwmemset(&page_table[pte_index], 0, 2);
-    ktlb_invalidate((void *) vaddr);
-    return OK_TRUE;
+    KPANIC("TODO:");
+    // uint32_t pde_index = VMM_GET_PDE_INDEX(vaddr);
+    // uint32_t pte_index = VMM_GET_PTE_INDEX(vaddr);
+    //
+    // if (!kvmm_page_directory._entries[pde_index]._present) {
+    //     return KO_FALSE;
+    // }
+    // page_table_entry_t *page_table = (void *) PHYS_TO_VIRT(kvmm_page_directory._entries[pde_index]._table_addr << 12);
+    // if (!page_table[pte_index]._present) {
+    //     return KO_FALSE;
+    // }
+    // kwmemset(&page_table[pte_index], 0, 2);
+    // ktlb_invalidate((void *) vaddr);
+    // return OK_TRUE;
 }

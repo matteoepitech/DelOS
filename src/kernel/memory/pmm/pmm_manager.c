@@ -7,6 +7,7 @@
 
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/memory/pmm/pmm.h>
+#include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/e820.h>
 #include <kernel/misc/panic.h>
 #include <utils/misc/print.h>
@@ -22,31 +23,24 @@
 static void
 pmm_free_pages_from_e820(void)
 {
-    uint64_t start_pfn = 0;
-    uint64_t end_pfn = 0;
-    uint64_t base = 0;
-    uint64_t end = 0;
+    uint8_t **bitmap_ptr = (uint8_t **) VIRT_TO_PHYS(&kpmm_bitmap);
+    uint8_t *bitmap_phys = *bitmap_ptr;
+    uint32_t *free_pages_ptr = (uint32_t *) VIRT_TO_PHYS(&kpmm_free_pages_amount);
 
+    *free_pages_ptr = 0;
     for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {
-        if (E820_INFO->_entries_buffer[i]._type != E820_TYPE_FREE)
-            continue;
-        base = E820_INFO->_entries_buffer[i]._base;
-        end = base + E820_INFO->_entries_buffer[i]._length;
-        if (end <= 0x100000)
-            continue;
-        if (base < 0x100000)
-            base = 0x100000;
-        base = ALIGN_UP(base, KERNEL_MEMORY_PMM_PAGE_SIZE);
-        end = ALIGN_DOWN(end, KERNEL_MEMORY_PMM_PAGE_SIZE);
-        if (base >= end)
-            continue;
-        start_pfn = base / KERNEL_MEMORY_PMM_PAGE_SIZE;
-        end_pfn = end / KERNEL_MEMORY_PMM_PAGE_SIZE;
-        for (uint64_t pfn = start_pfn; pfn < end_pfn; pfn++) {
-            if (pfn == 0)
-                continue;
-            kpmm_bitmap_set_value(pfn, KO_FALSE);
-            kpmm_free_pages_amount++;
+        if (E820_INFO->_entries_buffer[i]._type == E820_TYPE_FREE) {
+            uint64_t base = E820_INFO->_entries_buffer[i]._base;
+            uint64_t length = E820_INFO->_entries_buffer[i]._length;
+            uint64_t start_page = ALIGN_UP(base, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+            uint64_t end_page = ALIGN_DOWN(base + length, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+
+            for (uint64_t page = start_page; page < end_page; page++) {
+                uint32_t byte_idx = page / 8;
+                uint32_t bit_idx = page % 8;
+                bitmap_phys[byte_idx] &= ~(1 << bit_idx);
+                (*free_pages_ptr)++;
+            }
         }
     }
 }
@@ -56,9 +50,13 @@ pmm_free_pages_from_e820(void)
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
-bool32_t
+__attribute__((used)) bool32_t
 kpmm_init(void)
 {
+    uint32_t *pages_amount_ptr = (uint32_t *) VIRT_TO_PHYS(&kpmm_pages_amount);
+    uint32_t *bitmap_bytes_ptr = (uint32_t *) VIRT_TO_PHYS(&kpmm_bitmap_bytes_amout);
+    uint8_t **bitmap_ptr = (uint8_t **) VIRT_TO_PHYS(&kpmm_bitmap);
+    uint8_t *bitmap_phys = NULL;
     uint64_t max_phys = 0;
 
     for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {
@@ -67,15 +65,16 @@ kpmm_init(void)
             max_phys = end;
         }
     }
-    kpmm_pages_amount = ALIGN_UP(max_phys, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
-    kpmm_bitmap_bytes_amout = (kpmm_pages_amount + 7) / 8;
-    kpmm_bitmap = kearly_malloc(kpmm_bitmap_bytes_amout);
-    if (kpmm_bitmap == NULL) {
+    *pages_amount_ptr = ALIGN_UP(max_phys, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+    *bitmap_bytes_ptr = (*pages_amount_ptr + 7) / 8;
+    *bitmap_ptr = kearly_malloc(*bitmap_bytes_ptr);
+    if (*bitmap_ptr == NULL) {
         KPANIC("PMM init failed: early allocator returned NULL.");
         return KO_FALSE;
     }
-    for (uint64_t i = 0; i < kpmm_pages_amount; i++) {
-        kpmm_bitmap_set_value(i, OK_TRUE);
+    bitmap_phys = *bitmap_ptr;
+    for (uint32_t i = 0; i < *bitmap_bytes_ptr; i++) {
+        bitmap_phys[i] = 0xFF;
     }
     pmm_free_pages_from_e820();
     return OK_TRUE;
@@ -89,6 +88,7 @@ kpmm_init(void)
 void
 kpmm_dump(void)
 {
+    KPANIC("TODO: change the virt to phys stuff");
     if (kpmm_bitmap == NULL) {
         KPRINTF_ERROR("pmm dump: bitmap is NULL (initialization failed/missing)");
         return;

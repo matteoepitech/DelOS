@@ -101,13 +101,7 @@ typedef struct {
 } page_directory_t;
 
 /* @brief The page directory content of the major content of the OS */
-__attribute__((aligned(4096))) extern page_directory_t kvmm_page_directory;
-
-/* @brief The page directory content of the bootstrap kernel phase */
-__attribute__((aligned(4096))) extern page_directory_t kvmm_boot_page_directory;
-
-/* @brief The first page table content of the bootstrap kernel phase | NO need more IG ? */
-__attribute__((aligned(4096))) extern page_table_t kvmm_boot_first_page_table;
+extern page_directory_t *kvmm_page_directory;
 
 /* @brief Variables from the linker script to know the size of the kernel for the page mapping */
 extern uint32_t __kernel_start;

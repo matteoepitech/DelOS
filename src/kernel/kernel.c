@@ -12,6 +12,7 @@
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/shell/shell.h>
+#include <kernel/misc/panic.h>
 #include <utils/misc/print.h>
 #include <utils/asm/hlt.h>
 #include <defines.h>
@@ -24,6 +25,7 @@
 void
 kmain(void)
 {
+    kvmm_disable_identity_mapping();
     kinterruption_extern_stop();
     kpic_remap();
     kidt_create_ptr(&idt_ptr);
@@ -31,10 +33,6 @@ kmain(void)
     kinterruption_extern_start();
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
-    kearly_malloc_init();
-    kpmm_init();
-
-    kvmm_disable_identity_mapping();
 
     kshell_start();
 

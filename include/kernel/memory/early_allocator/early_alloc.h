@@ -53,7 +53,7 @@ extern bool32_t kernel_early_heap_available;
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
-bool32_t
+__attribute__((used)) bool32_t
 kearly_malloc_init(void);
 
 /**
@@ -78,5 +78,16 @@ kearly_malloc_disable(void);
  */
 void *
 kearly_malloc(uint32_t bytes);
+
+/**
+ * @brief Basically a malloc() implementation for kernel purpose only in early stage.
+ *        Same version as kearly_malloc but with custom alignment.
+ *
+ * @param bytes  The number of bytes to allocate
+ *
+ * @return The pointer to the size memory allocated.
+ */
+void *
+kearly_malloc_aligned(uint32_t bytes, uint32_t alignment);
 
 #endif /* ifndef KERNEL_MEMORY_EARLY_ALLOCATOR_H_ */

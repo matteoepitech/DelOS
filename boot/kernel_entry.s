@@ -6,6 +6,9 @@
 [bits 32]
 [extern kmain]
 [extern kvmm_init]
+[extern kearly_malloc_init]
+[extern kvmm_disable_identity_mapping]
+[extern kpmm_init]
 [extern __data_start]
 [extern __data_end]
 [extern __bss_start_phys]
@@ -30,6 +33,8 @@ zero_bss:
     jmp zero_bss
 
 setup_paging:
+    call kearly_malloc_init
+    call kpmm_init
     call kvmm_init
     lea ecx, [higher_half]
     jmp ecx

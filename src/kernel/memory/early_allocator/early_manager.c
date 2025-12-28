@@ -6,6 +6,7 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
+#include <kernel/memory/vmm/vmm.h>
 #include <kernel/misc/panic.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -22,33 +23,34 @@ bool32_t kernel_early_heap_available = OK_TRUE;
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
-bool32_t
+__attribute__((used)) bool32_t
 kearly_malloc_init(void)
 {
-    if (kernel_early_heap_available == KO_FALSE) {
-        KPANIC("The early allocator is already disabled. Something tried to enable it.");
+    bool32_t *available_ptr = (bool32_t *) VIRT_TO_PHYS(&kernel_early_heap_available);
+    uint8_t **heap_start_ptr = (uint8_t **) VIRT_TO_PHYS(&kernel_early_heap_start);
+    uint8_t **heap_end_ptr = (uint8_t **) VIRT_TO_PHYS(&kernel_early_heap_end);
+
+    if (*available_ptr == KO_FALSE) {
+        KPANIC("The early allocator is already disabled.");
         return KO_FALSE;
     }
-    if (kernel_early_heap_start != NULL && kernel_early_heap_end != NULL) {
-        KPRINTF_ERROR("early_allocator: cursors are already initialized");
+    if (*heap_start_ptr != NULL && *heap_end_ptr != NULL) {
+        KPANIC("The early allocator cursors are NULL.");
         return KO_FALSE;
     }
-    kernel_early_heap_start = (uint8_t *) &__kernel_early_heap_start;
-    kernel_early_heap_end = KERNEL_MEMORY_EARLY_DEFINE_END((uint8_t *) kernel_early_heap_start);
-    if (kernel_early_heap_start == NULL || kernel_early_heap_end == NULL) {
+    *heap_start_ptr = (uint8_t *)VIRT_TO_PHYS(&__kernel_early_heap_start);
+    *heap_end_ptr = KERNEL_MEMORY_EARLY_DEFINE_END(*heap_start_ptr);
+    if (*heap_end_ptr <= *heap_start_ptr) {
+        KPANIC("Early allocator: bad cursors.");
         return KO_FALSE;
     }
-    if (kernel_early_heap_end <= kernel_early_heap_start) {
-        KPANIC("Early allocator tried to be initialized but got bad cursors.");
-        return KO_FALSE;
-    }
-    KPRINTF_OK("early_allocator: initialization done (%d KiB)", KERNEL_MEMORY_EARLY_SIZE / 1024);
     return OK_TRUE;
 }
 
 /**
  * @brief Disable the early allocator usage.
  *        WARN: After using this function the allocation will never be allowed using this allocator.
+ *              Assuming this function is called after the virtual memory setup only.
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
