@@ -29,12 +29,13 @@ kvmm_map_page(vaddr_t vaddr, paddr_t paddr, UNUSED uint32_t flags)
 
     // Creating the page directory entry if not already present
     if (!kvmm_page_directory._entries[pde_index]._present) {
-        page_table_entry_t *page_table = (void *) PHYS_TO_VIRT(kpmm_alloc_pages(1));
+        paddr_t new_pt_phys = (uint32_t) kpmm_alloc_pages(1);
+        page_table_t *page_table = (page_table_t *) PHYS_TO_VIRT(new_pt_phys);
         kwmemset(page_table, 0, 4096);
         kvmm_page_directory._entries[pde_index]._present = OK_TRUE;
         kvmm_page_directory._entries[pde_index]._rw = OK_TRUE;
         kvmm_page_directory._entries[pde_index]._user = KO_FALSE;
-        kvmm_page_directory._entries[pde_index]._table_addr = (uint32_t) page_table >> 12;
+        kvmm_page_directory._entries[pde_index]._table_addr = new_pt_phys >> 12;
     }
     // Setup the page table entry in the page table we created
     page_table_entry_t *page_table = (void *) PHYS_TO_VIRT(kvmm_page_directory._entries[pde_index]._table_addr << 12);

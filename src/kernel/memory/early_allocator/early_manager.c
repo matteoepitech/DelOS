@@ -33,7 +33,7 @@ kearly_malloc_init(void)
         KPRINTF_ERROR("early_allocator: cursors are already initialized");
         return KO_FALSE;
     }
-    kernel_early_heap_start = (uint8_t *) &_kernel_early_heap_start_sym;
+    kernel_early_heap_start = (uint8_t *) &__kernel_early_heap_start;
     kernel_early_heap_end = KERNEL_MEMORY_EARLY_DEFINE_END((uint8_t *) kernel_early_heap_start);
     if (kernel_early_heap_start == NULL || kernel_early_heap_end == NULL) {
         return KO_FALSE;

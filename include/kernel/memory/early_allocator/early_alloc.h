@@ -34,7 +34,7 @@
  *
  *        INFO: This is a symbol located at the start of the early "heap" and can be used using &.
  */
-extern uint8_t _kernel_early_heap_start_sym;
+extern uint8_t __kernel_early_heap_start;
 
 /*
  * @brief Actual variables to manage the pointer of the start and end of early.

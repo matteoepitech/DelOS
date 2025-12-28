@@ -6,10 +6,10 @@
 [bits 32]
 [extern kmain]
 [extern kvmm_init]
-[extern _data_start]
-[extern _data_end]
-[extern _bss_start_phys]
-[extern _bss_end_phys]
+[extern __data_start]
+[extern __data_end]
+[extern __bss_start_phys]
+[extern __bss_end_phys]
 
 ; KERNEL_VIRTUAL_BASE = The base of the address of the kernel in the virtual address space
 KERNEL_VIRTUAL_BASE equ 0xC0000000
@@ -18,12 +18,12 @@ KERNEL_VIRTUAL_BASE equ 0xC0000000
 global _start
 
 _start:
-    mov edi, _bss_start_phys
+    mov edi, __bss_start_phys
     jmp zero_bss
 
 ; reset the BSS section (block started symbol)
 zero_bss:
-    cmp edi, _bss_end_phys
+    cmp edi, __bss_end_phys
     jge setup_paging
     mov byte [edi], 0
     inc edi
