@@ -42,6 +42,7 @@ setup_paging:
 higher_half:
     add esp, KERNEL_VIRTUAL_BASE
     add ebp, KERNEL_VIRTUAL_BASE
+    call kvmm_disable_identity_mapping
 
 enter_kernel:
     call kmain

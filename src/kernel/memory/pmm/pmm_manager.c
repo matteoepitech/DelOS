@@ -69,7 +69,7 @@ kpmm_init(void)
     *bitmap_bytes_ptr = (*pages_amount_ptr + 7) / 8;
     *bitmap_ptr = kearly_malloc(*bitmap_bytes_ptr);
     if (*bitmap_ptr == NULL) {
-        KPANIC("PMM init failed: early allocator returned NULL.");
+        KPANIC_PHYS("PMM init failed: early allocator returned NULL.");
         return KO_FALSE;
     }
     bitmap_phys = *bitmap_ptr;

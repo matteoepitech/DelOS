@@ -32,6 +32,11 @@
         #define E820_TYPE_FREE 1
         #define E820_TYPE_USED 2
     #endif /* ifndef E820_TYPES */
+    
+    /* @brief e820 info filled by the bootloader at E820_INFO_ADDR */
+    #ifndef E820_INFO
+        #define E820_INFO ((volatile e820_memory_info_t *) (E820_INFO_ADDR))
+    #endif /* ifndef E820_INFO */
 
 /*
  * @brief The sturcture of an e820 entry.
@@ -56,10 +61,5 @@ typedef struct e820_memory_info_s {
     uint32_t _entries_count;
     e820_entry_t *_entries_buffer;
 } e820_memory_info_t;
-
-    /* @brief e820 info filled by the bootloader at E820_INFO_ADDR */
-    #ifndef E820_INFO
-        #define E820_INFO ((volatile e820_memory_info_t *) (E820_INFO_ADDR))
-    #endif /* ifndef E820_INFO */
 
 #endif /* ifndef KERNEL_MEMORY_PMM_E820_H_ */

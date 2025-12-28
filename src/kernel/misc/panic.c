@@ -7,6 +7,8 @@
 
 #include <kernel/arch/i386/interruption/interruption.h>
 #include <utils/kstdlib/kstring.h>
+#include <utils/kstdlib/kmemory.h>
+#include <drivers/video/vga.h>
 #include <kernel/tty/tty.h>
 #include <utils/asm/hlt.h>
 #include <defines.h>
@@ -102,4 +104,99 @@ kpanic(const char *msg, const char *file, uint32_t line)
     ktty_cursor_set_visibility(KO_FALSE);
 
     KHLT_HARD_DO_NO_MSG();
+}
+
+/**
+ * @brief Print a kernel panic message using physical VGA address and stop the kernel by infinite loop.
+ *
+ * @param msg    The optionnal message (can be NULL)
+ * @param file   The file where the panic come from
+ * @param line   The line where the panic come from
+ */
+void
+kpanic_phys(const char *msg, const char *file, uint32_t line)
+{
+    const char *kernel_panic_msg = "*** KERNEL PANIC ***";
+    const char *kernel_reason_msg = "Reason:";
+    const char *kernel_location_msg = "Location:";
+    const char *kernel_bottom_msg = "System halted - Please submit this to Del";
+    char line_buffer[128];
+
+    file = file == NULL ? "(unknown)" : file;
+    kinterruption_extern_stop();
+    kvga_phys_fill(' ', VGA_TEXT_PANIC_COLOR);
+    kvga_phys_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_panic_msg) / 2),
+                      VGA_LINES_MAX / 2 - 5,
+                      kernel_panic_msg,
+                      VGA_TEXT_PANIC_COLOR);
+    if (msg != NULL) {
+        kvga_phys_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_reason_msg) / 2),
+                          VGA_LINES_MAX / 2 - 3,
+                          kernel_reason_msg,
+                          VGA_TEXT_PANIC_COLOR);
+        kvga_phys_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(msg) / 2),
+                          VGA_LINES_MAX / 2 - 2,
+                          msg,
+                          VGA_TEXT_PANIC_COLOR);
+    }
+    kvga_phys_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_location_msg) / 2),
+                      VGA_LINES_MAX / 2 + 1,
+                      kernel_location_msg,
+                      VGA_TEXT_PANIC_COLOR);
+    format_location(line_buffer, file, line);
+    kvga_phys_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(line_buffer) / 2),
+                      VGA_LINES_MAX / 2 + 2,
+                      line_buffer,
+                      VGA_TEXT_PANIC_COLOR);
+    kvga_phys_puts_at(VGA_COLUMNS_MAX / 2 - (kstrlen(kernel_bottom_msg) / 2),
+                      VGA_LINES_MAX - 2,
+                      kernel_bottom_msg,
+                      VGA_TEXT_PANIC_COLOR);
+    // Note: cursor visibility not handled for physical VGA
+
+    KHLT_HARD_DO_NO_MSG();
+}
+
+/**
+ * @brief Get the current value of the EIP register.
+ *
+ * @return The current EIP value
+ */
+static uint32_t
+kpanic_get_eip(void)
+{
+    uint32_t eip;
+    __asm__ volatile("call 1f; 1: pop %0" : "=r"(eip));
+    return eip;
+}
+
+/**
+ * @brief Format a uint32_t to hexadecimal string.
+ *
+ * @param buffer The buffer to store the string
+ * @param value  The value to format
+ */
+static void
+format_hex(char *buffer, uint32_t value)
+{
+    const char *hex_digits = "0123456789ABCDEF";
+    buffer[0] = '0';
+    buffer[1] = 'x';
+    for (int i = 7; i >= 0; i--) {
+        buffer[2 + (7 - i)] = hex_digits[(value >> (i * 4)) & 0xF];
+    }
+    buffer[10] = '\0';
+}
+
+/**
+ * @brief Display the current EIP value on the screen.
+ */
+void
+kpanic_show_eip(void)
+{
+    uint32_t eip = kpanic_get_eip();
+    char buffer[16];
+    format_hex(buffer, eip);
+    ktty_puts_at(0, 0, "EIP: ", VGA_TEXT_PANIC_COLOR);
+    ktty_puts_at(5, 0, buffer, VGA_TEXT_PANIC_COLOR);
 }

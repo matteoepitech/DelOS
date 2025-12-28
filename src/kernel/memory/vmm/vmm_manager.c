@@ -6,14 +6,15 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
+#include <kernel/arch/i386/interruption/idt.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <utils/kstdlib/kmemory.h>
 #include <kernel/misc/panic.h>
 #include <kernel/memory/mmu.h>
 #include <kernel/memory/tlb.h>
-#include <utils/misc/print.h>
 #include <utils/asm/hlt.h>
+#include <utils/misc/print.h>
 #include <defines.h>
 
 /* @brief The page directory content of the major content of the OS */
@@ -148,7 +149,7 @@ kvmm_init(void)
 
     *pd_ptr = (page_directory_t *) kearly_malloc_aligned(sizeof(page_directory_t), 4096);
     if (*pd_ptr == NULL) {
-        KPANIC("Failed to allocate page directory.");
+        KPANIC_PHYS("Failed to allocate page directory.");
         return KO_FALSE;
     }
     kmemset((uint8_t *) *pd_ptr, 0, sizeof(page_directory_t));
@@ -175,4 +176,14 @@ kvmm_init(void)
 bool32_t
 kvmm_disable_identity_mapping(void)
 {
+    page_directory_t *pd = (page_directory_t *) 0xFFFFF000;
+    paddr_t pd_phys_temp = (paddr_t) kvmm_page_directory;
+
+    kpmm_bitmap = (uint8_t *) PHYS_TO_VIRT(kpmm_bitmap);
+    kernel_early_heap_start = (uint8_t *) PHYS_TO_VIRT(kernel_early_heap_start);
+    kernel_early_heap_end = (uint8_t *) PHYS_TO_VIRT(kernel_early_heap_end);
+    kvmm_page_directory = (page_directory_t *) PHYS_TO_VIRT(kvmm_page_directory);
+    pd->_entries[0]._present = 0;
+    kmmu_load_cr3(pd_phys_temp);
+    return OK_TRUE;
 }

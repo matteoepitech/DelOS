@@ -6,13 +6,14 @@
 */
 
 #include <math/2d/point.h>
+#include <kernel/memory/vmm/vmm.h>
 
 #ifndef DRIVER_VIDEO_VGA_H_
     #define DRIVER_VIDEO_VGA_H_
 
     #ifndef VGA_TEXT_MODE_START_MMIO_ADDR
         #define VGA_TEXT_MODE_START_MMIO_ADDR 0xb8000
-        #define VGA_MMIO_ADDR ((volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR)
+        #define VGA_MMIO_ADDR ((volatile uint8_t *) PHYS_TO_VIRT(VGA_TEXT_MODE_START_MMIO_ADDR))
     #endif /* ifndef VGA_TEXT_MODE_START_MMIO_ADDR */
 
     #ifndef VGA_TEXT_MODE_CURSOR_REGISTER_ADDR
@@ -124,5 +125,36 @@ kvga_scroll_line(void);
  */
 void
 kvga_fill(char c, uint8_t color);
+
+/**
+ * @brief Print a character on the screen at a certain coordinates using physical VGA address.
+ *
+ * @param x             The coordinate X
+ * @param y             The coordinate Y
+ * @param c             The character
+ * @param color         The color
+ */
+void
+kvga_phys_putc_at(uint8_t x, uint8_t y, char c, uint8_t color);
+
+/**
+ * @brief Print a string on the screen at a certain coordinates using physical VGA address.
+ *
+ * @param x             The coordinate X
+ * @param y             The coordinate Y
+ * @param string        The string
+ * @param color         The color
+ */
+void
+kvga_phys_puts_at(uint8_t x, uint8_t y, const char *string, uint8_t color);
+
+/**
+ * @brief Fill the VGA buffer using physical address.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+kvga_phys_fill(char c, uint8_t color);
 
 #endif /* ifndef DRIVER_VIDEO_VGA_H_ */

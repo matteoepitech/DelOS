@@ -25,15 +25,16 @@
 void
 kmain(void)
 {
-    kvmm_disable_identity_mapping();
     kinterruption_extern_stop();
     kpic_remap();
     kidt_create_ptr(&idt_ptr);
     kidt_load_cpu(&idt_ptr);
-    kinterruption_extern_start();
     kpit_timer_init(PIT_TARGET_FREQUENCY);
     ktty_cursor_set_visibility(OK_TRUE);
 
+    kinterruption_extern_start(); // THIS IS FUCK
+
+    make_hlt_hard_no_msg(); // Should stop here
     kshell_start();
 
     kearly_malloc_disable(); // NEVER GOES HERE for the moment

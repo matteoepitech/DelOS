@@ -96,3 +96,67 @@ kvga_fill(char c, uint8_t color)
 {
     kwmemset((void *) VGA_MMIO_ADDR, ((uint16_t) color << 8) | c, VGA_COLUMNS_MAX * VGA_LINES_MAX);
 }
+
+/**
+ * @brief Print a character on the screen at a certain coordinates using physical VGA address.
+ *
+ * @param x             The coordinate X
+ * @param y             The coordinate Y
+ * @param c             The character
+ * @param color         The color
+ */
+void
+kvga_phys_putc_at(uint8_t x, uint8_t y, char c, uint8_t color)
+{
+    if (x >= VGA_COLUMNS_MAX || y >= VGA_LINES_MAX) {
+        return;
+    }
+    volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
+    vga_phys[(y * VGA_COLUMNS_MAX * 2) + (x * 2)] = c;
+    vga_phys[(y * VGA_COLUMNS_MAX * 2) + (x * 2) + 1] = color;
+}
+
+/**
+ * @brief Print a string on the screen at a certain coordinates using physical VGA address.
+ *
+ * @param x             The coordinate X
+ * @param y             The coordinate Y
+ * @param string        The string
+ * @param color         The color
+ */
+void
+kvga_phys_puts_at(uint8_t x, uint8_t y, const char *string, uint8_t color)
+{
+    if (string == NULL) {
+        return;
+    }
+    volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
+    size_t len = 0;
+    while (string[len] != '\0') {
+        len++;
+    }
+    for (size_t i = 0; i < len; i++) {
+        if (x + i >= VGA_COLUMNS_MAX) {
+            break;
+        }
+        size_t pos = (y * VGA_COLUMNS_MAX * 2) + ((x + i) * 2);
+        vga_phys[pos] = string[i];
+        vga_phys[pos + 1] = color;
+    }
+}
+
+/**
+ * @brief Fill the VGA buffer using physical address.
+ *
+ * @param c             The character
+ * @param color         The color
+ */
+void
+kvga_phys_fill(char c, uint8_t color)
+{
+    volatile uint8_t *vga_phys = (volatile uint8_t *) VGA_TEXT_MODE_START_MMIO_ADDR;
+    for (uint32_t i = 0; i < VGA_COLUMNS_MAX * VGA_LINES_MAX; i++) {
+        vga_phys[i * 2] = c;
+        vga_phys[i * 2 + 1] = color;
+    }
+}

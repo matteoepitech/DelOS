@@ -31,17 +31,17 @@ kearly_malloc_init(void)
     uint8_t **heap_end_ptr = (uint8_t **) VIRT_TO_PHYS(&kernel_early_heap_end);
 
     if (*available_ptr == KO_FALSE) {
-        KPANIC("The early allocator is already disabled.");
+        KPANIC_PHYS("The early allocator is already disabled.");
         return KO_FALSE;
     }
     if (*heap_start_ptr != NULL && *heap_end_ptr != NULL) {
-        KPANIC("The early allocator cursors are NULL.");
+        KPANIC_PHYS("The early allocator cursors are NULL.");
         return KO_FALSE;
     }
-    *heap_start_ptr = (uint8_t *)VIRT_TO_PHYS(&__kernel_early_heap_start);
+    *heap_start_ptr = (uint8_t *) VIRT_TO_PHYS(&__kernel_early_heap_start);
     *heap_end_ptr = KERNEL_MEMORY_EARLY_DEFINE_END(*heap_start_ptr);
     if (*heap_end_ptr <= *heap_start_ptr) {
-        KPANIC("Early allocator: bad cursors.");
+        KPANIC_PHYS("Early allocator: bad cursors.");
         return KO_FALSE;
     }
     return OK_TRUE;
