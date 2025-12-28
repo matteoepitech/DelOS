@@ -12,6 +12,7 @@
 
 /**
  * @brief Get an integer from a buffer.
+ *        Value is max 2 147 483 647. (int32 max)
  *
  * @param buffer     The buffer to get the integer from
  *
@@ -29,7 +30,7 @@ katoi(const char *buffer);
  *
  * @return The parsed number in a base.
  */
-int32_t
+int64_t
 kstrtol(const char *str, int32_t base, int32_t *ok);
 
 #endif /* ifndef UTILS_KSTDLIB_KSTDLIB_H_ */

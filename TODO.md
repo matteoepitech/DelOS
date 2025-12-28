@@ -10,7 +10,7 @@
 - [x] Ensure `kvga_putc_at` silently drops out-of-bounds writes; add tests/logging guard (src/drivers/video/vga.c).
 - [x] Add sanity checks for PIT divisor overflows and log the actual divisor (src/kernel/arch/i386/interruption/pit.c).
 - [ ] Make `kreboot` timeout and fail gracefully if controller never clears bit 1 (src/kernel/misc/reboot.c).
-- [ ] Accessing the address 0xC0300000 need to page fault? Since the kernel is not pagging this address right now.
+- [x] Accessing the address 0xC0300000 need to page fault? Since the kernel is not pagging this address right now.
 
 ## Shell / input / TTY
 - [x] Implement basic argv/argc parsing (split on space/tab) and return an error code when a command is unknown (src/kernel/shell/shell.c).

@@ -12,8 +12,8 @@
 
     /* LONG */
     #ifndef K_LONG
-        #define K_LONG_MAX  0x7FFFFFFFL
-        #define K_LONG_MIN  (-K_LONG_MAX - 1)
+        #define K_LONG_MAX  0x7FFFFFFFFFFFFFFFLL
+        #define K_LONG_MIN  (-K_LONG_MAX - 1LL)
     #endif /* ifndef K_LONG */
 
 #endif /* ifndef UTILS_KSTDLIB_KLIMITS_H_ */

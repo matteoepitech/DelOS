@@ -49,6 +49,98 @@ kuitoa(uint32_t value, uint32_t base, char *buffer, uint8_t uppercase)
 }
 
 /**
+ * @brief Divide a 64-bit unsigned value by a 32-bit base without libgcc helpers.
+ *
+ * @param value  The value to divide
+ * @param base   The base (assumed > 1 and small: 2, 10, 16)
+ * @param rem    Output: the remainder (can be NULL)
+ *
+ * @return The quotient.
+ */
+static uint64_t
+kdivmod_u64(uint64_t value, uint32_t base, uint32_t *rem)
+{
+    uint64_t quotient = 0;
+    uint64_t carry = 0;
+
+    for (int i = 63; i >= 0; i--) {
+        carry = (carry << 1) | ((value >> i) & 1ULL);
+        if (carry >= base) {
+            carry -= base;
+            quotient |= 1ULL << i;
+        }
+    }
+    if (rem != NULL) {
+        *rem = (uint32_t) carry;
+    }
+    return quotient;
+}
+
+/**
+ * @brief Convert an unsigned 64-bit integer to string in given base.
+ *
+ * @param value      The value to convert
+ * @param base       The base (2, 10, 16)
+ * @param buffer     The output buffer
+ * @param uppercase  Use uppercase for hex (A-F)
+ *
+ * @return The length of the string.
+ */
+static uint32_t
+kuitoa64(uint64_t value, uint32_t base, char *buffer, uint8_t uppercase)
+{
+    char *digits = uppercase ? "0123456789ABCDEF" : "0123456789abcdef";
+    char temp[32];
+    uint32_t i = 0;
+    uint32_t j = 0;
+
+    if (buffer == NULL) {
+        return 0;
+    }
+    if (value == 0) {
+        buffer[0] = '0';
+        buffer[1] = '\0';
+        return 1;
+    }
+    while (value > 0) {
+        uint32_t remainder = 0;
+
+        value = kdivmod_u64(value, base, &remainder);
+        temp[i++] = digits[remainder];
+    }
+    while (i > 0) {
+        buffer[j++] = temp[--i];
+    }
+    buffer[j] = '\0';
+    return j;
+}
+
+/**
+ * @brief Convert a signed 64-bit integer to string.
+ *
+ * @param value      The value to convert
+ * @param buffer     The output buffer
+ *
+ * @return The length of the string.
+ */
+static uint32_t
+kitoa64(int64_t value, char *buffer)
+{
+    uint32_t len = 0;
+
+    if (buffer == NULL) {
+        return 0;
+    }
+    if (value < 0) {
+        buffer[0] = '-';
+        len = 1 + kuitoa64((uint64_t) -value, 10, buffer + 1, KO_FALSE);
+    } else {
+        len = kuitoa64((uint64_t) value, 10, buffer, KO_FALSE);
+    }
+    return len;
+}
+
+/**
  * @brief Convert a signed integer to string.
  *
  * @param value      The value to convert
@@ -157,6 +249,7 @@ khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
     uint8_t pad_zero = KO_FALSE;
     uint32_t len = 0;
     uint32_t value = 0;
+    uint8_t is_long = KO_FALSE;
     char *str = NULL;
     char c = 0;
     char pad_char = ' ';
@@ -168,12 +261,29 @@ khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
     if (pad_zero == OK_TRUE) {
         pad_char = '0';
     }
+    if (format[*i] == 'l') {
+        is_long = OK_TRUE;
+        (*i)++;
+    }
     switch (format[*i]) {
         case 'd':
+            if (is_long == OK_TRUE) {
+                int64_t value64 = KVA_ARG(*va, int64_t);
+
+                len = kitoa64(value64, buffer);
+                return kprint_padded(buffer, len, width, pad_char, color);
+            }
             value = KVA_ARG(*va, int32_t);
             len = kitoa((int32_t)value, buffer);
             return kprint_padded(buffer, len, width, pad_char, color);
         case 'x':
+            if (is_long == OK_TRUE) {
+                uint64_t value64 = KVA_ARG(*va, uint64_t);
+
+                ktty_puts("0x", color);
+                len = kuitoa64(value64, 16, buffer, KO_FALSE);
+                return kprint_padded(buffer, len, width, pad_char, color);
+            }
             value = KVA_ARG(*va, uint32_t);
             ktty_puts("0x", color);
             len = kuitoa(value, 16, buffer, KO_FALSE);
@@ -223,8 +333,14 @@ khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
  *   %d  - Signed decimal integer (int32_t)
  *         Example: kprintf("%d", -42) → "-42"
  *
+ *   %ld - Signed decimal integer (int64_t)
+ *         Example: kprintf("%ld", -42) → "-42"
+ *
  *   %x  - Unsigned hexadecimal integer, lowercase (uint32_t)
  *         Example: kprintf("%x", 255) → "ff"
+ *
+ *   %lx - Unsigned hexadecimal integer, lowercase (uint64_t)
+ *         Example: kprintf("%lx", 0x1122334455667788) → "0x1122334455667788"
  *
  *   %X  - Unsigned hexadecimal integer, uppercase (uint32_t)
  *         Example: kprintf("%X", 255) → "FF"

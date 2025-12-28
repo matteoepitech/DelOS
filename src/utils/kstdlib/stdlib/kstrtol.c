@@ -11,6 +11,34 @@
 #include <defines.h>
 
 /**
+ * @brief Divide a 64-bit unsigned value by a small base without compiler helpers.
+ *
+ * @param value  The value to divide
+ * @param base   The base (expected 2..16)
+ * @param rem    Output: remainder (can be NULL)
+ *
+ * @return The quotient.
+ */
+static uint64_t
+kdivmod_u64(uint64_t value, uint32_t base, uint32_t *rem)
+{
+    uint64_t quotient = 0;
+    uint64_t carry = 0;
+
+    for (int i = 63; i >= 0; i--) {
+        carry = (carry << 1) | ((value >> i) & 1ULL);
+        if (carry >= base) {
+            carry -= base;
+            quotient |= 1ULL << i;
+        }
+    }
+    if (rem != NULL) {
+        *rem = (uint32_t) carry;
+    }
+    return quotient;
+}
+
+/**
  * @brief Skip every spaces.
  *
  * @param p  The pointer
@@ -82,10 +110,16 @@ detect_base(const char **p, int32_t base)
  *
  * @return Accumulate the result.
  */
-static int32_t
-accumulate(int32_t *value, int32_t base, int32_t digit)
+static int64_t
+accumulate(int64_t *value, int32_t base, int32_t digit)
 {
-    if (*value > (K_LONG_MAX - digit) / base) {
+    uint32_t limit_rem = 0;
+    uint64_t limit = kdivmod_u64(K_LONG_MAX, (uint32_t) base, &limit_rem);
+
+    if (*value > (int64_t) limit) {
+        return 0;
+    }
+    if (*value == (int64_t) limit && digit > (int32_t) limit_rem) {
         return 0;
     }
     *value = *value * base + digit;
@@ -101,11 +135,11 @@ accumulate(int32_t *value, int32_t base, int32_t digit)
  *
  * @return The parsed number in a base.
  */
-int32_t
+int64_t
 kstrtol(const char *str, int32_t base, int32_t *ok)
 {
     const char *p = NULL;
-    int32_t value = 0;
+    int64_t value = 0;
     int32_t sign = 1;
     int32_t digit = 0;
     int32_t parsed = 0;

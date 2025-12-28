@@ -16,6 +16,7 @@
     #define MEM_DUMP_HELP_MSG "usage: mem_dump <addr> <len>"
     #define MEM_DUMP_ADDR_START_ERROR_MSG "mem_dump: the addr parameter need to start with 0x"
     #define MEM_DUMP_ADDR_PLACE_ERROR_MSG "mem_dump: the addr parameter need to be greater than 0"
+    #define MEM_DUMP_ADDR_RANGE_ERROR_MSG "mem_dump: the addr parameter must fit in 32 bits"
     #define MEM_DUMP_LEN_ERROR_MSG "mem_dump: the len parameter need to be greater than 0"
 #endif /* MEM_DUMP_MSG */
 
@@ -53,7 +54,7 @@ mem_dump_formatted(uint8_t *addr, uint32_t len)
                 ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);
             }
             KPRINTF_DATE();
-            kprintf(VGA_TEXT_DATE_COLOR, "%08x   ", addr);
+            kprintf(VGA_TEXT_DATE_COLOR, "%08x   ", (uint32_t) addr);
         }
         mem_dump_print_byte(*addr);
         addr++;
@@ -73,7 +74,8 @@ uint8_t
 kshell_mem_dump(uint32_t argc, char *argv[])
 {
     int32_t len = 0;
-    int32_t addr = 0;
+    uint32_t addr = 0;
+    int64_t parsed_addr = 0;
     int32_t parse_ok = 0;
 
     if (argc < 3) {
@@ -89,11 +91,16 @@ kshell_mem_dump(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", MEM_DUMP_LEN_ERROR_MSG);
         return OK_TRUE;
     }
-    addr = kstrtol(&argv[1][2], 16, &parse_ok);
-    if (addr < 0 && parse_ok) {
+    parsed_addr = kstrtol(&argv[1][2], 16, &parse_ok);
+    if (!parse_ok || parsed_addr < 0) {
         KPRINTF_ERROR("%s", MEM_DUMP_ADDR_PLACE_ERROR_MSG);
         return OK_TRUE;
     }
-    mem_dump_formatted((uint8_t *)addr, (uint32_t)len);
+    if ((uint64_t) parsed_addr > 0xFFFFFFFFULL) {
+        KPRINTF_ERROR("%s", MEM_DUMP_ADDR_RANGE_ERROR_MSG);
+        return OK_TRUE;
+    }
+    addr = (uint32_t) parsed_addr;
+    mem_dump_formatted((uint8_t *) addr, (uint32_t) len);
     return KO_FALSE;
 }

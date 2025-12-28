@@ -20,8 +20,14 @@
  *   %d  - Signed decimal integer (int32_t)
  *         Example: kprintf("%d", -42) → "-42"
  *
+ *   %ld - Signed decimal integer (int64_t)
+ *         Example: kprintf("%ld", -42) → "-42"
+ *
  *   %x  - Unsigned hexadecimal integer, lowercase (uint32_t)
  *         Example: kprintf("%x", 255) → "ff"
+ *
+ *   %lx - Unsigned hexadecimal integer, lowercase (uint64_t)
+ *         Example: kprintf("%lx", 0x1122334455667788) → "0x1122334455667788"
  *
  *   %X  - Unsigned hexadecimal integer, uppercase (uint32_t)
  *         Example: kprintf("%X", 255) → "FF"
