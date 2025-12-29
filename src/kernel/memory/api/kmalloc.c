@@ -6,3 +6,19 @@
 */
 
 #include <kernel/memory/api/kmalloc.h>
+#include <kernel/memory/pmm/pmm.h>
+#include <kernel/memory/vmm/vmm.h>
+
+/**
+ * @brief Initialize the heap for malloc stuff.
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kmalloc_init(void)
+{
+    paddr_t first_frame = (paddr_t) kpmm_alloc_pages(1);
+
+    kvmm_map_page((vaddr_t) &__kernel_heap_start, first_frame, KVMM_FLAG_PRESENT | KVMM_FLAG_USER | KVMM_FLAG_RW);
+    return OK_TRUE;
+}

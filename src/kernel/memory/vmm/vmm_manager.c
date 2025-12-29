@@ -106,7 +106,7 @@ static bool32_t
 kvmm_setup_higher_half_mapping(page_directory_t *pd)
 {
     page_table_t *higher_half_pt = kvmm_alloc_page_table();
-    uint32_t kernel_pd_index = KERNEL_PD_INDEX;
+    uint32_t kernel_pd_index = KVMM_PD_INDEX;
 
     if (higher_half_pt == NULL) {
         KPANIC_PHYS("Failed to allocate higher half page table.");

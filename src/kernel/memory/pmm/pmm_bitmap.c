@@ -89,7 +89,7 @@ kpmm_bitmap_get_n_continuous(uint32_t n)
 inline void *
 kpmm_bitmap_get_page_addr(uint64_t bitmap_bit_i)
 {
-    return ((void *) (uint32_t) (bitmap_bit_i * KERNEL_MEMORY_PMM_PAGE_SIZE));
+    return ((void *) (uint32_t) (bitmap_bit_i * KPMM_PAGE_SIZE));
 }
 
 /**

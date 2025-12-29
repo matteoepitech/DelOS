@@ -16,54 +16,55 @@
     // 31........22 | 21........12 | 11......0
     // PDE index    |   PTE index  |  offset
 
-    #ifndef VMM_GET_PDE_INDEX
-        #define VMM_GET_PDE_INDEX(vaddr) ((vaddr >> 22) & 0x3FF)
-    #endif /* ifndef VMM_GET_PDE_INDEX */
+    #ifndef KVMM_GET_PDE_INDEX
+        #define KVMM_GET_PDE_INDEX(vaddr) ((vaddr >> 22) & 0x3FF)
+    #endif /* ifndef KVMM_GET_PDE_INDEX */
 
-    #ifndef VMM_GET_PTE_INDEX
-        #define VMM_GET_PTE_INDEX(vaddr) ((vaddr >> 12) & 0x3FF)
-    #endif /* ifndef VMM_GET_PTE_INDEX */
+    #ifndef KVMM_GET_PTE_INDEX
+        #define KVMM_GET_PTE_INDEX(vaddr) ((vaddr >> 12) & 0x3FF)
+    #endif /* ifndef KVMM_GET_PTE_INDEX */
 
-    #ifndef VMM_GET_OFFSET_VAL
-        #define VMM_GET_OFFSET_VAL(vaddr) (vaddr & 0xFFF)
-    #endif /* ifndef VMM_GET_OFFSET_VAL */
+    #ifndef KVMM_GET_OFFSET_VAL
+        #define KVMM_GET_OFFSET_VAL(vaddr) (vaddr & 0xFFF)
+    #endif /* ifndef KVMM_GET_OFFSET_VAL */
 
     #ifndef KERNEL_VIRTUAL_BASE
         #define KERNEL_VIRTUAL_BASE 0xC0000000
     #endif /* ifndef KERNEL_VIRTUAL_BASE */
 
-    #ifndef KERNEL_PD_INDEX
-        #define KERNEL_PD_INDEX (KERNEL_VIRTUAL_BASE / (1024 * 4096))
-    #endif /* ifndef KERNEL_PD_INDEX */
+    #ifndef KVMM_PD_INDEX
+        #define KVMM_PD_INDEX (KERNEL_VIRTUAL_BASE / (1024 * 4096))
+    #endif /* ifndef KVMM_PD_INDEX */
 
-    #ifndef VMM_TRANSLATION
+    #ifndef KVMM_TRANSLATION
+        #define KVMM_TRANSLATION
         #define VIRT_TO_PHYS(addr) ((uint32_t) (addr) - KERNEL_VIRTUAL_BASE)
         #define PHYS_TO_VIRT(addr) ((uint32_t) (addr) + KERNEL_VIRTUAL_BASE)
-    #endif /* ifndef VMM_TRANSLATION */
+    #endif /* ifndef KVMM_TRANSLATION */
 
-    #ifndef VMM_RECURSIVE_INFO
-        #define VMM_RECURSIVE_INFO
-        #define VMM_RECURSIVE_PD_ADDR 0xFFFFF000
-        #define VMM_RECURSIVE_PT_BASE 0xFFC00000
-    #endif /* ifndef VMM_RECURSIVE_INFO */
+    #ifndef KVMM_RECURSIVE_INFO
+        #define KVMM_RECURSIVE_INFO
+        #define KVMM_RECURSIVE_PD_ADDR 0xFFFFF000
+        #define KVMM_RECURSIVE_PT_BASE 0xFFC00000
+    #endif /* ifndef KVMM_RECURSIVE_INFO */
 
-    #ifndef VMM_GET_PD
-        #define VMM_GET_PD ((page_directory_t *) VMM_RECURSIVE_PD_ADDR) // Using the recursive mapping
-    #endif /* ifndef VMM_GET_PD */
+    #ifndef KVMM_GET_PD
+        #define KVMM_GET_PD ((page_directory_t *) KVMM_RECURSIVE_PD_ADDR) // Using the recursive mapping
+    #endif /* ifndef KVMM_GET_PD */
 
-    #ifndef VMM_GET_PT_VIA_PDE
-        #define VMM_GET_PT_VIA_PDE(pd_index) ((page_table_t *) (VMM_RECURSIVE_PT_BASE + (pd_index * 4096))) // Using the recursive mapping
-    #endif /* ifndef VMM_GET_PT_VIA_DE */
+    #ifndef KVMM_GET_PT_VIA_PDE
+        #define KVMM_GET_PT_VIA_PDE(pd_index) ((page_table_t *) (KVMM_RECURSIVE_PT_BASE + (pd_index * 4096))) // Using the recursive mapping
+    #endif /* ifndef KVMM_GET_PT_VIA_PDE */
 
-    #ifndef VMM_FLAGS
-        #define VMM_FLAGS
-        #define VMM_FLAG_PRESENT   (1u << 0)
-        #define VMM_FLAG_READONLY  (0u << 1)
-        #define VMM_FLAG_WRITE     (1u << 1)
-        #define VMM_FLAG_RW        (1u << 1)
-        #define VMM_FLAG_USER      (1u << 2)
-        #define VMM_FLAG_KERNEL    (0u << 2)
-    #endif /* ifndef VMM_FLAGS */
+    #ifndef KVMM_FLAGS
+        #define KVMM_FLAGS
+        #define KVMM_FLAG_PRESENT   (1u << 0)
+        #define KVMM_FLAG_READONLY  (0u << 1)
+        #define KVMM_FLAG_WRITE     (1u << 1)
+        #define KVMM_FLAG_RW        (1u << 1)
+        #define KVMM_FLAG_USER      (1u << 2)
+        #define KVMM_FLAG_KERNEL    (0u << 2)
+    #endif /* ifndef KVMM_FLAGS */
 
 /* @brief The address type for a virtual address space */
 typedef uint32_t vaddr_t;

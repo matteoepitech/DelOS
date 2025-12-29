@@ -5,6 +5,7 @@ KERNEL_VIRTUAL_BASE  = 0xC0000000;
 KERNEL_PHYSICAL_BASE = 0x00100000;
 
 KERNEL_STACK_SIZE = 8196;
+KERNEL_HEAP_SIZE = 40960;
 
 SECTIONS
 {
@@ -70,6 +71,12 @@ SECTIONS
     __kernel_stack_start = .;
     . += KERNEL_STACK_SIZE;
     __kernel_stack_end = .;
+
+    /* Setup the heap in virtual space */
+    . = ALIGN(4096);
+    __kernel_heap_start = .;
+    . += KERNEL_HEAP_SIZE;
+    __kernel_heap_end = .;
 
     __kernel_virtual_end = .;
     __kernel_physical_end = . - KERNEL_VIRTUAL_BASE;

@@ -26,10 +26,10 @@ pmm_free_pages_from_e820(void)
     uint8_t **bitmap_ptr = (uint8_t **) VIRT_TO_PHYS(&kpmm_bitmap);
     uint8_t *bitmap_phys = *bitmap_ptr;
     uint32_t *free_pages_ptr = (uint32_t *) VIRT_TO_PHYS(&kpmm_free_pages_amount);
-    uint64_t min_free_phys = ALIGN_UP((uint32_t) &__kernel_physical_end, KERNEL_MEMORY_PMM_PAGE_SIZE);
+    uint64_t min_free_phys = ALIGN_UP((uint32_t) &__kernel_physical_end, KPMM_PAGE_SIZE);
 
-    if (min_free_phys < KERNEL_MEMORY_PMM_MIN_BASE) {
-        min_free_phys = KERNEL_MEMORY_PMM_MIN_BASE;
+    if (min_free_phys < KPMM_MIN_BASE) {
+        min_free_phys = KPMM_MIN_BASE;
     }
 
     *free_pages_ptr = 0;
@@ -46,8 +46,8 @@ pmm_free_pages_from_e820(void)
             if (region_start < min_free_phys) {
                 region_start = min_free_phys;
             }
-            uint64_t start_page = ALIGN_UP(region_start, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
-            uint64_t end_page = ALIGN_DOWN(region_end, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+            uint64_t start_page = ALIGN_UP(region_start, KPMM_PAGE_SIZE) / KPMM_PAGE_SIZE;
+            uint64_t end_page = ALIGN_DOWN(region_end, KPMM_PAGE_SIZE) / KPMM_PAGE_SIZE;
 
             if (end_page <= start_page) {
                 continue;
@@ -82,7 +82,7 @@ kpmm_init(void)
             max_phys = end;
         }
     }
-    *pages_amount_ptr = ALIGN_UP(max_phys, KERNEL_MEMORY_PMM_PAGE_SIZE) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+    *pages_amount_ptr = ALIGN_UP(max_phys, KPMM_PAGE_SIZE) / KPMM_PAGE_SIZE;
     *bitmap_bytes_ptr = (*pages_amount_ptr + 7) / 8;
     *bitmap_ptr = kearly_malloc(*bitmap_bytes_ptr);
     if (*bitmap_ptr == NULL) {
@@ -112,7 +112,7 @@ kpmm_dump(void)
         return;
     }
     KPRINTF_INFO("pmm dump: dump informations:");
-    KPRINTF_INFO("  PMM page size            : %d bytes", KERNEL_MEMORY_PMM_PAGE_SIZE);
+    KPRINTF_INFO("  PMM page size            : %d bytes", KPMM_PAGE_SIZE);
     KPRINTF_INFO("  Total pages calculated   : %d", kpmm_pages_amount);
     KPRINTF_INFO("  Free pages amount        : %d/%d", (uint32_t) kpmm_free_pages_amount, (uint32_t) kpmm_pages_amount);
     KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_bytes_amout);

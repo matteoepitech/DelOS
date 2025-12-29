@@ -25,7 +25,7 @@ kpmm_free_pages(void *page_ptr, uint32_t page_count)
     if (page_count == 0) {
         return KO_FALSE;
     }
-    page_i = (uint64_t) ((uint32_t) page_ptr) / KERNEL_MEMORY_PMM_PAGE_SIZE;
+    page_i = (uint64_t) ((uint32_t) page_ptr) / KPMM_PAGE_SIZE;
     for (uint32_t i = 0; i < page_count; i++) {
         kpmm_bitmap_set_value(page_i + i, KO_FALSE);
         kpmm_free_pages_amount++;
