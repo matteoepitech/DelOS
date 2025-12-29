@@ -4,16 +4,19 @@
 ; PROTECTED MODE
 ; ======================================================
 [bits 32]
+
 [extern kmain]
 [extern kvmm_init]
 [extern kearly_malloc_init]
 [extern kgdt_init]
 [extern kvmm_disable_identity_mapping]
 [extern kpmm_init]
+
 [extern __data_start]
 [extern __data_end]
 [extern __bss_start_phys]
 [extern __bss_end_phys]
+[extern __kernel_stack_end]
 
 ; KERNEL_VIRTUAL_BASE = The base of the address of the kernel in the virtual address space
 KERNEL_VIRTUAL_BASE equ 0xC0000000
@@ -41,8 +44,8 @@ setup_paging:
     jmp ecx
 
 higher_half:
-    add esp, KERNEL_VIRTUAL_BASE
-    add ebp, KERNEL_VIRTUAL_BASE
+    mov esp, __kernel_stack_end
+    mov ebp, esp
 
     call kgdt_init
     call kvmm_disable_identity_mapping

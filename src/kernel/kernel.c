@@ -11,6 +11,7 @@
 #include <kernel/arch/i386/interruption/pic.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/memory/vmm/vmm.h>
+#include <kernel/memory/stack.h>
 #include <kernel/shell/shell.h>
 #include <kernel/misc/panic.h>
 #include <utils/misc/print.h>
