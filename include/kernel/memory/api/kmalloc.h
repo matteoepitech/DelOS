@@ -11,9 +11,18 @@
 #ifndef KERNEL_MEMORY_API_KMALLOC_H_
     #define KERNEL_MEMORY_API_KMALLOC_H_
 
+    #ifndef KMALLOC_PAGE_SIZE
+        #define KMALLOC_PAGE_SIZE 4096 
+    #endif /* ifndef KMALLOC_PAGE_SIZE */
+
 /* @brief Variables from the linker script to describe the position of the heap in the RAM */
 extern uint8_t __kernel_heap_start;
 extern uint8_t __kernel_heap_end;
+
+/* @brief Variables for managing the heap */
+extern uint8_t *kernel_heap_base;  // The base of the heap in virtual space
+extern uint8_t *kernel_heap_brk;   // The current pointer to the program break (similary to brk() in linux)
+extern uint8_t *kernel_heap_limit; // The end of the heap in virtual space (no more heap after that)
 
 /*
  * @brief Header for a malloc data.
@@ -29,7 +38,7 @@ extern uint8_t __kernel_heap_end;
  */
 typedef struct kmalloc_header_s {
     bool32_t _free;
-    uint32_t *_size;
+    uint32_t _size;
     struct kmalloc_header_s *_next;
 } kmalloc_header_t;
 
