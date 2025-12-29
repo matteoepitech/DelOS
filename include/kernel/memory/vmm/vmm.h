@@ -11,39 +11,59 @@
 #ifndef KERNEL_MEMORY_VMM_H_
     #define KERNEL_MEMORY_VMM_H_
 
-// Structure of a virtual address:
-//
-// 31........22 | 21........12 | 11......0
-// PDE index    |   PTE index  |  offset
+    // Structure of a virtual address:
+    //
+    // 31........22 | 21........12 | 11......0
+    // PDE index    |   PTE index  |  offset
 
-#ifndef VMM_GET_PDE_INDEX
-    #define VMM_GET_PDE_INDEX(vaddr) ((vaddr >> 22) & 0x3FF)
-#endif /* ifndef VMM_GET_PDE_INDEX */
+    #ifndef VMM_GET_PDE_INDEX
+        #define VMM_GET_PDE_INDEX(vaddr) ((vaddr >> 22) & 0x3FF)
+    #endif /* ifndef VMM_GET_PDE_INDEX */
 
-#ifndef VMM_GET_PTE_INDEX
-    #define VMM_GET_PTE_INDEX(vaddr) ((vaddr >> 12) & 0x3FF)
-#endif /* ifndef VMM_GET_PTE_INDEX */
+    #ifndef VMM_GET_PTE_INDEX
+        #define VMM_GET_PTE_INDEX(vaddr) ((vaddr >> 12) & 0x3FF)
+    #endif /* ifndef VMM_GET_PTE_INDEX */
 
-#ifndef VMM_GET_OFFSET_VAL
-    #define VMM_GET_OFFSET_VAL(vaddr) (vaddr & 0xFFF)
-#endif /* ifndef VMM_GET_OFFSET_VAL */
+    #ifndef VMM_GET_OFFSET_VAL
+        #define VMM_GET_OFFSET_VAL(vaddr) (vaddr & 0xFFF)
+    #endif /* ifndef VMM_GET_OFFSET_VAL */
 
-#ifndef KERNEL_VIRTUAL_BASE
-    #define KERNEL_VIRTUAL_BASE 0xC0000000
-#endif /* ifndef KERNEL_VIRTUAL_BASE */
+    #ifndef KERNEL_VIRTUAL_BASE
+        #define KERNEL_VIRTUAL_BASE 0xC0000000
+    #endif /* ifndef KERNEL_VIRTUAL_BASE */
 
-#ifndef KERNEL_PD_INDEX
-    #define KERNEL_PD_INDEX (KERNEL_VIRTUAL_BASE / (1024 * 4096))
-#endif /* ifndef KERNEL_PD_INDEX */
+    #ifndef KERNEL_PD_INDEX
+        #define KERNEL_PD_INDEX (KERNEL_VIRTUAL_BASE / (1024 * 4096))
+    #endif /* ifndef KERNEL_PD_INDEX */
 
-#ifndef VMM_TRANSLATION
-    #define VIRT_TO_PHYS(addr) ((uint32_t) (addr) - KERNEL_VIRTUAL_BASE)
-    #define PHYS_TO_VIRT(addr) ((uint32_t) (addr) + KERNEL_VIRTUAL_BASE)
-#endif /* ifndef VMM_TRANSLATION */
+    #ifndef VMM_TRANSLATION
+        #define VIRT_TO_PHYS(addr) ((uint32_t) (addr) - KERNEL_VIRTUAL_BASE)
+        #define PHYS_TO_VIRT(addr) ((uint32_t) (addr) + KERNEL_VIRTUAL_BASE)
+    #endif /* ifndef VMM_TRANSLATION */
 
-#ifndef BOOT_PT_POOL_SIZE
-    #define BOOT_PT_POOL_SIZE 8
-#endif /* ifndef BOOT_PT_POOL_SIZE */
+    #ifndef VMM_RECURSIVE_INFO
+        #define VMM_RECURSIVE_INFO
+        #define VMM_RECURSIVE_PD_ADDR 0xFFFFF000
+        #define VMM_RECURSIVE_PT_BASE 0xFFC00000
+    #endif /* ifndef VMM_RECURSIVE_INFO */
+
+    #ifndef VMM_GET_PD
+        #define VMM_GET_PD ((page_directory_t *) VMM_RECURSIVE_PD_ADDR) // Using the recursive mapping
+    #endif /* ifndef VMM_GET_PD */
+
+    #ifndef VMM_GET_PT_VIA_PDE
+        #define VMM_GET_PT_VIA_PDE(pd_index) ((page_table_t *) (VMM_RECURSIVE_PT_BASE + (pd_index * 4096))) // Using the recursive mapping
+    #endif /* ifndef VMM_GET_PT_VIA_DE */
+
+    #ifndef VMM_FLAGS
+        #define VMM_FLAGS
+        #define VMM_FLAG_PRESENT   (1u << 0)
+        #define VMM_FLAG_READONLY  (0u << 1)
+        #define VMM_FLAG_WRITE     (1u << 1)
+        #define VMM_FLAG_RW        (1u << 1)
+        #define VMM_FLAG_USER      (1u << 2)
+        #define VMM_FLAG_KERNEL    (0u << 2)
+    #endif /* ifndef VMM_FLAGS */
 
 /* @brief The address type for a virtual address space */
 typedef uint32_t vaddr_t;
@@ -138,7 +158,7 @@ kvmm_disable_identity_mapping(void);
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-kvmm_map_page(vaddr_t vaddr, paddr_t paddr, UNUSED uint32_t flags);
+kvmm_map_page(vaddr_t vaddr, paddr_t paddr, uint32_t flags);
 
 /**
  * @brief Unmap a virtual address on the page table referenced by it's address.

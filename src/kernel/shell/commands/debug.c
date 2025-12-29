@@ -26,7 +26,7 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     paddr_t pd_frame = (paddr_t) kpmm_alloc_pages(1);
 
     KPRINTF_DEBUG("%x", pd_frame);
-    if (kvmm_map_page(0xC0400000, pd_frame, 0)) {
+    if (kvmm_map_page(0xC0400000, pd_frame, VMM_FLAG_USER | VMM_FLAG_RW | VMM_FLAG_PRESENT)) {
         KPRINTF_DEBUG("Vaddr %x, is mapped to Paddr %x.", 0xC0400000, pd_frame);
         kvmm_unmap_page(0xC0400000);
         kpmm_free_pages((void *) pd_frame, 1);
