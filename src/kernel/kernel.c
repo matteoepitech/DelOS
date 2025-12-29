@@ -9,6 +9,7 @@
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/arch/i386/interruption/idt.h>
 #include <kernel/arch/i386/interruption/pic.h>
+#include <kernel/memory/api/kmalloc.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/stack.h>
@@ -34,6 +35,7 @@ kmain(void)
     ktty_cursor_set_visibility(OK_TRUE);
     kinterruption_extern_start();
     kearly_malloc_disable();
+    kmalloc_init();
 
     kshell_start();
 

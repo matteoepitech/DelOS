@@ -11,22 +11,22 @@
     #define KERNEL_MEMORY_EARLY_ALLOCATOR_H_
 
     /* @brief The size of a page in KiB */
-    #ifndef KERNEL_MEMORY_EARLY_PAGE_SIZE
-        #define KERNEL_MEMORY_EARLY_PAGE_SIZE (1024 * 256)
-    #endif /* ifndef KERNEL_MEMORY_EARLY_PAGE_SIZE */
+    #ifndef KEARLY_PAGE_SIZE
+        #define KEARLY_PAGE_SIZE (1024 * 256)
+    #endif /* ifndef KEARLY_PAGE_SIZE */
 
     /* @brief This value (PAGE_SIZE * 1) is arbitrary (4 KiB) and can be increased if needed and argumented */
-    #ifndef KERNEL_MEMORY_EARLY_SIZE
-        #define KERNEL_MEMORY_EARLY_SIZE (KERNEL_MEMORY_EARLY_PAGE_SIZE * 1)
-    #endif /* ifndef KERNEL_MEMORY_EARLY_SIZE */
+    #ifndef KEARLY_SIZE
+        #define KEARLY_SIZE (KEARLY_PAGE_SIZE * 1)
+    #endif /* ifndef KEARLY_SIZE */
 
-    #ifndef KERNEL_MEMORY_EARLY_ALIGN_UP
-        #define KERNEL_MEMORY_EARLY_ALIGN_UP(x) (((x) + 7) & ~7)
-    #endif /* ifndef KERNEL_MEMORY_EARLY_ALIGN_UP */
+    #ifndef KEARLY_ALIGN_UP
+        #define KEARLY_ALIGN_UP(x) (((x) + 7) & ~7)
+    #endif /* ifndef KEARLY_ALIGN_UP */
 
-    #ifndef KERNEL_MEMORY_EARLY_DEFINE_END
-        #define KERNEL_MEMORY_EARLY_DEFINE_END(start) (start + KERNEL_MEMORY_EARLY_SIZE)
-    #endif /* ifndef KERNEL_MEMORY_EARLY_DEFINE_END */
+    #ifndef KEARLY_DEFINE_END
+        #define KEARLY_DEFINE_END(start) (start + KEARLY_SIZE)
+    #endif /* ifndef KEARLY_DEFINE_END */
 
 /*
  * @brief This symbol comes from the linker script which place it next to the end of the code space.

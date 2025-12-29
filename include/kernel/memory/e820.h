@@ -12,35 +12,35 @@
     #define KERNEL_MEMORY_PMM_E820_H_
     
     /* e820 data is written by the bootloader in low memory; keep in sync with boot/e820.s */
-    #ifndef E820_INFO_ADDR
-        #define E820_INFO_ADDR 0x0500
-    #endif /* ifndef E820_INFO_ADDR*/
+    #ifndef KE820_INFO_ADDR
+        #define KE820_INFO_ADDR 0x0500
+    #endif /* ifndef KE820_INFO_ADDR*/
 
-    #ifndef E820_BUFFER_ADDR
-        #define E820_BUFFER_ADDR 0x0600
-    #endif /* ifndef E820_BUFFER_ADDR*/
+    #ifndef KE820_BUFFER_ADDR
+        #define KE820_BUFFER_ADDR 0x0600
+    #endif /* ifndef KE820_BUFFER_ADDR*/
 
-    #ifndef E820_ENTRY_SIZE
-        #define E820_ENTRY_SIZE 0x18
-    #endif /* ifndef E820_ENTRY_SIZE*/
+    #ifndef KE820_ENTRY_SIZE
+        #define KE820_ENTRY_SIZE 0x18
+    #endif /* ifndef KE820_ENTRY_SIZE*/
 
-    #ifndef E820_MAX_ENTRIES
-        #define E820_MAX_ENTRIES 32
-    #endif /* ifndef E820_MAX_ENTRIES */
+    #ifndef KE820_MAX_ENTRIES
+        #define KE820_MAX_ENTRIES 32
+    #endif /* ifndef KE820_MAX_ENTRIES */
     /* -- stop syncing here -- */
 
-    #ifndef E820_TYPES
-        #define E820_TYPE_FREE 1
-        #define E820_TYPE_USED 2
-    #endif /* ifndef E820_TYPES */
+    #ifndef KE820_TYPES
+        #define KE820_TYPE_FREE 1
+        #define KE820_TYPE_USED 2
+    #endif /* ifndef KE820_TYPES */
 
-    #ifndef E820_INFO
-        #define E820_INFO ((volatile e820_memory_info_t *) (E820_INFO_ADDR))
-    #endif /* ifndef E820_INFO */
+    #ifndef KE820_INFO
+        #define KE820_INFO ((volatile e820_memory_info_t *) (KE820_INFO_ADDR))
+    #endif /* ifndef KE820_INFO */
 
-    #ifndef E820_INFO_VIRTUAL
-        #define E820_INFO_VIRTUAL ((volatile e820_memory_info_t *) (PHYS_TO_VIRT(E820_INFO_ADDR)))
-    #endif /* ifndef E820_INFO_VIRTUAL */
+    #ifndef KE820_INFO_VIRTUAL
+        #define KE820_INFO_VIRTUAL ((volatile e820_memory_info_t *) (PHYS_TO_VIRT(KE820_INFO_ADDR)))
+    #endif /* ifndef KE820_INFO_VIRTUAL */
 
 /*
  * @brief The structure of an e820 entry.

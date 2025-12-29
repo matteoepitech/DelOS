@@ -30,7 +30,7 @@ kearly_malloc(uint32_t bytes)
     uint8_t **heap_end_ptr = (uint8_t **) VIRT_TO_PHYS(&kernel_early_heap_end);
     void *ptr = NULL;
 
-    bytes = KERNEL_MEMORY_EARLY_ALIGN_UP(bytes);
+    bytes = KEARLY_ALIGN_UP(bytes);
     if (*available_ptr == KO_FALSE) {
         KPANIC_PHYS("Early allocator tried to allocate memory while being disabled.");
         return ptr;

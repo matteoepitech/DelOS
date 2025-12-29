@@ -73,10 +73,8 @@ SECTIONS
     __kernel_stack_end = .;
 
     /* Setup the heap in virtual space */
-    . = ALIGN(4096);
-    __kernel_heap_start = .;
-    . += KERNEL_HEAP_SIZE;
-    __kernel_heap_end = .;
+    __kernel_heap_start = 0xD0000000;
+    __kernel_heap_end = __kernel_heap_start + KERNEL_HEAP_SIZE;
 
     __kernel_virtual_end = .;
     __kernel_physical_end = . - KERNEL_VIRTUAL_BASE;

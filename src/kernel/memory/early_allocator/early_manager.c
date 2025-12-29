@@ -39,7 +39,7 @@ kearly_malloc_init(void)
         return KO_FALSE;
     }
     *heap_start_ptr = (uint8_t *) VIRT_TO_PHYS(&__kernel_early_heap_start);
-    *heap_end_ptr = KERNEL_MEMORY_EARLY_DEFINE_END(*heap_start_ptr);
+    *heap_end_ptr = KEARLY_DEFINE_END(*heap_start_ptr);
     if (*heap_end_ptr <= *heap_start_ptr) {
         KPANIC_PHYS("Early allocator: bad cursors.");
         return KO_FALSE;

@@ -33,10 +33,10 @@ pmm_free_pages_from_e820(void)
     }
 
     *free_pages_ptr = 0;
-    for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {
-        if (E820_INFO->_entries_buffer[i]._type == E820_TYPE_FREE) {
-            uint64_t base = E820_INFO->_entries_buffer[i]._base;
-            uint64_t length = E820_INFO->_entries_buffer[i]._length;
+    for (uint32_t i = 0; i < KE820_INFO->_entries_count; i++) {
+        if (KE820_INFO->_entries_buffer[i]._type == KE820_TYPE_FREE) {
+            uint64_t base = KE820_INFO->_entries_buffer[i]._base;
+            uint64_t length = KE820_INFO->_entries_buffer[i]._length;
             uint64_t region_start = base;
             uint64_t region_end = base + length;
 
@@ -76,8 +76,8 @@ kpmm_init(void)
     uint8_t *bitmap_phys = NULL;
     uint64_t max_phys = 0;
 
-    for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {
-        uint64_t end = E820_INFO->_entries_buffer[i]._base + E820_INFO->_entries_buffer[i]._length;
+    for (uint32_t i = 0; i < KE820_INFO->_entries_count; i++) {
+        uint64_t end = KE820_INFO->_entries_buffer[i]._base + KE820_INFO->_entries_buffer[i]._length;
         if (end > max_phys) {
             max_phys = end;
         }
@@ -105,7 +105,7 @@ kpmm_init(void)
 void
 kpmm_dump(void)
 {
-    e820_entry_t *entries = (e820_entry_t *) PHYS_TO_VIRT((uint32_t) E820_INFO_VIRTUAL->_entries_buffer);
+    e820_entry_t *entries = (e820_entry_t *) PHYS_TO_VIRT((uint32_t) KE820_INFO_VIRTUAL->_entries_buffer);
 
     if (kpmm_bitmap == NULL) {
         KPRINTF_ERROR("pmm dump: bitmap is NULL (initialization failed/missing)");
@@ -117,16 +117,16 @@ kpmm_dump(void)
     KPRINTF_INFO("  Free pages amount        : %d/%d", (uint32_t) kpmm_free_pages_amount, (uint32_t) kpmm_pages_amount);
     KPRINTF_INFO("  Bitmap size allocated    : %d bytes", kpmm_bitmap_bytes_amout);
     KPRINTF_INFO("  Bitmap virtual address   : %p", kpmm_bitmap);
-    KPRINTF_INFO("pmm dump: RAM regions from e820 BIOS: (%d)", E820_INFO_VIRTUAL->_entries_count);
-    for (uint32_t i = 0; i < E820_INFO_VIRTUAL->_entries_count; i++) {
+    KPRINTF_INFO("pmm dump: RAM regions from e820 BIOS: (%d)", KE820_INFO_VIRTUAL->_entries_count);
+    for (uint32_t i = 0; i < KE820_INFO_VIRTUAL->_entries_count; i++) {
         KPRINTFN_INFO("  Addr %08x with length %08x | TYPE: ",
             (uint32_t) (entries[i]._base),
             (uint32_t) (entries[i]._length));
         switch (entries[i]._type) {
-            case E820_TYPE_FREE:
+            case KE820_TYPE_FREE:
                 kprintf(VGA_TEXT_SUCCESS_COLOR, "Free\n");
                 break;
-            case E820_TYPE_USED:
+            case KE820_TYPE_USED:
                 kprintf(VGA_TEXT_ERROR_COLOR, "Used\n");
                 break;
             default:
