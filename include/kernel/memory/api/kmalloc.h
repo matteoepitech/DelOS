@@ -15,14 +15,19 @@
         #define KMALLOC_PAGE_SIZE 4096 
     #endif /* ifndef KMALLOC_PAGE_SIZE */
 
+    #ifndef KMALLOC_GO_AFTER_HEADER
+        #define KMALLOC_GO_AFTER_HEADER(header) ((kmalloc_header_t *) header + 1)
+    #endif /* ifndef KMALLOC_GO_AFTER_HEADER */
+
 /* @brief Variables from the linker script to describe the position of the heap in the RAM */
 extern uint8_t __kernel_heap_start;
 extern uint8_t __kernel_heap_end;
 
 /* @brief Variables for managing the heap */
-extern uint8_t *kernel_heap_base;  // The base of the heap in virtual space
-extern uint8_t *kernel_heap_brk;   // The current pointer to the program break (similary to brk() in linux)
-extern uint8_t *kernel_heap_limit; // The end of the heap in virtual space (no more heap after that)
+extern uint8_t *kernel_heap_base;               // The base of the heap in virtual space
+extern uint8_t *kernel_heap_brk;                // The current pointer to the program break (similary to brk() in linux)
+extern uint8_t *kernel_heap_limit;              // The end of the heap in virtual space (no more heap after that)
+extern struct kmalloc_header_s *kernel_heap_lh; // The last created header for the linked list (lh = last header)
 
 /*
  * @brief Header for a malloc data.
@@ -49,5 +54,15 @@ typedef struct kmalloc_header_s {
  */
 bool32_t
 kmalloc_init(void);
+
+/**
+ * @brief Allocate in the heap memory of the kernel an amount of bytes.
+ *
+ * @param size   The size in bytes of the data to be allocated (prefer aligned bytes by 8/16)
+ *
+ * @return The pointer to that data allocated on the kernel heap.
+ */
+void *
+kmalloc(uint32_t size);
 
 #endif /* ifndef KERNEL_MEMORY_API_KMALLOC_H_ */

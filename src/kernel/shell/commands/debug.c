@@ -6,6 +6,7 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
+#include <kernel/memory/api/kmalloc.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/shell/shell.h>
@@ -23,16 +24,6 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    paddr_t pd_frame = (paddr_t) kpmm_alloc_pages(1);
-
-    *((uint32_t *) (0xC0400000)) = 32;
-    return 0;
-    KPRINTF_DEBUG("%x", pd_frame);
-    if (kvmm_map_page(0xC0400000, pd_frame, KVMM_FLAG_USER | KVMM_FLAG_RW | KVMM_FLAG_PRESENT)) {
-        KPRINTF_DEBUG("Vaddr %x, is mapped to Paddr %x.", 0xC0400000, pd_frame);
-        kvmm_unmap_page(0xC0400000);
-        kpmm_free_pages((void *) pd_frame, 1);
-        KPRINTF_DEBUG("Vaddr %x, is unmapped.", 0xC0400000);
-    }
+    kmalloc(10);
     return OK_TRUE;
 }
