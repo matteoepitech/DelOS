@@ -46,14 +46,6 @@ __attribute__((used)) bool32_t
 kpmm_init(void);
 
 /**
- * @brief Debug function to display PMM internal informations.
- *        This function does NOT allocate anything and does NOT modify the PMM state.
- *        It is only used to validate PMM assumptions during early boot.
- */
-void
-kpmm_dump(void);
-
-/**
  * @brief Get the next bitmap concerning the next free page.
  *
  * @return The index of the bitmap concerning the next page.

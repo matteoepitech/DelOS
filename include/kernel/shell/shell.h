@@ -200,4 +200,15 @@ kshell_pmm_dump(UNUSED uint32_t argc, UNUSED char *argv[]);
 uint8_t
 kshell_bitmap_dump(uint32_t argc, char *argv[]);
 
+/**
+ * @brief Command for heap_dump.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_heap_dump(UNUSED uint32_t argc, UNUSED char *argv[]);
+
 #endif /* ifndef KERNEL_SHELL_H_ */
