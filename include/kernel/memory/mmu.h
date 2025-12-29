@@ -5,6 +5,7 @@
 ** MMU header file
 */
 
+#include <kernel/memory/vmm/vmm.h>
 #include <types.h>
 
 #ifndef KERNEL_MEMORY_MMU_H_
@@ -16,11 +17,27 @@
  * @param paddr   The physical address of the page directory to load on the CR3
  */
 static inline void
-kmmu_load_cr3(uint32_t paddr)
+kmmu_load_cr3(paddr_t paddr)
 {
     // AT&T syntax used by GCC
     // mov source, destination
     __asm__ volatile("mov %0, %%cr3" :: "r"(paddr));
+}
+
+/**
+ * @brief Read CR2 register (faulting virtual address).
+ *
+ * @return The virtual address stored in CR2.
+ */
+static inline vaddr_t
+kmmu_get_cr2(void)
+{
+    vaddr_t val = 0;
+
+    // AT&T syntax used by GCC
+    // mov source, destination
+    __asm__ volatile("mov %%cr2, %0" : "=r"(val) :: "memory");
+    return val;
 }
 
 /**

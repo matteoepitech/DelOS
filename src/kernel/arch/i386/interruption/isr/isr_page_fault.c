@@ -6,7 +6,9 @@
 */
 
 #include <kernel/arch/i386/interruption/isr.h>
+#include <utils/kstdlib/kstdio.h>
 #include <kernel/misc/panic.h>
+#include <kernel/memory/mmu.h>
 #include <kernel/tty/tty.h>
 #include <defines.h>
 
@@ -16,7 +18,14 @@
  * @param regs          The registers
  */
 void
-isr_page_fault(registers_t *regs)
+isr_page_fault(UNUSED registers_t *regs)
 {
-    KPANIC("Page fault invoked...");
+    char buffer[64] = {0};
+
+    ksprintf(buffer, "Page fault invoked by accessing the address %x.", kmmu_get_cr2());
+    if (buffer[63] != 0) {
+        KPANIC("Page fault invoked without getting access to the address (buffer too small).");
+        return;
+    }
+    KPANIC(buffer);
 }

@@ -14,6 +14,7 @@
         #define KPANIC(msg) kpanic(msg, __FILE__, __LINE__)
     #endif /* ifndef KPANIC */
 
+    /* @brief Do not use this KPANIC after the paging activated */
     #ifndef KPANIC_PHYS
         #define KPANIC_PHYS(msg) kpanic_phys(msg, __FILE__, __LINE__)
     #endif /* ifndef KPANIC_PHYS */
