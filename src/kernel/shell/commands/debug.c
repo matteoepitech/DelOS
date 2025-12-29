@@ -12,26 +12,25 @@
 #include <utils/misc/print.h>
 #include <defines.h>
 
+/**
+ * @brief Command for debug.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    void *physical = kpmm_alloc_pages(1);
-    KPRINTF_DEBUG("Physical allocated: 0x%x\n", physical);
+    paddr_t pd_frame = (paddr_t) kpmm_alloc_pages(1);
 
-    void *virtual = (void *) (0xC0400000);
-    KPRINTF_DEBUG("Virtual target: 0x%x\n", virtual);
-
-    KPRINTF_DEBUG("Before kvmm_map_page...\n");
-    kvmm_map_page((uint32_t) virtual, (uint32_t) physical, 0);
-
-    KPRINTF_DEBUG("After kvmm_map_page...\n");
-
-    KPRINTF_DEBUG("Testing write...\n");
-    *(uint32_t *)virtual = 0xDEADBEEF;
-
-    KPRINTF_DEBUG("Testing read...\n");
-    uint32_t value = *(uint32_t *)virtual;
-
-    KPRINTF_DEBUG("Value read: 0x%x\n", value);
+    KPRINTF_DEBUG("%x", pd_frame);
+    if (kvmm_map_page(0xC0400000, pd_frame, 0)) {
+        KPRINTF_DEBUG("Vaddr %x, is mapped to Paddr %x.", 0xC0400000, pd_frame);
+        kvmm_unmap_page(0xC0400000);
+        kpmm_free_pages((void *) pd_frame, 1);
+        KPRINTF_DEBUG("Vaddr %x, is unmapped.", 0xC0400000);
+    }
     return OK_TRUE;
 }

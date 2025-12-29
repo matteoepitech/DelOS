@@ -13,7 +13,7 @@
  *
  * @param page_count     The number of pages allocated
  *
- * @return The pointer to the start of all pages allocated.
+ * @return The pointer to the start of all pages allocated. Physical address.
  */
 void *
 kpmm_alloc_pages(uint32_t page_count)

@@ -34,6 +34,9 @@ extern uint32_t kpmm_pages_amount;
 /* @brief This variable is the amount of free pages available in the bitmap */
 extern uint32_t kpmm_free_pages_amount;
 
+/* @brief Variable from the linker script which is the end of the kernel in physical address mode */
+extern uint8_t __kernel_physical_end;
+
 /**
  * @brief Init the PMM using the early_allocator and calculating amount of bitmaps needed.
  *
@@ -95,7 +98,7 @@ kpmm_bitmap_set_value(uint64_t bitmap_bit_i, bool32_t being_used);
  *
  * @param page_count     The number of pages allocated
  *
- * @return The pointer to the start of all pages allocated.
+ * @return The pointer to the start of all pages allocated. Physical address.
  */
 void *
 kpmm_alloc_pages(uint32_t page_count);

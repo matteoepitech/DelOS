@@ -26,7 +26,11 @@ pmm_free_pages_from_e820(void)
     uint8_t **bitmap_ptr = (uint8_t **) VIRT_TO_PHYS(&kpmm_bitmap);
     uint8_t *bitmap_phys = *bitmap_ptr;
     uint32_t *free_pages_ptr = (uint32_t *) VIRT_TO_PHYS(&kpmm_free_pages_amount);
-    const uint64_t min_free_phys = KERNEL_MEMORY_PMM_MIN_BASE;
+    uint64_t min_free_phys = ALIGN_UP((uint32_t) &__kernel_physical_end, KERNEL_MEMORY_PMM_PAGE_SIZE);
+
+    if (min_free_phys < KERNEL_MEMORY_PMM_MIN_BASE) {
+        min_free_phys = KERNEL_MEMORY_PMM_MIN_BASE;
+    }
 
     *free_pages_ptr = 0;
     for (uint32_t i = 0; i < E820_INFO->_entries_count; i++) {

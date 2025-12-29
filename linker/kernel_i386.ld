@@ -61,8 +61,6 @@ SECTIONS
     __kernel_early_heap_end = .;
 
     __kernel_end = .;
-    __kernel_virtual_end = .;
-    __kernel_physical_end = . - KERNEL_VIRTUAL_BASE;
 
     __kernel_size = __kernel_end - __kernel_start;
     __kernel_size_pages = (__kernel_size + 4095) / 4096;
@@ -72,4 +70,7 @@ SECTIONS
     __kernel_stack_start = .;
     . += KERNEL_STACK_SIZE;
     __kernel_stack_end = .;
+
+    __kernel_virtual_end = .;
+    __kernel_physical_end = . - KERNEL_VIRTUAL_BASE;
 }
