@@ -23,7 +23,7 @@
 static uint32_t
 get_amount_heap_header(bool32_t only_free)
 {
-    kmalloc_header_t *h = (kmalloc_header_t *) kernel_heap_base;
+    kmalloc_header_t *h = kernel_heap_lh;
     uint32_t amount = 0;
 
     while (h != NULL) {
@@ -48,9 +48,9 @@ get_amount_heap_header(bool32_t only_free)
 uint8_t
 kshell_heap_dump(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    kmalloc_header_t *hdr = (kmalloc_header_t *) kernel_heap_base;
     uint32_t free = get_amount_heap_header(OK_TRUE);
     uint32_t used = get_amount_heap_header(KO_FALSE) - free;
+    kmalloc_header_t *hdr = kernel_heap_lh;
 
     KPRINTF_INFO("heapdump: dump informations (kmalloc):");
     KPRINTF_INFO("  base : %x", (uint32_t) kernel_heap_base);
@@ -60,13 +60,14 @@ kshell_heap_dump(UNUSED uint32_t argc, UNUSED char *argv[])
     KPRINTF_INFO("  hdrs : %d used / %d free", used, free);
     KPRINTF_INFO("heapdump: headers details:");
     for (uint32_t i = 0; hdr != NULL; hdr = hdr->_next) {
-        KPRINTFN_INFO("  #%d  ", i);
+        KPRINTFN_INFO("  #%03d  ", i);
         if (hdr->_free) {
             kprintf(VGA_TEXT_SUCCESS_COLOR, "FREE");
         } else {
             kprintf(VGA_TEXT_ERROR_COLOR, "USED");
         }
-        kprintf(VGA_TEXT_DEFAULT_COLOR, "  size=%dB  hdr=%x\n", hdr->_size, (uint32_t) hdr);
+        kprintf(VGA_TEXT_DEFAULT_COLOR, "  remaining=%dB  hdr=%x\n", hdr->_size, (uint32_t) hdr);
+        i++;
     }
     return OK_TRUE;
 }

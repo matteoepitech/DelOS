@@ -23,7 +23,7 @@
 static kmalloc_header_t *
 find_free_heap_header(uint32_t size)
 {
-    kmalloc_header_t *tmp_header = (kmalloc_header_t *) kernel_heap_base;
+    kmalloc_header_t *tmp_header = kernel_heap_lh;
 
     while (tmp_header != NULL) {
         if (tmp_header->_free == OK_TRUE && tmp_header->_size >= size) {
@@ -59,8 +59,10 @@ create_heap_header(uint32_t size)
         return NULL;
     }
     header->_free = KO_FALSE;
-    header->_size = KMALLOC_PAGE_SIZE - sizeof(kmalloc_header_t);
+    header->_size = KMALLOC_PAGE_SIZE - sizeof(kmalloc_header_t) - size;
     header->_next = kernel_heap_lh;
+    kernel_heap_lh = header;
+    kernel_heap_brk = ((uint8_t *) kernel_heap_brk) + KMALLOC_PAGE_SIZE;
     return header;
 }
 
