@@ -69,4 +69,17 @@
 uint32_t
 kprintf(uint8_t color, char *format, ...);
 
+/**
+ * @brief Write formatted output to a buffer (like sprintf).
+ *        Supported format specifiers and padding options mirror kprintf.
+ *
+ * @param buffer     The output buffer (must be large enough)
+ * @param format     The format string buffer containing text and format specifiers
+ * @param ...        The variadic arguments corresponding to format specifiers
+ *
+ * @return Number of characters written, excluding the terminating null byte.
+ */
+uint32_t
+ksprintf(char *buffer, char *format, ...);
+
 #endif /* ifndef UTILS_KSTDLIB_KSTDIO_H_ */

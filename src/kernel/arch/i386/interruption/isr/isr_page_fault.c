@@ -16,7 +16,7 @@
  * @param regs          The registers
  */
 void
-isr_page_fault(UNUSED registers_t *regs)
+isr_page_fault(registers_t *regs)
 {
     KPANIC("Page fault invoked...");
 }

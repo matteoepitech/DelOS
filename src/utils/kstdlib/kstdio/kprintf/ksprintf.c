@@ -1,14 +1,13 @@
 /*
 ** DELOS PROJECT, 2025
-** src/utils/kstdlib/stdio/kprintf
+** src/utils/kstdlib/stdio/ksprintf
 ** File description:
-** Kprintf source file
+** Ksprint source file
 */
 
 #include <utils/kstdlib/kstdarg.h>
 #include <utils/kstdlib/kstring.h>
 #include <utils/kstdlib/kstdio.h>
-#include <kernel/tty/tty.h>
 #include <defines.h>
 
 /**
@@ -166,41 +165,61 @@ kitoa(int32_t value, char *buffer)
 }
 
 /**
- * @brief Apply padding to a string and print it.
+ * @brief Write len bytes from src into out buffer pointer.
  *
- * @param str        The string to print
+ * @param out    Pointer to the output cursor
+ * @param src    The source buffer
+ * @param len    Amount of bytes to write
+ */
+static void
+kbuf_write(char **out, const char *src, uint32_t len)
+{
+    if (out == NULL || *out == NULL || src == NULL) {
+        return;
+    }
+    for (uint32_t i = 0; i < len; i++) {
+        **out = src[i];
+        (*out)++;
+    }
+}
+
+/**
+ * @brief Apply padding to a string and write it to the buffer.
+ *
+ * @param out        Pointer to the output cursor
+ * @param str        The string to write
  * @param len        The length of the string
  * @param width      The minimum width
  * @param pad_char   The padding character ('0' or ' ')
- * @param color      The color to use for output
  *
- * @return The number of characters printed.
+ * @return The number of characters written.
  */
 static uint32_t
-kprint_padded(char *str, uint32_t len, uint32_t width, char pad_char, uint8_t color)
+kprint_padded(char **out, char *str, uint32_t len, uint32_t width, char pad_char)
 {
     uint32_t count = 0;
     uint32_t padding = 0;
-    char pad[2] = {pad_char, '\0'};
 
-    if (str == NULL) {
+    if (out == NULL || str == NULL) {
         return 0;
     }
     if (width > len) {
         padding = width - len;
     }
     if (str[0] == '-' && pad_char == '0' && padding > 0) {
-        ktty_puts("-", color);
+        **out = '-';
+        (*out)++;
         count++;
         str++;
         len--;
     }
     while (padding > 0) {
-        ktty_puts(pad, color);
+        **out = pad_char;
+        (*out)++;
         count++;
         padding--;
     }
-    ktty_puts(str, color);
+    kbuf_write(out, str, len);
     count += len;
     return count;
 }
@@ -232,17 +251,17 @@ kparse_format(char *format, uint32_t *i, uint32_t *width, uint8_t *pad_zero)
 }
 
 /**
- * @brief Handle format specifier and print corresponding value.
+ * @brief Handle format specifier and write corresponding value.
  *
+ * @param out        Pointer to the output cursor
  * @param format     The format string
  * @param i          The current index (will be updated)
  * @param va         The variadic argument list
- * @param color      The color to use for output
  *
- * @return The number of characters printed.
+ * @return The number of characters written.
  */
 static uint32_t
-khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
+khandle_format(char **out, char *format, uint32_t *i, kva_list *va)
 {
     char buffer[64];
     uint32_t width = 0;
@@ -254,7 +273,7 @@ khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
     char c = 0;
     char pad_char = ' ';
 
-    if (format == NULL || i == NULL || va == NULL) {
+    if (out == NULL || format == NULL || i == NULL || va == NULL) {
         return 0;
     }
     kparse_format(format, i, &width, &pad_zero);
@@ -271,135 +290,97 @@ khandle_format(char *format, uint32_t *i, kva_list *va, uint8_t color)
                 int64_t value64 = KVA_ARG(*va, int64_t);
 
                 len = kitoa64(value64, buffer);
-                return kprint_padded(buffer, len, width, pad_char, color);
+                return kprint_padded(out, buffer, len, width, pad_char);
             }
             value = KVA_ARG(*va, int32_t);
-            len = kitoa((int32_t)value, buffer);
-            return kprint_padded(buffer, len, width, pad_char, color);
+            len = kitoa((int32_t) value, buffer);
+            return kprint_padded(out, buffer, len, width, pad_char);
         case 'x':
             if (is_long == OK_TRUE) {
                 uint64_t value64 = KVA_ARG(*va, uint64_t);
 
-                ktty_puts("0x", color);
+                kbuf_write(out, "0x", 2);
                 len = kuitoa64(value64, 16, buffer, KO_FALSE);
-                return kprint_padded(buffer, len, width, pad_char, color);
+                return 2 + kprint_padded(out, buffer, len, width, pad_char);
             }
             value = KVA_ARG(*va, uint32_t);
-            ktty_puts("0x", color);
+            kbuf_write(out, "0x", 2);
             len = kuitoa(value, 16, buffer, KO_FALSE);
-            return kprint_padded(buffer, len, width, pad_char, color);
+            return 2 + kprint_padded(out, buffer, len, width, pad_char);
         case 'X':
             value = KVA_ARG(*va, uint32_t);
-            ktty_puts("0X", color);
+            kbuf_write(out, "0X", 2);
             len = kuitoa(value, 16, buffer, OK_TRUE);
-            return kprint_padded(buffer, len, width, pad_char, color);
+            return 2 + kprint_padded(out, buffer, len, width, pad_char);
         case 'b':
             value = KVA_ARG(*va, uint32_t);
             len = kuitoa(value, 2, buffer, KO_FALSE);
-            return kprint_padded(buffer, len, width, pad_char, color);
+            return kprint_padded(out, buffer, len, width, pad_char);
         case 'p':
             value = KVA_ARG(*va, uint32_t);
-            ktty_puts("0x", color);
+            kbuf_write(out, "0x", 2);
             len = kuitoa(value, 16, buffer, KO_FALSE);
-            return 2 + kprint_padded(buffer, len, width > 2 ? width - 2 : 0, pad_char, color);
+            return 2 + kprint_padded(out, buffer, len, width > 2 ? width - 2 : 0, pad_char);
         case 's':
             str = KVA_ARG(*va, char *);
-            if (str == NULL)
+            if (str == NULL) {
                 str = "(null)";
+            }
             len = kstrlen(str);
-            return kprint_padded(str, len, width, ' ', color);
+            return kprint_padded(out, str, len, width, ' ');
         case 'c':
-            c = (char)KVA_ARG(*va, int);
+            c = (char) KVA_ARG(*va, int);
             buffer[0] = c;
             buffer[1] = '\0';
-            return kprint_padded(buffer, 1, width, ' ', color);
+            return kprint_padded(out, buffer, 1, width, ' ');
         case '%':
-            ktty_puts("%", color);
+            **out = '%';
+            (*out)++;
             return 1;
         default:
-            ktty_puts("%", color);
-            ktty_puts(&format[*i], color);
+            **out = '%';
+            (*out)++;
+            **out = format[*i];
+            (*out)++;
             return 2;
     }
 }
 
 /**
- * @brief Print formatted output to the screen using TTY API.
+ * @brief Write formatted output to a buffer (like sprintf).
  *
- * This function provides a printf-like interface for kernel output with support
- * for various format specifiers and padding options.
+ * This function provides a printf-like interface but writes into the given
+ * buffer instead of the TTY. The supported format specifiers and padding
+ * options are identical to kprintf.
  *
- * Format specifiers:
- *   %d  - Signed decimal integer (int32_t)
- *         Example: kprintf("%d", -42) → "-42"
- *
- *   %ld - Signed decimal integer (int64_t)
- *         Example: kprintf("%ld", -42) → "-42"
- *
- *   %x  - Unsigned hexadecimal integer, lowercase (uint32_t)
- *         Example: kprintf("%x", 255) → "ff"
- *
- *   %lx - Unsigned hexadecimal integer, lowercase (uint64_t)
- *         Example: kprintf("%lx", 0x1122334455667788) → "0x1122334455667788"
- *
- *   %X  - Unsigned hexadecimal integer, uppercase (uint32_t)
- *         Example: kprintf("%X", 255) → "FF"
- *
- *   %b  - Unsigned binary integer (uint32_t)
- *         Example: kprintf("%b", 5) → "101"
- *
- *   %p  - Pointer address (prefixed with "0x")
- *         Example: kprintf("%p", ptr) → "0x7fff1234"
- *
- *   %s  - Null-terminated string (char*)
- *         Example: kprintf("%s", "hello") → "hello"
- *         Note: NULL pointers are displayed as "(null)"
- *
- *   %c  - Single character (char)
- *         Example: kprintf("%c", 'A') → "A"
- *
- *   %%  - Literal percent sign
- *         Example: kprintf("100%%") → "100%"
- *
- * Padding options:
- *   %Nd   - Minimum width of N characters, padded with spaces on the left
- *           Example: kprintf("%5d", 42) → "   42"
- *
- *   %0Nd  - Minimum width of N characters, padded with zeros on the left
- *           Example: kprintf("%05d", 42) → "00042"
- *           Note: For negative numbers, sign is placed before zeros
- *           Example: kprintf("%05d", -42) → "-0042"
- *
- * Padding works with all numeric specifiers (%d, %x, %X, %b, %p) and strings.
- * Character specifiers (%c) use space padding only.
- *
- * @param color      The VGA text color to use for output
+ * @param buffer     The output buffer (must be large enough)
  * @param format     The format string buffer containing text and format specifiers
  * @param ...        The variadic arguments corresponding to format specifiers
  *
- * @return The total number of characters printed to the screen.
+ * @return Number of characters written, excluding the terminating null byte.
  */
 uint32_t
-kprintf(uint8_t color, char *format, ...)
+ksprintf(char *buffer, char *format, ...)
 {
     kva_list va = KVA_START(format);
     uint32_t i = 0;
     uint32_t count = 0;
-    char c[2] = {0, 0};
+    char *out = buffer;
 
-    if (format == NULL) {
+    if (buffer == NULL || format == NULL) {
         return 0;
     }
     while (format[i]) {
         if (format[i] == '%' && format[i + 1]) {
             i++;
-            count += khandle_format(format, &i, &va, color);
+            count += khandle_format(&out, format, &i, &va);
         } else {
-            c[0] = format[i];
-            ktty_puts(c, color);
+            *out = format[i];
+            out++;
             count++;
         }
         i++;
     }
+    *out = '\0';
     return count;
 }
