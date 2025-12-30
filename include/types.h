@@ -44,6 +44,12 @@ typedef long long int64_t;
 typedef uint32_t size_t;
 
 /**
+ * @brief Unsigned integer (4 bytes)
+ *        Use in more specific case to precise this is an offset. (e.g. in VFS)
+ */
+typedef uint32_t off_t;
+
+/**
  * @brief Short (2 bytes)
  */
 typedef short int16_t;
