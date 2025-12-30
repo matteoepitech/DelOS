@@ -7,6 +7,7 @@
 
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/memory/api/kmalloc.h>
+#include <utils/kstdlib/kstring.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/shell/shell.h>
@@ -24,9 +25,13 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    char *my_string = kmalloc(sizeof("Salut tout le monde"));
-    char *my_string2 = kmalloc(sizeof("Salut tout le monde"));
+    const char *val = "Hello World!";
+    const uint32_t len = kstrlen(val);
+    char *alloc = kmalloc(sizeof(char) * (len + 1));
 
-    kfree(my_string);
+    for (uint32_t i = 0; i <= len; i++) {
+        alloc[i] = val[i];
+    }
+    KPRINTF_DEBUG("Result: %s", alloc);
     return OK_TRUE;
 }
