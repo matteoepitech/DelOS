@@ -24,6 +24,9 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    kmalloc(10);
+    char *my_string = kmalloc(sizeof("Salut tout le monde"));
+    char *my_string2 = kmalloc(sizeof("Salut tout le monde"));
+
+    kfree(my_string);
     return OK_TRUE;
 }

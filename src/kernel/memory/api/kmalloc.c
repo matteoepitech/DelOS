@@ -59,7 +59,7 @@ create_heap_header(uint32_t size)
         return NULL;
     }
     header->_free = KO_FALSE;
-    header->_size = KMALLOC_PAGE_SIZE - sizeof(kmalloc_header_t) - size;
+    header->_size = KMALLOC_PAGE_SIZE - sizeof(kmalloc_header_t);
     header->_next = kernel_heap_lh;
     kernel_heap_lh = header;
     kernel_heap_brk = ((uint8_t *) kernel_heap_brk) + KMALLOC_PAGE_SIZE;
@@ -84,13 +84,9 @@ kmalloc(uint32_t size)
     size = ALIGN_UP(size, 8);
     header = find_free_heap_header(size);
     if (header == NULL) {
-        KPRINTF_ERROR("Didn't found any space for the heap allocation..");
-        KPRINTF_OK("Creating one...");
         return create_heap_header(size);
     } else {
-        KPRINTF_OK("Found a space for the heap allocation...");
         header->_free = KO_FALSE;
-        header->_size -= size;
         return KMALLOC_GO_AFTER_HEADER(header);
     }
     return NULL;

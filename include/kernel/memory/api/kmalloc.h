@@ -19,6 +19,10 @@
         #define KMALLOC_GO_AFTER_HEADER(header) ((kmalloc_header_t *) header + 1)
     #endif /* ifndef KMALLOC_GO_AFTER_HEADER */
 
+    #ifndef KMALLOC_GO_BEFORE_HEADER
+        #define KMALLOC_GO_BEFORE_HEADER(header) ((kmalloc_header_t *) header - 1)
+    #endif /* ifndef KMALLOC_GO_BEFORE_HEADER */
+
 /* @brief Variables from the linker script to describe the position of the heap in the RAM */
 extern uint8_t __kernel_heap_start;
 extern uint8_t __kernel_heap_end;
@@ -32,7 +36,7 @@ extern struct kmalloc_header_s *kernel_heap_lh; // The last created header for t
 /*
  * @brief Header for a malloc data.
  *        - free = if the data block is free then OK_TRUE, KO_FALSE otherwise
- *        - size = the size of the data
+ *        - size = the size of allocation
  *        - next = the next header data
  *
  *        This header is before the real data to make the free list easier.
@@ -64,5 +68,15 @@ kmalloc_init(void);
  */
 void *
 kmalloc(uint32_t size);
+
+/**
+ * @brief Free data allocated from kmalloc.
+ *
+ * @param ptr    The pointer to the data allocated to be freed
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kfree(void *ptr);
 
 #endif /* ifndef KERNEL_MEMORY_API_KMALLOC_H_ */

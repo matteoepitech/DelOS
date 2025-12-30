@@ -66,7 +66,7 @@ kshell_heap_dump(UNUSED uint32_t argc, UNUSED char *argv[])
         } else {
             kprintf(VGA_TEXT_ERROR_COLOR, "USED");
         }
-        kprintf(VGA_TEXT_DEFAULT_COLOR, "  remaining=%dB  hdr=%x\n", hdr->_size, (uint32_t) hdr);
+        kprintf(VGA_TEXT_DEFAULT_COLOR, "  size=%dB  hdr=%x\n", hdr->_size, (uint32_t) hdr);
         i++;
     }
     return OK_TRUE;
