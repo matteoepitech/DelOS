@@ -19,6 +19,10 @@
         #define KVFS_MOUNT_PATH_MAX_LEN 64 
     #endif /* ifndef KVFS_MOUNT_PATH_MAX_LEN */
 
+    #ifndef KVFS_REGISTRY_LEN
+        #define KVFS_REGISTRY_LEN 1
+    #endif /* ifndef KVFS_REGISTRY_LEN */
+
 /*
  * @brief This enumeration contains all differents type of a node for the VFS.
  */
