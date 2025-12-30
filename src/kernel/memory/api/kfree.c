@@ -22,7 +22,7 @@ kfree(void *ptr)
 {
     kmalloc_header_t *header = NULL;
 
-    if (ptr == NULL) {
+    if (ptr == NULL || (uint32_t) ptr < (uint32_t) kernel_heap_base || (uint32_t) ptr > (uint32_t) kernel_heap_brk) {
         return KO_FALSE;
     }
     header = KMALLOC_GO_BEFORE_HEADER(ptr);

@@ -1,13 +1,14 @@
 # TODO DelOS
 
 ## Memory stuff
-- [ ] Fix `kearly_malloc_init` start/end check (NULL vs non-NULL typo) and enforce a hard panic if the early allocator is called after it is disabled; add a simple "bytes used/remaining" counter for debugging.
+- [x] Fix `kearly_malloc_init` start/end check (NULL vs non-NULL typo) and enforce a hard panic if the early allocator is called after it is disabled; add a simple "bytes used/remaining" counter for debugging.
 - [ ] Map the whole kernel image + early heap + stack based on `__kernel_physical_end` (not a fixed 4 MiB window); keep identity mappings for required low-memory regions (BIOS data/e820/VRAM/low MMIO) until safe to drop; ensure higher-half access to e820/early data.
 - [ ] PMM: add a range-reservation helper (initrd/MMIO/APIC/VGA/firmware tables); return NULL instead of panicking when no contiguous run exists; validate `page_count <= kpmm_free_pages_amount`; detect double free and expose a `kpmm_mark_used_range` API.
 - [ ] PMM: add an aligned/2^n allocation helper and optionally "alloc without zeroing"; expose stats (total/free/highest page).
-- [ ] VMM: make `kvmm_unmap_page` free frames via PMM, drop empty page tables, and flush TLB when removing PDEs; add `kvmm_get_mapping` + `kvmm_map_kernel_range` + helpers for device mappings (write-combine/non-cacheable flags).
 - [ ] Page-fault path: install #PF/#GP/#DF handlers that log CR2/error code + PDE/PTE snapshot, then panic cleanly; add a fallback IDT/GDT for double faults.
-- [ ] Heap: enforce `kernel_heap_limit`, bail cleanly if `create_heap_header` fails, validate pointers in `kfree` (heap range + double-free); add block split/merge and return fully free pages to PMM; add aligned alloc and optional `krealloc`.
+- [x] Heap: enforce `kernel_heap_limit`, bail cleanly if `create_heap_header` fails, validate pointers in `kfree` (heap range + double-free).
+- [ ] Heap: add block split/merge
+- [ ] Heap: add aligned alloc and optional `krealloc`.
 - [ ] Heap hardening: add simple canaries/poison for freed blocks and expose heap stats (bytes used/free, fragments) to shell.
 - [x] Memory library: fix `kmemcpy` pointer arithmetic on `void *`; add 32-bit optimized `kmemset`, `memcmp`, `strnlen`, `strncpy`; add self-tests for `memcpy`/`memmove`/`memset`.
 - [ ] Map MMIO windows (VGA text, serial, LAPIC/IOAPIC, PIT/RTC) explicitly in higher-half with correct cache flags; keep identity for required ports until PIC reprogram done.

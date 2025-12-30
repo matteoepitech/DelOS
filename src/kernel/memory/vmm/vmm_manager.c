@@ -26,14 +26,14 @@ page_directory_t *kvmm_page_directory = NULL;
  * @return The pointer to the allocated page table, NULL if allocation failed.
  */
 static page_table_t *
-kvmm_alloc_page_table(void)
+alloc_page_table(void)
 {
     page_table_t *pt = (page_table_t *) kearly_malloc_aligned(sizeof(page_table_t), 4096);
 
     if (pt == NULL) {
         return NULL;
     }
-    kmemset((uint8_t *)pt, 0, sizeof(page_table_t));
+    kmemset((uint8_t *) pt, 0, sizeof(page_table_t));
     return pt;
 }
 
@@ -44,7 +44,7 @@ kvmm_alloc_page_table(void)
  * @param pt  The page table to setup
  */
 static void
-kvmm_setup_page_table_entries(page_table_t *pt)
+setup_page_table_entries(page_table_t *pt)
 {
     uint32_t phys_addr = 0;
 
@@ -64,7 +64,7 @@ kvmm_setup_page_table_entries(page_table_t *pt)
  * @param pt     The page table to reference
  */
 static void
-kvmm_setup_page_directory_entry(page_directory_entry_t *entry, page_table_t *pt)
+setup_page_directory_entry(page_directory_entry_t *entry, page_table_t *pt)
 {
     entry->_present = 1;
     entry->_rw = 1;
@@ -81,16 +81,16 @@ kvmm_setup_page_directory_entry(page_directory_entry_t *entry, page_table_t *pt)
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 static bool32_t
-kvmm_setup_identity_mapping(page_directory_t *pd)
+setup_identity_mapping(page_directory_t *pd)
 {
-    page_table_t *identity_pt = kvmm_alloc_page_table();
+    page_table_t *identity_pt = alloc_page_table();
 
     if (identity_pt == NULL) {
         KPANIC_PHYS("Failed to allocate identity page table.");
         return KO_FALSE;
     }
-    kvmm_setup_page_table_entries(identity_pt);
-    kvmm_setup_page_directory_entry(&pd->_entries[0], identity_pt);
+    setup_page_table_entries(identity_pt);
+    setup_page_directory_entry(&pd->_entries[0], identity_pt);
     return OK_TRUE;
 }
 
@@ -103,17 +103,17 @@ kvmm_setup_identity_mapping(page_directory_t *pd)
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 static bool32_t
-kvmm_setup_higher_half_mapping(page_directory_t *pd)
+setup_higher_half_mapping(page_directory_t *pd)
 {
-    page_table_t *higher_half_pt = kvmm_alloc_page_table();
+    page_table_t *higher_half_pt = alloc_page_table();
     uint32_t kernel_pd_index = KVMM_PD_INDEX;
 
     if (higher_half_pt == NULL) {
         KPANIC_PHYS("Failed to allocate higher half page table.");
         return KO_FALSE;
     }
-    kvmm_setup_page_table_entries(higher_half_pt);
-    kvmm_setup_page_directory_entry(&pd->_entries[kernel_pd_index], higher_half_pt);
+    setup_page_table_entries(higher_half_pt);
+    setup_page_directory_entry(&pd->_entries[kernel_pd_index], higher_half_pt);
     return OK_TRUE;
 }
 
@@ -126,7 +126,7 @@ kvmm_setup_higher_half_mapping(page_directory_t *pd)
  * @return OK_TRUE.
  */
 static bool32_t
-kvmm_setup_recursive_mapping(page_directory_t *pd)
+setup_recursive_mapping(page_directory_t *pd)
 {
     pd->_entries[1023]._present = 1;
     pd->_entries[1023]._rw = 1;
@@ -153,13 +153,13 @@ kvmm_init(void)
         return KO_FALSE;
     }
     kmemset((uint8_t *) *pd_ptr, 0, sizeof(page_directory_t));
-    if (kvmm_setup_identity_mapping(*pd_ptr) == KO_FALSE) {
+    if (setup_identity_mapping(*pd_ptr) == KO_FALSE) {
         return KO_FALSE;
     }
-    if (kvmm_setup_higher_half_mapping(*pd_ptr) == KO_FALSE) {
+    if (setup_higher_half_mapping(*pd_ptr) == KO_FALSE) {
         return KO_FALSE;
     }
-    kvmm_setup_recursive_mapping(*pd_ptr);
+    setup_recursive_mapping(*pd_ptr);
     kmmu_load_cr3((paddr_t) *pd_ptr);
     kmmu_enable_paging();
     return OK_TRUE;

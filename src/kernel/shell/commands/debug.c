@@ -25,12 +25,12 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    int *array = kmalloc(sizeof(int) * 1500);
+    void *not_used = kmalloc(sizeof(uint32_t));
 
-    for (uint32_t i = 0; i < 1500; i++) {
-        array[i] = 6;
+    if (not_used == NULL) {
+        return KO_FALSE;
     }
+    *((uint32_t *) not_used) = 10;
 
-    kfree(array);
     return OK_TRUE;
 }

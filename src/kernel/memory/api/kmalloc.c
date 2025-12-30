@@ -52,6 +52,10 @@ create_heap_header(uint32_t size)
     if (size == 0 || pages_to_get == 0) {
         return NULL;
     }
+    if (kernel_heap_brk + size + sizeof(kmalloc_header_t) > kernel_heap_limit) {
+        KPRINTF_ERROR("malloc: failed since no more space in heap available");
+        return NULL;
+    }
     frame = (paddr_t) kpmm_alloc_pages(pages_to_get);
     if (frame == NULL) {
         return NULL;
@@ -63,7 +67,7 @@ create_heap_header(uint32_t size)
     header->_size = (KMALLOC_PAGE_SIZE * pages_to_get) - sizeof(kmalloc_header_t);
     header->_next = kernel_heap_lh;
     kernel_heap_lh = header;
-    kernel_heap_brk = ((uint8_t *) kernel_heap_brk) + (KMALLOC_PAGE_SIZE * pages_to_get);
+    kernel_heap_brk = kernel_heap_brk + (KMALLOC_PAGE_SIZE * pages_to_get);
     return header;
 }
 
@@ -85,7 +89,8 @@ kmalloc(uint32_t size)
     size = ALIGN_UP(size, 8);
     header = find_free_heap_header(size);
     if (header == NULL) {
-        return KMALLOC_GO_AFTER_HEADER(create_heap_header(size));
+        header = create_heap_header(size);
+        return header != NULL ? KMALLOC_GO_AFTER_HEADER(header) : NULL;
     } else {
         header->_free = KO_FALSE;
         return KMALLOC_GO_AFTER_HEADER(header);

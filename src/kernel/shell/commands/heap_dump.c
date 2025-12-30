@@ -59,7 +59,7 @@ kshell_heap_dump(UNUSED uint32_t argc, UNUSED char *argv[])
     KPRINTF_INFO("  size : %d bytes", kernel_heap_limit - kernel_heap_base);
     KPRINTF_INFO("  hdrs : %d used / %d free", used, free);
     KPRINTF_INFO("heapdump: headers details:");
-    for (uint32_t i = 0; hdr != NULL; hdr = hdr->_next) {
+    for (uint32_t i = 1; hdr != NULL; hdr = hdr->_next) {
         KPRINTFN_INFO("  #%03d  ", i);
         if (hdr->_free) {
             kprintf(VGA_TEXT_SUCCESS_COLOR, "FREE");
