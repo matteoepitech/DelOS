@@ -1,11 +1,11 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/interruption/isr/isr_page_fault
+** src/kernel/interruption/isr/isr_page_fault
 ** File description:
 ** ISR breakpoint
 */
 
-#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/interruption/isr.h>
 #include <utils/kstdlib/kstdio.h>
 #include <kernel/misc/panic.h>
 #include <kernel/memory/mmu.h>

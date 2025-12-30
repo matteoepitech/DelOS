@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** include/kernel/arch/i386/gdt
+** include/kernel/system/gdt
 ** File description:
 ** GDT header file
 */
@@ -8,8 +8,8 @@
 #include <defines.h>
 #include <types.h>
 
-#ifndef KERNEL_ARCH_I386_GDT_H_
-    #define KERNEL_ARCH_I386_GDT_H_
+#ifndef KERNEL_SYSTEM_GDT_H_
+    #define KERNEL_SYSTEM_GDT_H_
 
     #ifndef KGDT_CODE_SELECTOR
         #define KGDT_CODE_SELECTOR 0x08
@@ -80,4 +80,4 @@ typedef struct gdt_ptr_s {
 bool32_t
 kgdt_init(void);
 
-#endif /* ifndef KERNEL_ARCH_I386_GDT_H_ */
+#endif /* ifndef KERNEL_SYSTEM_GDT_H_ */

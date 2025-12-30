@@ -1,11 +1,11 @@
 /*
 ** DELOS PROJECT, 2025
-** include/kernel/arch/i386/interruption/idt
+** include/kernel/interruption/idt
 ** File description:
 ** interruption description table header file
 */
 
-#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/interruption/isr.h>
 #include <types.h>
 
 #ifndef KERNEL_INTERRUPTION_IDT_H_
@@ -86,7 +86,7 @@ typedef struct idt_registration_s {
  * @brief Variable for the IDT pointer loaded in the CPU.
  *        This contains the size and address of the IDT.
  *
- *        Declared in src/kernel/arch/i386/interruption/idt.c
+ *        Declared in src/kernel/interruption/idt.c
  */
 extern idt_ptr_t idt_ptr;
 
@@ -94,7 +94,7 @@ extern idt_ptr_t idt_ptr;
  * @brief Variable for the IDT values loaded in the CPU.
  *        This contains all of the entries of the IDT.
  *
- *        Declared in src/kernel/arch/i386/interruption/idt.c
+ *        Declared in src/kernel/interruption/idt.c
  */
 extern idt_entry_t idt[IDT_SIZE];
 

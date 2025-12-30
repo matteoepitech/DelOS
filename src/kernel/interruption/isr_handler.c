@@ -1,12 +1,12 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/interruption/isr_handler
+** src/kernel/interruption/isr_handler
 ** File description:
 ** Interruption service routine source file and for IRQs
 */
 
-#include <kernel/arch/i386/interruption/idt.h>
-#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/interruption/idt.h>
+#include <kernel/interruption/isr.h>
 #include <kernel/misc/panic.h>
 #include <kernel/tty/tty.h>
 #include <defines.h>

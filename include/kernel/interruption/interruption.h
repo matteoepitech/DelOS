@@ -1,11 +1,12 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/interruption/interruption
+** include/kernel/interruption/interruption
 ** File description:
-** Interruption source file
+** Interruption header file
 */
 
-#include <kernel/arch/i386/interruption/interruption.h>
+#ifndef KERNEL_INTERRUPTION_H_
+    #define KERNEL_INTERRUPTION_H_
 
 /**
  * @brief Stop the interruptions by clearing the interruption flag.
@@ -13,10 +14,7 @@
  *        This only manage the external interruptions like IRQs.
  */
 void
-kinterruption_extern_stop(void)
-{
-    __asm__ volatile ("cli");
-}
+kinterruption_extern_stop(void);
 
 /**
  * @brief Start the interruptions by setting the interruption flag.
@@ -24,7 +22,6 @@ kinterruption_extern_stop(void)
  *        This only manage the external interruptions like IRQs.
  */
 void
-kinterruption_extern_start(void)
-{
-    __asm__ volatile ("sti");
-}
+kinterruption_extern_start(void);
+
+#endif /* ifndef KERNEL_INTERRUPTION_H_ */

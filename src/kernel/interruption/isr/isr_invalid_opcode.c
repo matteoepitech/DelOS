@@ -1,11 +1,11 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/interruption/isr/isr_invalid_opcode
+** src/kernel/interruption/isr/isr_invalid_opcode
 ** File description:
 ** ISR invalid opcode
 */
 
-#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/interruption/isr.h>
 #include <kernel/misc/panic.h>
 #include <kernel/tty/tty.h>
 #include <defines.h>

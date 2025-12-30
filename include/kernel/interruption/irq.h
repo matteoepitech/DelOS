@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** include/kernel/arch/i386/interruption/irq
+** include/kernel/interruption/irq
 ** File description:
 ** Interruption request header file
 */

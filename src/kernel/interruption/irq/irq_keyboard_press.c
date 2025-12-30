@@ -1,12 +1,12 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/interruption/irq/irq_keyboard_press
+** src/kernel/interruption/irq/irq_keyboard_press
 ** File description:
 ** IRQ keyboard press (IRQ1)
 */
 
-#include <kernel/arch/i386/interruption/pic.h>
-#include <kernel/arch/i386/interruption/isr.h>
+#include <kernel/interruption/pic.h>
+#include <kernel/interruption/isr.h>
 #include <kernel/misc/keyboard.h>
 #include <utils/asm/io_port.h>
 #include <utils/misc/print.h>

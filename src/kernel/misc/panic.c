@@ -5,7 +5,7 @@
 ** Panic source file
 */
 
-#include <kernel/arch/i386/interruption/interruption.h>
+#include <kernel/interruption/interruption.h>
 #include <utils/kstdlib/kstring.h>
 #include <utils/kstdlib/kmemory.h>
 #include <drivers/video/vga.h>

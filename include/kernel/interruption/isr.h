@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** include/kernel/arch/i386/interruption/isr
+** include/kernel/interruption/isr
 ** File description:
 ** Interruption service routine header file
 */

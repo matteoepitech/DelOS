@@ -6,7 +6,7 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
-#include <kernel/arch/i386/interruption/idt.h>
+#include <kernel/interruption/idt.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <utils/kstdlib/kmemory.h>

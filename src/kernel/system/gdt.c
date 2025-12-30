@@ -1,11 +1,11 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/gdt
+** src/kernel/system/gdt
 ** File description:
 ** GDT source file
 */
 
-#include <kernel/arch/i386/gdt.h>
+#include <kernel/system/gdt.h>
 
 /* @brief Variables for the new Global Descriptor Table */
 static gdt_entry_t gdt_entries[3] __attribute__((aligned(8))) = {0};

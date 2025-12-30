@@ -1,11 +1,11 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/interruption/pic
+** src/kernel/interruption/pic
 ** File description:
 ** PIC source file
 */
 
-#include <kernel/arch/i386/interruption/pic.h>
+#include <kernel/interruption/pic.h>
 #include <utils/asm/io_port.h>
 
 /**

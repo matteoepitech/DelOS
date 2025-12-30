@@ -5,10 +5,10 @@
 ** Kernel Source file main
 */
 
-#include <kernel/arch/i386/interruption/interruption.h>
+#include <kernel/interruption/interruption.h>
 #include <kernel/memory/early_allocator/early_alloc.h>
-#include <kernel/arch/i386/interruption/idt.h>
-#include <kernel/arch/i386/interruption/pic.h>
+#include <kernel/interruption/idt.h>
+#include <kernel/interruption/pic.h>
 #include <kernel/memory/api/kmalloc.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/memory/vmm/vmm.h>

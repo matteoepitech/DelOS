@@ -5,7 +5,7 @@
 ** Keyboard source file
 */
 
-#include <kernel/arch/i386/interruption/interruption.h>
+#include <kernel/interruption/interruption.h>
 #include <kernel/misc/keyboard.h>
 #include <utils/asm/hlt.h>
 

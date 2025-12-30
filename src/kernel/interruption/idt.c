@@ -1,13 +1,13 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/arch/i386/interruption/idt
+** src/kernel/interruption/idt
 ** File description:
 ** Interruption descriptor table source file
 */
 
-#include <kernel/arch/i386/interruption/idt.h>
-#include <kernel/arch/i386/interruption/isr.h>
-#include <kernel/arch/i386/interruption/irq.h>
+#include <kernel/interruption/idt.h>
+#include <kernel/interruption/isr.h>
+#include <kernel/interruption/irq.h>
 #include <utils/kstdlib/kmemory.h>
 #include <kernel/misc/panic.h>
 #include <kernel/tty/tty.h>
