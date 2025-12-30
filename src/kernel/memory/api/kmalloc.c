@@ -46,23 +46,24 @@ static kmalloc_header_t *
 create_heap_header(uint32_t size)
 {
     kmalloc_header_t *header = (kmalloc_header_t *) kernel_heap_brk;
+    uint32_t pages_to_get = ((size + sizeof(kmalloc_header_t) + KMALLOC_PAGE_SIZE - 1) / KMALLOC_PAGE_SIZE);
     paddr_t frame = NULL;
 
-    if (size == 0) {
+    if (size == 0 || pages_to_get == 0) {
         return NULL;
     }
-    frame = (paddr_t) kpmm_alloc_pages(1);
+    frame = (paddr_t) kpmm_alloc_pages(pages_to_get);
     if (frame == NULL) {
         return NULL;
     }
-    if (kvmm_map_page((vaddr_t) header, frame, KVMM_FLAG_PRESENT | KVMM_FLAG_RW) == KO_FALSE) {
+    if (kvmm_map_range((vaddr_t) header, frame, KVMM_FLAG_PRESENT | KVMM_FLAG_RW, pages_to_get) == KO_FALSE) {
         return NULL;
     }
     header->_free = KO_FALSE;
-    header->_size = KMALLOC_PAGE_SIZE - sizeof(kmalloc_header_t);
+    header->_size = (KMALLOC_PAGE_SIZE * pages_to_get) - sizeof(kmalloc_header_t);
     header->_next = kernel_heap_lh;
     kernel_heap_lh = header;
-    kernel_heap_brk = ((uint8_t *) kernel_heap_brk) + KMALLOC_PAGE_SIZE;
+    kernel_heap_brk = ((uint8_t *) kernel_heap_brk) + (KMALLOC_PAGE_SIZE * pages_to_get);
     return header;
 }
 
@@ -84,7 +85,7 @@ kmalloc(uint32_t size)
     size = ALIGN_UP(size, 8);
     header = find_free_heap_header(size);
     if (header == NULL) {
-        return create_heap_header(size);
+        return KMALLOC_GO_AFTER_HEADER(create_heap_header(size));
     } else {
         header->_free = KO_FALSE;
         return KMALLOC_GO_AFTER_HEADER(header);

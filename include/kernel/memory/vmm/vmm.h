@@ -162,6 +162,20 @@ bool32_t
 kvmm_map_page(vaddr_t vaddr, paddr_t paddr, uint32_t flags);
 
 /**
+ * @brief Map a virtual address to a physical address but in range.
+ *        The physical address need to be in a linear way.
+ *
+ * @param vaddr  The virtual address
+ * @param paddr  The physical address
+ * @param flags  Some flags
+ * @param amount The amount of page of size KPMM_PAGE_SIZE to alloc in range
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvmm_map_range(vaddr_t vaddr, paddr_t paddr, uint32_t flags, uint32_t amount);
+
+/**
  * @brief Unmap a virtual address on the page table referenced by it's address.
  *
  * @param vaddr  The address to unmap

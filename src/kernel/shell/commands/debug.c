@@ -25,13 +25,12 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    const char *val = "Hello World!";
-    const uint32_t len = kstrlen(val);
-    char *alloc = kmalloc(sizeof(char) * (len + 1));
+    int *array = kmalloc(sizeof(int) * 1500);
 
-    for (uint32_t i = 0; i <= len; i++) {
-        alloc[i] = val[i];
+    for (uint32_t i = 0; i < 1500; i++) {
+        array[i] = 6;
     }
-    KPRINTF_DEBUG("Result: %s", alloc);
+
+    kfree(array);
     return OK_TRUE;
 }

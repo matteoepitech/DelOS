@@ -11,6 +11,7 @@
 #include <kernel/misc/panic.h>
 #include <kernel/memory/tlb.h>
 #include <utils/misc/print.h>
+#include <utils/misc/align.h>
 #include <defines.h>
 
 /**
@@ -32,6 +33,10 @@ kvmm_map_page(vaddr_t vaddr, paddr_t paddr, uint32_t flags)
     paddr_t new_pt_phys = NULL;
     page_table_t *pt = NULL;
 
+    if (!IS_ALIGNED_TO(vaddr, 4096) || !IS_ALIGNED_TO(paddr, 4096)) {
+        KPRINTF_ERROR("Vaddr or Paddr is not aligned to 4096 for mapping");
+        return KO_FALSE;
+    }
     // Creating the page table entry if not already present
     if (pd->_entries[pde_index]._present == KO_FALSE) {
         new_pt_phys = (uint32_t) kpmm_alloc_pages(1);
@@ -59,6 +64,32 @@ kvmm_map_page(vaddr_t vaddr, paddr_t paddr, uint32_t flags)
 }
 
 /**
+ * @brief Map a virtual address to a physical address but in range.
+ *        The physical address need to be in a linear way.
+ *
+ * @param vaddr  The virtual address
+ * @param paddr  The physical address
+ * @param flags  Some flags
+ * @param amount The amount of page of size KPMM_PAGE_SIZE to alloc in range
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvmm_map_range(vaddr_t vaddr, paddr_t paddr, uint32_t flags, uint32_t amount)
+{
+    if (!IS_ALIGNED_TO(vaddr, 4096) || !IS_ALIGNED_TO(paddr, 4096)) {
+        KPRINTF_ERROR("Vaddr or Paddr is not aligned to 4096 for mapping");
+        return KO_FALSE;
+    }
+    for (uint32_t i = 0; i < amount; i++) {
+        if (kvmm_map_page(vaddr + (KPMM_PAGE_SIZE * i), paddr + (KPMM_PAGE_SIZE * i), flags) == KO_FALSE) {
+            return KO_FALSE;
+        }
+    }
+    return OK_TRUE;
+}
+
+/**
  * @brief Unmap a virtual address on the page table referenced by it's address.
  *
  * @param vaddr  The address to unmap
@@ -72,6 +103,10 @@ kvmm_unmap_page(vaddr_t vaddr)
     uint32_t pte_index = KVMM_GET_PTE_INDEX(vaddr);
     page_table_t *page_table = NULL;
 
+    if (!IS_ALIGNED_TO(vaddr, 4096)) {
+        KPRINTF_ERROR("Vaddr is not aligned to 4096 for unmapping");
+        return KO_FALSE;
+    }
     if (KVMM_GET_PD->_entries[pde_index]._present == KO_FALSE) {
         return KO_FALSE;
     }

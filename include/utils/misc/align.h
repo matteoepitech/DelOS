@@ -16,4 +16,8 @@
         #define ALIGN_DOWN(x, a) ((x) & ~((a) - 1))
     #endif /* ifndef ALIGN_DOWN */
 
+    #ifndef IS_ALIGNED_TO
+        #define IS_ALIGNED_TO(x, a) (x % a == 0)
+    #endif /* ifndef IS_ALIGNED_TO */
+
 #endif /* ifndef ALIGN_DOWN */
