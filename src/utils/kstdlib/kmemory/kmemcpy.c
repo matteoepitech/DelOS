@@ -20,15 +20,17 @@
 void *
 kmemcpy(void *restrict dst, const void *restrict src, size_t n)
 {
+    uint8_t *dst_c = (uint8_t *) dst;
+    uint8_t *src_c = (uint8_t *) src;
     void *ret = dst;
 
     if (dst == NULL || src == NULL) {
         return NULL;
     }
     while (n) {
-        *(uint8_t *) dst = *(uint8_t *) src;
-        dst++;
-        src++;
+        *dst_c = *src_c;
+        dst_c++;
+        src_c++;
         n--;
     }
     return ret;
