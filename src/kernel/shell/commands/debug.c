@@ -29,32 +29,18 @@ uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     vfs_node_t *root = kvfs_mount("tmpfs", "/", NULL);
+
     if (root == NULL) {
         KPRINTF_ERROR("debug: failed to mount the tmpfs");
         return OK_TRUE;
     }
     ktmpfs_create_entry(root->_private, "file.txt", KTMPFS_FILE);
 
-    KPRINTF_DEBUG("FS's name: %s", root->_fs->_name);
-    KPRINTF_DEBUG("File type: %s", kvfs_get_type_string(root->_type));
-    KPRINTF_DEBUG("File refcount: %d", root->_refcount);
-    KPRINTF_DEBUG("File size: %d", root->_size);
-    if (root->_private == NULL) {
-        KPRINTF_ERROR("Private is null");
-        return KO_FALSE;
-    }
-    KPRINTF_DEBUG("File name: %s", ((tmpfs_entry_t *) root->_private)->_name);
+    vfs_node_t *file = kvfs_open("/file.txt");
 
-    vfs_node_t *file_node = kvfs_lookup(root, "file.txt");
-    KPRINTF_DEBUG("FS's name: %s", file_node->_fs->_name);
-    KPRINTF_DEBUG("File type: %s", kvfs_get_type_string(file_node->_type));
-    KPRINTF_DEBUG("File refcount: %d", file_node->_refcount);
-    KPRINTF_DEBUG("File size: %d", file_node->_size);
-    if (file_node->_private == NULL) {
-        KPRINTF_ERROR("Private is null");
-        return KO_FALSE;
+    if (file == NULL) {
+        KPRINTF_ERROR("debug: cannot opening file.txt");
+        return OK_TRUE;
     }
-    KPRINTF_DEBUG("File name: %s", ((tmpfs_entry_t *) file_node->_private)->_name);
-
     return KO_FALSE;
 }

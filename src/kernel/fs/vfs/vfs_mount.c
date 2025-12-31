@@ -9,6 +9,9 @@
 #include <kernel/fs/tmpfs/tmpfs.h>
 #include <kernel/fs/vfs/vfs.h>
 
+/* @brief Variable that contain the pointer to the VFS node of the root directory obtained by mouting the VFS */
+vfs_node_t *kvfs_root_mount_dir = NULL;
+
 /**
  * @brief Mount a filesystem in our VFS architecture.
  *
@@ -30,5 +33,6 @@ kvfs_mount(const char *fs_name, const char *location, void *device)
     if (fs == NULL) {
         return NULL;
     }
-    return fs->_mount(location, device);
+    kvfs_root_mount_dir = fs->_mount(location, device);
+    return kvfs_root_mount_dir;
 }

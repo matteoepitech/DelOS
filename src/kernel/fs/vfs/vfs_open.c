@@ -32,9 +32,9 @@ kvfs_open(char *path)
         return NULL;
     }
     if (kstrcmp(path_parts[0], "/") == 0) {
-        tmp_node = NULL; // TODO: Get the root node
+        tmp_node = kvfs_root_mount_dir;
     } else {
-        KPRINTF_ERROR("vfs: opening file without absolute path is not handled yet");
+        KPRINTF_ERROR("vfs: opening file with relative path is not handled yet");
         return NULL; // TODO: ?
     }
     for (uint32_t i = 1; i < count_part; i++) {

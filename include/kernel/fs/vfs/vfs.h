@@ -90,6 +90,9 @@ typedef struct vfs_ops_s {
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
 } vfs_ops_t;
 
+/* @brief Variable that contain the pointer to the VFS node of the root directory obtained by mouting the VFS */
+extern vfs_node_t *kvfs_root_mount_dir;
+
 /**
  * @brief Mount a filesystem in our VFS architecture.
  *
