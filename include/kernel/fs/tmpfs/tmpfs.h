@@ -119,4 +119,16 @@ ktmpfs_get_operations(void);
 vfs_node_t *
 ktmpfs_create_vfs_node(tmpfs_entry_t *entry);
 
+/**
+ * @brief Create an entry on the TMPFS fs using parent, name, type and return it.
+ *
+ * @param parent     The parent of the entry
+ * @param name       The name of the entry
+ * @param type       The type of the entry
+ *
+ * @return The entry created.
+ */
+tmpfs_entry_t *
+ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, tmpfs_file_type_t type);
+
 #endif /* ifndef KERNEL_FS_TMPFS_H_ */

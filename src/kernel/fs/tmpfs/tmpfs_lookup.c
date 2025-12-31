@@ -24,7 +24,7 @@ ktmpfs_lookup(vfs_node_t *node, const char *next_level)
     tmpfs_entry_t *child_entry = NULL;
     tmpfs_entry_t *entry = NULL;
 
-    if (node == NULL || next_level == NULL) {
+    if (node == NULL || next_level == NULL || node->_private == NULL) {
         return NULL;
     }
     entry = (tmpfs_entry_t *) node->_private;

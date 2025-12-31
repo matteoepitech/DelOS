@@ -29,5 +29,6 @@ kstrcpy(char *dst, const char *src)
         dst++;
         src++;
     }
+    *dst = *src;
     return res;
 }
