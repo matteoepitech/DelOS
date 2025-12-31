@@ -20,5 +20,8 @@ size_t
 kvfs_write(vfs_node_t *node, const void *buffer, size_t len)
 {
     // TODO: do the offset, need file descriptors for that
+    if (node == NULL || buffer == NULL || len == 0) {
+        return 0;
+    }
     return node->_ops->_write(node, 0, buffer, len);
 }

@@ -38,6 +38,7 @@ typedef struct tmpfs_entry_s {
         struct {
             uint8_t *_data_ptr;
             size_t _size;
+            size_t _capacity;
         } _file;
         struct {
             struct tmpfs_entry_s *_child;

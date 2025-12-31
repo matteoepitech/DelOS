@@ -5,6 +5,7 @@
 ** TMPFS write source file
 */
 
+#include <utils/kstdlib/kmemory.h>
 #include <kernel/fs/tmpfs/tmpfs.h>
 #include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
@@ -22,6 +23,23 @@
 size_t
 ktmpfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len)
 {
+    tmpfs_entry_t *entry = NULL;
+    size_t new_size = 0;
 
+    if (node == NULL || buffer == NULL || len == 0) {
+        return 0;
+    }
+    entry = node->_private;
+    if (entry->_type != KTMPFS_FILE) {
+        KPRINTF_ERROR("tmpfs: cannot write on an entry which is not a file");
+        return 0;
+    }
+    new_size = len + entry->_file._size;
+    if (new_size >= entry->_file._capacity) {
+        // realoc.
+    }
+    kmemcpy(&entry->_file._data_ptr[offset], buffer, len);
+    entry->_file._size = new_size;
+    node->_size = entry->_file._size;
     return 0;
 }

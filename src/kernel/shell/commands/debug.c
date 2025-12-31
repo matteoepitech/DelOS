@@ -47,5 +47,11 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     }
     kvfs_close(file);
     kvfs_close(secret_dir);
+
+    vfs_node_t *a = kvfs_open("/secret/secret.file");
+    char buffer[] = "qdkjqx829N";
+    kvfs_write(a, buffer, sizeof(buffer));
+    kvfs_close(a);
+
     return KO_FALSE;
 }
