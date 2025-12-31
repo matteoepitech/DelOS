@@ -5,6 +5,7 @@
 ** TMPFS lookup source file
 */
 
+#include <utils/kstdlib/kstring.h>
 #include <kernel/fs/tmpfs/tmpfs.h>
 #include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
@@ -20,6 +21,19 @@
 vfs_node_t *
 ktmpfs_lookup(vfs_node_t *node, const char *next_level)
 {
-    KPRINTF_DEBUG("lookup from ktmpfs driver");
-    return NULL;
+    tmpfs_entry_t *child_entry = NULL;
+    tmpfs_entry_t *entry = NULL;
+
+    if (node == NULL || next_level == NULL) {
+        return NULL;
+    }
+    entry = (tmpfs_entry_t *) node->_private;
+    if (entry->_type != KTMPFS_DIR) {
+        return NULL;
+    }
+    child_entry = entry->_dir._child;
+    while (child_entry != NULL && kstrcmp(child_entry->_name, next_level) != 0) {
+        child_entry = child_entry->_next;
+    }
+    return ktmpfs_create_vfs_node(child_entry);
 }

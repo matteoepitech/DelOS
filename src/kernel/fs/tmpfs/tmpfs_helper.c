@@ -5,6 +5,8 @@
 ** TMPFS helper source file
 */
 
+#include <kernel/fs/vfs/vfs_registry.h>
+#include <kernel/memory/api/kmalloc.h>
 #include <kernel/fs/tmpfs/tmpfs.h>
 #include <kernel/fs/vfs/vfs.h>
 
@@ -24,4 +26,34 @@ vfs_ops_t *
 ktmpfs_get_operations(void)
 {
     return &ktmpfs_operations;
+}
+
+/**
+ * @brief Create a VFS node using an entry on that tmpfs.
+ *
+ * @param entry     The entry to get data from
+ *
+ * @return The VFS node pointer created or NULL otherwise.
+ */
+vfs_node_t *
+ktmpfs_create_vfs_node(tmpfs_entry_t *entry)
+{
+    vfs_node_t *node = NULL;
+    vfs_fs_t *fs = NULL;
+
+    if (entry == NULL) {
+        return NULL;
+    }
+    node = kmalloc(sizeof(vfs_node_t));
+    fs = kvfs_get_fs("tmpfs");
+    if (node == NULL || fs == NULL) {
+        return NULL;
+    }
+    node->_fs = fs;
+    node->_ops = ktmpfs_get_operations();
+    node->_private = entry;
+    node->_refcount = 1;
+    node->_type = entry->_type == KTMPFS_FILE ? KVFS_FILE : KVFS_DIR;
+    node->_size = 0;
+    return node;
 }

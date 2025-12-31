@@ -109,4 +109,14 @@ ktmpfs_lookup(vfs_node_t *node, const char *next_level);
 vfs_ops_t *
 ktmpfs_get_operations(void);
 
+/**
+ * @brief Create a VFS node using an entry on that tmpfs.
+ *
+ * @param entry     The entry to get data from
+ *
+ * @return The VFS node pointer created or NULL otherwise.
+ */
+vfs_node_t *
+ktmpfs_create_vfs_node(tmpfs_entry_t *entry);
+
 #endif /* ifndef KERNEL_FS_TMPFS_H_ */

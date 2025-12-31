@@ -38,31 +38,6 @@ create_root_entry(const char *loc)
 }
 
 /**
- * @brief Create the root vfs node using the created entry on that tmpfs.
- *
- * @param root_entry     The root entry already created
- *
- * @return The vfs node pointer created or NULL otherwise.
- */
-static vfs_node_t *
-create_root_vfs_node(tmpfs_entry_t *root_entry)
-{
-    vfs_node_t *root_node = kmalloc(sizeof(vfs_node_t));
-    vfs_fs_t *fs = kvfs_get_fs("tmpfs");
-
-    if (root_node == NULL || fs == NULL) {
-        return NULL;
-    }
-    root_node->_fs = fs;
-    root_node->_ops = ktmpfs_get_operations();
-    root_node->_private = root_entry;
-    root_node->_refcount = 1;
-    root_node->_type = KVFS_DIR;
-    root_node->_size = 0;
-    return root_node;
-}
-
-/**
  * @brief Create the vfs node and tmpfs entry for the root directory.
  *
  * @param loc       The location of the mount
@@ -80,7 +55,7 @@ ktmpfs_mount(const char *loc, UNUSED void *device)
     if (root_entry == NULL) {
         return NULL;
     }
-    root_node = create_root_vfs_node(root_entry);
+    root_node = ktmpfs_create_vfs_node(root_entry);
     if (root_node == NULL) {
         kfree(root_entry);
         return NULL;
