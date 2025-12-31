@@ -22,11 +22,13 @@ kvfs_open(char *path)
 {
     char path_parts[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME_LEN] = {0};
     vfs_node_t *tmp_node = NULL;
+    uint32_t count_part = 0;
 
     if (path == NULL) {
         return NULL;
     }
-    if (kvfs_split_path(path, path_parts) == 0) {
+    count_part = kvfs_split_path(path, path_parts);
+    if (count_part == 0) {
         return NULL;
     }
     if (kstrcmp(path_parts[0], "/") == 0) {
@@ -35,7 +37,7 @@ kvfs_open(char *path)
         KPRINTF_ERROR("vfs: opening file without absolute path is not handled yet");
         return NULL; // TODO: ?
     }
-    for (uint32_t i = 1; path_parts[i] != NULL; i++) {
+    for (uint32_t i = 1; i < count_part; i++) {
         tmp_node = kvfs_lookup(tmp_node, path_parts[i]);
     }
     return tmp_node;
