@@ -70,6 +70,17 @@ void *
 kmalloc(size_t size);
 
 /**
+ * @brief Realloc a zone of data into a new one with a different size.
+ *
+ * @param ptr    The pointer to get data from and free
+ * @param size   The size of the new allocation
+ *
+ * @return The new pointer reallocated.
+ */
+void *
+krealloc(void *ptr, size_t size);
+
+/**
  * @brief Free data allocated from kmalloc.
  *
  * @param ptr    The pointer to the data allocated to be freed
