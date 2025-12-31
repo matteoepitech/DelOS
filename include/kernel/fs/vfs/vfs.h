@@ -124,7 +124,15 @@ kvfs_lookup(vfs_node_t *node, const char *next_level);
  * @return The VFS node of the path result. (Can be anything: file, dir, link, ...)
  */
 vfs_node_t *
-kvfs_open(char *path);
+kvfs_open(const char *path);
+
+/**
+ * @brief Close a VFS node, if the refcount is zeroed then destroying it.
+ *
+ * @param node   The VFS node to close
+ */
+void
+kvfs_close(vfs_node_t *node);
 
 /**
  * @brief Give us the pointer to the literal string of a type node name.

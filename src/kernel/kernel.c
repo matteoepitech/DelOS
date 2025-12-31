@@ -17,6 +17,7 @@
 #include <kernel/misc/panic.h>
 #include <utils/misc/print.h>
 #include <utils/asm/hlt.h>
+#include <kernel/fs/fs.h>
 #include <defines.h>
 
 /**
@@ -36,6 +37,7 @@ kmain(void)
     kinterruption_extern_start();
     kearly_malloc_disable();
     kmalloc_init();
+    kfs_init();
 
     kshell_start();
 

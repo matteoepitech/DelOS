@@ -28,13 +28,7 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    vfs_node_t *root = kvfs_mount("tmpfs", "/", NULL);
-
-    if (root == NULL) {
-        KPRINTF_ERROR("debug: failed to mount the tmpfs");
-        return OK_TRUE;
-    }
-    ktmpfs_create_entry(root->_private, "file.txt", KTMPFS_FILE);
+    ktmpfs_create_entry(kvfs_root_mount_dir->_private, "file.txt", KTMPFS_FILE);
 
     vfs_node_t *file = kvfs_open("/file.txt");
 
@@ -42,5 +36,8 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
         KPRINTF_ERROR("debug: cannot opening file.txt");
         return OK_TRUE;
     }
+
+    kvfs_close(file);
+
     return KO_FALSE;
 }

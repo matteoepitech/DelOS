@@ -18,9 +18,10 @@
  * @return The VFS node of the path result. (Can be anything: file, dir, link, ...)
  */
 vfs_node_t *
-kvfs_open(char *path)
+kvfs_open(const char *path)
 {
     char path_parts[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME_LEN] = {0};
+    vfs_node_t *free_node = NULL;
     vfs_node_t *tmp_node = NULL;
     uint32_t count_part = 0;
 
@@ -38,7 +39,14 @@ kvfs_open(char *path)
         return NULL; // TODO: ?
     }
     for (uint32_t i = 1; i < count_part; i++) {
+        free_node = tmp_node;
         tmp_node = kvfs_lookup(tmp_node, path_parts[i]);
+        if (free_node != kvfs_root_mount_dir) {
+            kvfs_close(free_node);
+        }
+        if (tmp_node == NULL) {
+            return NULL;
+        }
     }
     return tmp_node;
 }
