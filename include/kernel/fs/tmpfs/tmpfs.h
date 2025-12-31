@@ -12,10 +12,6 @@
 #ifndef KERNEL_FS_TMPFS_H_
     #define KERNEL_FS_TMPFS_H_
 
-    #ifndef KTMPFS_NAME_MAX_LEN
-        #define KTMPFS_NAME_MAX_LEN 64 
-    #endif /* ifndef KTMPFS_NAME_MAX_LEN */
-
 /*
  * @brief This enumeration contains all differents type of a file for the TMPFS.
  */
@@ -35,7 +31,7 @@ typedef enum {
  *        - next     = the next occurence in the entry (on a dir for example)
  */
 typedef struct tmpfs_entry_s {
-    char _name[KTMPFS_NAME_MAX_LEN];
+    char _name[KVFS_MAX_NAME_LEN];
     tmpfs_file_type_t _type;
     struct tmpfs_entry_s *_parent;
     union {

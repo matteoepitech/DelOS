@@ -11,17 +11,21 @@
 #ifndef KERNEL_FS_VFS_H_
     #define KERNEL_FS_VFS_H_
 
-    #ifndef KVFS_TYPE_MAX_LEN
-        #define KVFS_TYPE_MAX_LEN 8
-    #endif /* ifndef KVFS_TYPE_MAX_LEN */
-
-    #ifndef KVFS_MOUNT_PATH_MAX_LEN
-        #define KVFS_MOUNT_PATH_MAX_LEN 64 
-    #endif /* ifndef KVFS_MOUNT_PATH_MAX_LEN */
+    #ifndef KVFS_MAX_FS_NAME_LEN
+        #define KVFS_MAX_FS_NAME_LEN 8
+    #endif /* ifndef KVFS_MAX_FS_NAME_LEN */
 
     #ifndef KVFS_REGISTRY_LEN
         #define KVFS_REGISTRY_LEN 1
     #endif /* ifndef KVFS_REGISTRY_LEN */
+
+    #ifndef KVFS_MAX_PATH_PARTS
+        #define KVFS_MAX_PATH_PARTS 16
+    #endif /* ifndef KVFS_MAX_PATH_PARTS */
+
+    #ifndef KVFS_MAX_NAME_LEN
+        #define KVFS_MAX_NAME_LEN 255
+    #endif /* ifndef KVFS_MAX_NAME_LEN */
 
 /*
  * @brief This enumeration contains all differents type of a node for the VFS.
@@ -57,7 +61,7 @@ typedef struct vfs_node_s {
  *        - mount = the function pointer to the mount callback
  */
 typedef struct vfs_fs_s {
-    const char _name[KVFS_TYPE_MAX_LEN];
+    const char _name[KVFS_MAX_FS_NAME_LEN];
     vfs_node_t *(*_mount)(const char *loc, void *device);
 } vfs_fs_t;
 
@@ -68,7 +72,7 @@ typedef struct vfs_fs_s {
  *        - root           = the node of the root directory/file of that fs
  */
 typedef struct vfs_mount_s {
-    char _mount_location[KVFS_MOUNT_PATH_MAX_LEN];
+    char _mount_location[KVFS_MAX_NAME_LEN];
     vfs_fs_t *_fs;
     vfs_node_t *_root;
 } vfs_mount_t;
@@ -110,6 +114,16 @@ vfs_node_t *
 kvfs_lookup(vfs_node_t *node, const char *next_level);
 
 /**
+ * @brief Open a file and go through its entire path to get the node associated to the end level.
+ *
+ * @param path   The complete path to a node (e.g. "/abc/dir/a.txt")
+ *
+ * @return The VFS node of the path result. (Can be anything: file, dir, link, ...)
+ */
+vfs_node_t *
+kvfs_open(char *path);
+
+/**
  * @brief Give us the pointer to the literal string of a type node name.
  *
  * @param type   The type of the node we want to get the string from
@@ -118,5 +132,16 @@ kvfs_lookup(vfs_node_t *node, const char *next_level);
  */
 char *
 kvfs_get_type_string(vfs_node_type_t type);
+
+/**
+ * @brief Split an entire path into some tokens for easier parsing.
+ *
+ * @param path           The path to split
+ * @param tokens         The buffer of tokens (need to be pre-allocated)
+ *
+ * @return Number of part got.
+ */
+size_t
+kvfs_split_path(const char *path, char tokens[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME_LEN]);
 
 #endif /* ifndef KERNEL_FS_VFS_H_ */
