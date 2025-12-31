@@ -5,7 +5,7 @@
 ** VFS registry header file
 */
 
-#include <kernel/fs/vfs.h>
+#include <kernel/fs/vfs/vfs.h>
 #include <defines.h>
 #include <types.h>
 

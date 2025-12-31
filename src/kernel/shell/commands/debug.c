@@ -6,11 +6,13 @@
 */
 
 #include <kernel/memory/early_allocator/early_alloc.h>
+#include <kernel/fs/vfs/vfs_registry.h>
 #include <kernel/memory/api/kmalloc.h>
 #include <utils/kstdlib/kstring.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/shell/shell.h>
+#include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
 #include <defines.h>
 
@@ -25,12 +27,8 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    void *not_used = kmalloc(sizeof(uint32_t));
+    vfs_fs_t *tmpfs = kvfs_get_fs("tmpfs");
 
-    if (not_used == NULL) {
-        return KO_FALSE;
-    }
-    *((uint32_t *) not_used) = 10;
-
+    KPRINTF_DEBUG("%s", tmpfs->_name);
     return OK_TRUE;
 }
