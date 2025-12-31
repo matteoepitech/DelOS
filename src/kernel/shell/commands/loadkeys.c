@@ -27,10 +27,10 @@ kshell_loadkeys(uint32_t argc, char *argv[])
         return OK_TRUE;
     }
     if (kstrcmp(argv[1], "fr") == 0) {
-        keymap = KEYMAP_AZERTY;
+        keymap = KKEYMAP_AZERTY;
         return KO_FALSE;
     } else if (kstrcmp(argv[1], "us") == 0) {
-        keymap = KEYMAP_QWERTY;
+        keymap = KKEYMAP_QWERTY;
         return KO_FALSE;
     } else {
         KPRINTF_ERROR("loadkeys: keymap \"%s\" not found", argv[1]);

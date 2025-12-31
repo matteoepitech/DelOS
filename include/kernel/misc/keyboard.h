@@ -18,8 +18,8 @@
  * @brief This enum contain every keyboard layout implemented in the kernel IRQ.
  */
 typedef enum {
-    KEYMAP_QWERTY,
-    KEYMAP_AZERTY,
+    KKEYMAP_QWERTY,
+    KKEYMAP_AZERTY,
 } keymap_t;
 
 /* Some extern variables most used in the IRQ directly but can be used outside */

@@ -51,12 +51,12 @@ uint8_t *
 kkeyboard_get_keymap_values(keymap_t keymap, bool32_t shifted)
 {
     switch (keymap) {
-        case KEYMAP_QWERTY:
+        case KKEYMAP_QWERTY:
             if (shifted)
                 return (uint8_t *) &scancode_to_ascii_qwerty_shift;
             else
                 return (uint8_t *) &scancode_to_ascii_qwerty;
-        case KEYMAP_AZERTY:
+        case KKEYMAP_AZERTY:
             if (shifted)
                 return (uint8_t *) &scancode_to_ascii_azerty_shift;
             else

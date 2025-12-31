@@ -31,7 +31,7 @@
 #endif /* ifndef KEY_CAPS_LOCK */
 
 /* Keyboard manager using a head/tail management and fixed buffer */
-keymap_t keymap = KEYMAP_AZERTY;
+keymap_t keymap = KKEYMAP_AZERTY;
 int8_t keyboard_buffer[KEYBOARD_BUFFER_SIZE] = {0};
 size_t keyboard_head = 0;
 size_t keyboard_tail = 0;
