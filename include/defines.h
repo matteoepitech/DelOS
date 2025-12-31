@@ -32,4 +32,12 @@
         #define UNUSED __attribute__((unused))
     #endif /* ifndef UNUSED */
 
+    #ifndef MAX
+        #define MAX(x, y) ((x > y) ? x : y)
+    #endif /* ifndef MAX */
+    
+    #ifndef MIN
+        #define MIN(x, y) ((x < y) ? x : y)
+    #endif /* ifndef MIN */
+
 #endif /* ifndef DEFINES_H_ */

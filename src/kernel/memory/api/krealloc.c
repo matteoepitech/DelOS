@@ -22,15 +22,14 @@ krealloc(void *ptr, size_t size)
     kmalloc_header_t *header = NULL;
     uint8_t *new_ptr = NULL;
 
-    if (ptr == NULL) {
-        return NULL;
-    }
     if (size == 0) {
         header = KMALLOC_GO_BEFORE_HEADER(ptr);
         size = header->_size;
     }
     new_ptr = kmalloc(size);
-    kmemcpy(new_ptr, ptr, size);
-    kfree(ptr);
+    if (ptr != NULL) {
+        kmemcpy(new_ptr, ptr, size);
+        kfree(ptr);
+    }
     return new_ptr;
 }
