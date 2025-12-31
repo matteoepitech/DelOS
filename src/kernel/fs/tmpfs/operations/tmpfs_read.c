@@ -5,6 +5,7 @@
 ** TMPFS read source file
 */
 
+#include <utils/kstdlib/kmemory.h>
 #include <kernel/fs/tmpfs/tmpfs.h>
 #include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
@@ -22,6 +23,24 @@
 size_t
 ktmpfs_read(vfs_node_t *node, off_t offset, void *buffer, size_t len)
 {
-    KPRINTF_DEBUG("read from ktmpfs driver");
-    return 0;
+    tmpfs_entry_t *entry = NULL;
+    size_t read_content = 0;
+
+    if (node == NULL || buffer == NULL || len == 0) {
+        return 0;
+    }
+    entry = node->_private;
+    if (entry == NULL) {
+        return NULL;
+    }
+    if (entry->_type != KTMPFS_FILE) {
+        KPRINTF_ERROR("tmpfs: cannot read on an entry which is not a file");
+        return 0;
+    }
+    if (offset > entry->_file._size) {
+        return 0;
+    }
+    read_content = (entry->_file._size - offset) > len ? len : (entry->_file._size - offset);
+    kmemcpy(buffer, &entry->_file._data_ptr[offset], read_content);
+    return read_content;
 }
