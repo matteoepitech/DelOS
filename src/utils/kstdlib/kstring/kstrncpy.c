@@ -9,7 +9,7 @@
 #include <defines.h>
 
 /**
- * @brief Copy a literral string into a pointer.
+ * @brief Copy a literal string into a pointer.
  *
  * @param dst        Where to copy
  * @param src        The string to copy

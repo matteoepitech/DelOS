@@ -86,4 +86,14 @@ typedef struct vfs_ops_s {
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
 } vfs_ops_t;
 
+/**
+ * @brief Give us the pointer to the literal string of a type node name.
+ *
+ * @param type   The type of the node we want to get the string from
+ *
+ * @return The pointer to the literal string 
+ */
+char *
+kvfs_get_type_string(vfs_node_type_t type);
+
 #endif /* ifndef KERNEL_FS_VFS_H_ */

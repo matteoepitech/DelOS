@@ -9,7 +9,7 @@
 #include <defines.h>
 
 /**
- * @brief Copy a literral string into a pointer.
+ * @brief Copy a literal string into a pointer.
  *
  * @param dst        Where to copy
  * @param src        The string to copy
@@ -24,7 +24,7 @@ kstrcpy(char *dst, const char *src)
     if (dst == NULL || src == NULL) {
         return dst;
     }
-    while (*dst) {
+    while (*src) {
         *dst = *src;
         dst++;
         src++;

@@ -56,7 +56,7 @@ char *
 kstrcat(char *restrict string_a, const char *restrict string_b);
 
 /**
- * @brief Copy a literral string into a pointer.
+ * @brief Copy a literal string into a pointer.
  *
  * @param dst        Where to copy
  * @param src        The string to copy
@@ -67,7 +67,7 @@ char *
 kstrcpy(char *dst, const char *src);
 
 /**
- * @brief Copy a literral string into a pointer.
+ * @brief Copy a literal string into a pointer.
  *
  * @param dst        Where to copy
  * @param src        The string to copy

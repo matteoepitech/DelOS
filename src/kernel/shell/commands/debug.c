@@ -8,6 +8,7 @@
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/fs/vfs/vfs_registry.h>
 #include <kernel/memory/api/kmalloc.h>
+#include <kernel/fs/tmpfs/tmpfs.h>
 #include <utils/kstdlib/kstring.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/pmm/pmm.h>
@@ -27,8 +28,20 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    vfs_fs_t *tmpfs = kvfs_get_fs("tmpfs");
+    vfs_node_t *root = ktmpfs_mount(NULL);
 
-    KPRINTF_DEBUG("%s", tmpfs->_name);
-    return OK_TRUE;
+    if (root == NULL) {
+        KPRINTF_ERROR("debug: failed to mount the tmpfs");
+        return OK_TRUE;
+    }
+    KPRINTF_DEBUG("FS's name: %s", root->_fs->_name);
+    KPRINTF_DEBUG("File type: %s", kvfs_get_type_string(root->_type));
+    KPRINTF_DEBUG("File refcount: %d", root->_refcount);
+    KPRINTF_DEBUG("File size: %d", root->_size);
+    if (root->_private == NULL) {
+        KPRINTF_ERROR("Private is null");
+        return KO_FALSE;
+    }
+    KPRINTF_DEBUG("File name: %s", ((tmpfs_entry_t *) root->_private)->_name);
+    return KO_FALSE;
 }
