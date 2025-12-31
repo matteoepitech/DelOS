@@ -28,7 +28,7 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    vfs_node_t *root = ktmpfs_mount(NULL);
+    vfs_node_t *root = kvfs_mount("tmpfs", "/", NULL);
 
     if (root == NULL) {
         KPRINTF_ERROR("debug: failed to mount the tmpfs");

@@ -58,7 +58,7 @@ typedef struct vfs_node_s {
  */
 typedef struct vfs_fs_s {
     const char _name[KVFS_TYPE_MAX_LEN];
-    vfs_node_t *(*_mount)(void *device);
+    vfs_node_t *(*_mount)(const char *loc, void *device);
 } vfs_fs_t;
 
 /*
@@ -85,6 +85,18 @@ typedef struct vfs_ops_s {
     size_t (*_write)(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
 } vfs_ops_t;
+
+/**
+ * @brief Mount a filesystem in our VFS architecture.
+ *
+ * @param fs_name    The name of the file system (need to be exact)
+ * @param location   Where to locate that mounting
+ * @param device     The device pointer on how to access data
+ *
+ * @return The VFS node of the root of that mounting.
+ */
+vfs_node_t *
+kvfs_mount(const char *fs_name, const char *location, void *device);
 
 /**
  * @brief Give us the pointer to the literal string of a type node name.

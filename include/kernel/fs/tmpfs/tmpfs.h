@@ -56,12 +56,13 @@ extern struct vfs_ops_s ktmpfs_operations;
 /**
  * @brief Create the vfs node and tmpfs entry for the root directory.
  *
+ * @param loc       The location of the mount
  * @param device    The device pointer on how to access data (unused on tmpfs)
  *
  * @return The root directory of the tmpfs file system ("/").
  */
 vfs_node_t *
-ktmpfs_mount(UNUSED void *device);
+ktmpfs_mount(const char *loc, UNUSED void *device);
 
 /**
  * @brief Read data in the temporary virtual file system.

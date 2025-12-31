@@ -14,17 +14,19 @@
 /**
  * @brief Create the root entry for the TMPFS.
  *
+ * @param loc       The location of the root
+ *
  * @return The entry pointer created, NULL otherwise.
  */
 static tmpfs_entry_t *
-create_root_entry(void)
+create_root_entry(const char *loc)
 {
     tmpfs_entry_t *root_entry = kmalloc(sizeof(tmpfs_entry_t));
 
     if (root_entry == NULL) {
         return NULL;
     }
-    if (kstrcpy(root_entry->_name, "/") == NULL) {
+    if (kstrcpy(root_entry->_name, loc) == NULL) {
         kfree(root_entry);
         return NULL;
     }
@@ -63,17 +65,18 @@ create_root_vfs_node(tmpfs_entry_t *root_entry)
 /**
  * @brief Create the vfs node and tmpfs entry for the root directory.
  *
+ * @param loc       The location of the mount
  * @param device    The device pointer on how to access data (unused on tmpfs)
  *
  * @return The root directory of the tmpfs file system ("/").
  */
 vfs_node_t *
-ktmpfs_mount(UNUSED void *device)
+ktmpfs_mount(const char *loc, UNUSED void *device)
 {
     tmpfs_entry_t *root_entry = NULL;
     vfs_node_t *root_node = NULL;
 
-    root_entry = create_root_entry();
+    root_entry = create_root_entry(loc);
     if (root_entry == NULL) {
         return NULL;
     }
