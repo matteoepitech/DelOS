@@ -41,7 +41,7 @@ kstrcmp(const char *string_a, const char *string_b);
  * @return The difference between the first non equal character.
  */
 int32_t
-kstrncmp(const char *string_a, const char *string_b, uint32_t n);
+kstrncmp(const char *string_a, const char *string_b, size_t n);
 
 /**
  * @brief Concat the string b into the string a.
@@ -54,5 +54,28 @@ kstrncmp(const char *string_a, const char *string_b, uint32_t n);
  */
 char *
 kstrcat(char *restrict string_a, const char *restrict string_b);
+
+/**
+ * @brief Copy a literral string into a pointer.
+ *
+ * @param dst        Where to copy
+ * @param src        The string to copy
+ *
+ * @return The pointer to the destination.
+ */
+char *
+kstrcpy(char *dst, const char *src);
+
+/**
+ * @brief Copy a literral string into a pointer.
+ *
+ * @param dst        Where to copy
+ * @param src        The string to copy
+ * @param n          The maximum of char to copy
+ *
+ * @return The pointer to the destination.
+ */
+char *
+kstrncpy(char *dst, const char *src, size_t n);
 
 #endif /* ifndef UTILS_KSTDLIB_KSTRING_H_ */

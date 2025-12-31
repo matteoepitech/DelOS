@@ -6,12 +6,13 @@
 */
 
 #include <kernel/fs/vfs/vfs_registry.h>
+#include <kernel/fs/tmpfs/tmpfs.h>
 #include <utils/kstdlib/kstring.h>
 #include <kernel/fs/vfs/vfs.h>
 
 /* @brief Variable to get all available file system here */
 vfs_fs_t kvfs_registry[KVFS_REGISTRY_LEN] = {
-    {"tmpfs", NULL}
+    {"tmpfs", ktmpfs_mount}
 };
 
 /**

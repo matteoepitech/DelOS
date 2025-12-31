@@ -5,6 +5,7 @@
 ** TMPFS header file
 */
 
+#include <kernel/fs/vfs/vfs.h>
 #include <defines.h>
 #include <types.h>
 
@@ -19,8 +20,8 @@
  * @brief This enumeration contains all differents type of a file for the TMPFS.
  */
 typedef enum {
-    TMPFS_FILE,
-    TMPFS_DIR,
+    KTMPFS_FILE,
+    KTMPFS_DIR,
 } tmpfs_file_type_t;
 
 /*
@@ -48,5 +49,15 @@ typedef struct tmpfs_entry_s {
     };
     struct tmpfs_entry_s *_next;
 } tmpfs_entry_t;
+
+/**
+ * @brief Create the vfs node and tmpfs entry for the root directory.
+ *
+ * @param device    The device pointer on how to access data (unused on tmpfs)
+ *
+ * @return The root directory of the tmpfs file system ("/").
+ */
+vfs_node_t *
+ktmpfs_mount(UNUSED void *device);
 
 #endif /* ifndef KERNEL_FS_TMPFS_H_ */

@@ -67,7 +67,7 @@ kmalloc_init(void);
  * @return The pointer to that data allocated on the kernel heap.
  */
 void *
-kmalloc(uint32_t size);
+kmalloc(size_t size);
 
 /**
  * @brief Free data allocated from kmalloc.

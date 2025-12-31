@@ -21,7 +21,7 @@
  * @return The pointer to the first header found or NULL if not found.
  */
 static kmalloc_header_t *
-find_free_heap_header(uint32_t size)
+find_free_heap_header(size_t size)
 {
     kmalloc_header_t *tmp_header = kernel_heap_lh;
 
@@ -43,7 +43,7 @@ find_free_heap_header(uint32_t size)
  * @return The created the pointer to the heap header.
  */
 static kmalloc_header_t *
-create_heap_header(uint32_t size)
+create_heap_header(size_t size)
 {
     kmalloc_header_t *header = (kmalloc_header_t *) kernel_heap_brk;
     uint32_t pages_to_get = ((size + sizeof(kmalloc_header_t) + KMALLOC_PAGE_SIZE - 1) / KMALLOC_PAGE_SIZE);
@@ -79,7 +79,7 @@ create_heap_header(uint32_t size)
  * @return The pointer to that data allocated on the kernel heap.
  */
 void *
-kmalloc(uint32_t size)
+kmalloc(size_t size)
 {
     kmalloc_header_t *header = NULL;
 

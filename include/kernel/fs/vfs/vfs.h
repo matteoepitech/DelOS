@@ -27,10 +27,10 @@
  * @brief This enumeration contains all differents type of a node for the VFS.
  */
 typedef enum {
-    VFS_FILE,
-    VFS_DIR,
-    VFS_SYMLINK,
-    VFS_DEVICE
+    KVFS_FILE,
+    KVFS_DIR,
+    KVFS_SYMLINK,
+    KVFS_DEVICE
 } vfs_node_type_t;
 
 /*

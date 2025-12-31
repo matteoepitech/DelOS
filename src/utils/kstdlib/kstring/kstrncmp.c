@@ -18,7 +18,7 @@
  * @return The difference between the first non equal character.
  */
 int32_t
-kstrncmp(const char *string_a, const char *string_b, uint32_t n)
+kstrncmp(const char *string_a, const char *string_b, size_t n)
 {
     if (string_a == NULL || string_b == NULL) {
         return -1;
