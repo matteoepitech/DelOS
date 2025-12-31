@@ -43,6 +43,7 @@ kshell_bitmap_dump(uint32_t argc, char *argv[])
 {
     uint32_t size_remain = 0;
     uint32_t size_bytes = 0;
+    int32_t check_ok = 0;
     int32_t size = 0;
     uint32_t tmp = 0;
 
@@ -50,7 +51,11 @@ kshell_bitmap_dump(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", "usage: bitmapdump <size>");
         return OK_TRUE;
     }
-    size = katoi(argv[1]);
+    size = kstrtol(argv[1], 10, &check_ok);
+    if (check_ok == KO_FALSE) {
+        KPRINTF_ERROR("%s", "bitmap_dump: error while parsing the size");
+        return OK_TRUE;
+    }
     if (size <= 0) {
         KPRINTF_ERROR("%s", "bitmap_dump: the size must be greater than 0");
         return OK_TRUE;

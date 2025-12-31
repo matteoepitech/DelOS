@@ -24,7 +24,6 @@ kvfs_close(vfs_node_t *node)
     }
     node->_refcount--;
     if (node->_refcount == 0) {
-        KPRINTF_DEBUG("FREE");
         kfree(node);
     }
 }

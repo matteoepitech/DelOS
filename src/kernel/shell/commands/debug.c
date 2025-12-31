@@ -28,16 +28,24 @@
 uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    ktmpfs_create_entry(kvfs_root_mount_dir->_private, "file.txt", KTMPFS_FILE);
+    vfs_node_t *file = NULL;
 
-    vfs_node_t *file = kvfs_open("/file.txt");
-
+    kvfs_create(kvfs_root_mount_dir, "file.txt");
+    kvfs_mkdir(kvfs_root_mount_dir, "secret");
+    vfs_node_t *secret_dir = kvfs_lookup(kvfs_root_mount_dir, "secret");
+    kvfs_create(secret_dir, "secret.file");
+    file = kvfs_open("/file.txt");
     if (file == NULL) {
         KPRINTF_ERROR("debug: cannot opening file.txt");
         return OK_TRUE;
     }
-
     kvfs_close(file);
-
+    file = kvfs_open("/secret/secret.file");
+    if (file == NULL) {
+        KPRINTF_ERROR("debug: cannot opening secret.file");
+        return OK_TRUE;
+    }
+    kvfs_close(file);
+    kvfs_close(secret_dir);
     return KO_FALSE;
 }

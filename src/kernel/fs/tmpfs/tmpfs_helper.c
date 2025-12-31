@@ -60,7 +60,6 @@ ktmpfs_create_vfs_node(tmpfs_entry_t *entry)
     node->_refcount = 1;
     node->_type = entry->_type == KTMPFS_FILE ? KVFS_FILE : KVFS_DIR;
     node->_size = 0;
-    KPRINTF_DEBUG("CREATED");
     return node;
 }
 

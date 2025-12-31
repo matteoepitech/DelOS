@@ -22,8 +22,9 @@ kfs_init(void)
     vfs_node_t *root = kvfs_mount("tmpfs", "/", NULL);
 
     if (root == NULL) {
-        KPRINTF_ERROR("fs: failed to mount the tmpfs");
+        KPRINTF_ERROR("file_system: failed to mount the tmpfs");
         return KO_FALSE;
     }
+    KPRINTF_OK("file_system: successfully mounted the kernel's tmpfs");
     return OK_TRUE;
 }
