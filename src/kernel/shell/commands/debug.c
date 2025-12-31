@@ -45,7 +45,7 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     }
     KPRINTF_DEBUG("File name: %s", ((tmpfs_entry_t *) root->_private)->_name);
 
-    vfs_node_t *file_node = root->_ops->_lookup(root, "file.txt");
+    vfs_node_t *file_node = kvfs_lookup(root, "file.txt");
     KPRINTF_DEBUG("FS's name: %s", file_node->_fs->_name);
     KPRINTF_DEBUG("File type: %s", kvfs_get_type_string(file_node->_type));
     KPRINTF_DEBUG("File refcount: %d", file_node->_refcount);
