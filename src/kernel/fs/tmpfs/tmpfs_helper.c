@@ -17,7 +17,9 @@
 vfs_ops_t ktmpfs_operations = {
     ktmpfs_read,
     ktmpfs_write,
-    ktmpfs_lookup
+    ktmpfs_lookup,
+    ktmpfs_create,
+    ktmpfs_mkdir
 };
 
 /**

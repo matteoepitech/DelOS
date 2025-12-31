@@ -88,6 +88,8 @@ typedef struct vfs_ops_s {
     size_t (*_read)(vfs_node_t *node, off_t offset, void *buffer, size_t len);
     size_t (*_write)(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
+    bool32_t (*_create)(vfs_node_t *parent, const char *name);
+    bool32_t (*_mkdir)(vfs_node_t *parent, const char *name);
 } vfs_ops_t;
 
 /* @brief Variable that contain the pointer to the VFS node of the root directory obtained by mouting the VFS */
@@ -115,6 +117,28 @@ kvfs_mount(const char *fs_name, const char *location, void *device);
  */
 vfs_node_t *
 kvfs_lookup(vfs_node_t *node, const char *next_level);
+
+/**
+ * @brief Create a file in a parent node.
+ *
+ * @param parent     The parent of the file (likely a dir)
+ * @param name       The name of the file we want to create
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_create(vfs_node_t *parent, const char *name);
+
+/**
+ * @brief Create a directory in a parent node.
+ *
+ * @param parent     The parent of the directory (likely a dir)
+ * @param name       The name of the directory we want to mkdir
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_mkdir(vfs_node_t *parent, const char *name);
 
 /**
  * @brief Open a file and go through its entire path to get the node associated to the end level.

@@ -98,6 +98,28 @@ vfs_node_t *
 ktmpfs_lookup(vfs_node_t *node, const char *next_level);
 
 /**
+ * @brief Create a file in a parent entry on the TMPFS.
+ *
+ * @param parent     The parent of the file (likely a dir)
+ * @param name       The name of the file we want to create
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+ktmpfs_create(vfs_node_t *parent, const char *name);
+
+/**
+ * @brief Create a directory in a parent entry on the TMPFS.
+ *
+ * @param parent     The parent of the dir (likely a dir)
+ * @param name       The name of the dir we want to mkdir
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+ktmpfs_mkdir(vfs_node_t *parent, const char *name);
+
+/**
  * @brief Get the structure containing every callback for that filesystem.
  *
  * @return Pointer to the vfs_ops_t structure for the TMPFS fs.
