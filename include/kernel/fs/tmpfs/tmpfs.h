@@ -50,6 +50,9 @@ typedef struct tmpfs_entry_s {
     struct tmpfs_entry_s *_next;
 } tmpfs_entry_t;
 
+/* @brief Variable containing a static version of all operations of TMPFS fs */
+extern struct vfs_ops_s ktmpfs_operations;
+
 /**
  * @brief Create the vfs node and tmpfs entry for the root directory.
  *
@@ -59,5 +62,50 @@ typedef struct tmpfs_entry_s {
  */
 vfs_node_t *
 ktmpfs_mount(UNUSED void *device);
+
+/**
+ * @brief Read data in the temporary virtual file system.
+ *
+ * @param node       The node of the file in the VFS
+ * @param offset     The offset in the file
+ * @param buffer     The buffer where to store the data read in (should be allocated to len size)
+ * @param len        The number of byte to read
+ *
+ * @return The number of bytes read.
+ */
+size_t
+ktmpfs_read(vfs_node_t *node, off_t offset, void *buffer, size_t len);
+
+/**
+ * @brief Write data in the temporary virtual file system.
+ *
+ * @param node       The node of the file in the VFS
+ * @param offset     The offset in the file
+ * @param buffer     The buffer where the data to write is in
+ * @param len        The number of bytes to write
+ *
+ * @return The size of the number of bytes write in the file.
+ */
+size_t
+ktmpfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
+
+/**
+ * @brief Get another node from the VFS with a node and next level path.
+ *
+ * @param node           The node of the file in the VFS
+ * @param next_level     The next level of the node (e.g. we are at "/" we want the file "abc", next_level = "abc")
+ *
+ * @return The new VFS node we get in the next level.
+ */
+vfs_node_t *
+ktmpfs_lookup(vfs_node_t *node, const char *next_level);
+
+/**
+ * @brief Get the structure containing every callback for that filesystem.
+ *
+ * @return Pointer to the vfs_ops_t structure for the TMPFS fs.
+ */
+vfs_ops_t *
+ktmpfs_get_operations(void);
 
 #endif /* ifndef KERNEL_FS_TMPFS_H_ */

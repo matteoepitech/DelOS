@@ -52,7 +52,7 @@ create_root_vfs_node(tmpfs_entry_t *root_entry)
         return NULL;
     }
     root_node->_fs = fs;
-    root_node->_ops = NULL; // Genre une fonction get tmpfs operations ?
+    root_node->_ops = ktmpfs_get_operations();
     root_node->_private = root_entry;
     root_node->_refcount = 1;
     root_node->_type = KVFS_DIR;

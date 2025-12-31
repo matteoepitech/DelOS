@@ -43,5 +43,11 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
         return KO_FALSE;
     }
     KPRINTF_DEBUG("File name: %s", ((tmpfs_entry_t *) root->_private)->_name);
+
+
+    root->_ops->_read(root, 0, NULL, 0);
+    root->_ops->_write(root, 0, NULL, 0);
+    root->_ops->_lookup(root, "abc");
+
     return KO_FALSE;
 }
