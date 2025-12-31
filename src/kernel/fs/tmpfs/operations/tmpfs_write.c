@@ -22,6 +22,6 @@
 size_t
 ktmpfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len)
 {
-    KPRINTF_DEBUG("write from ktmpfs driver");
+
     return 0;
 }

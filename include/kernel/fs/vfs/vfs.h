@@ -141,6 +141,30 @@ bool32_t
 kvfs_mkdir(vfs_node_t *parent, const char *name);
 
 /**
+ * @brief Write some data in a file.
+ *
+ * @param node       The node where to write the data
+ * @param buffer     The buffer to take the data from
+ * @param len        Number of maximum byte to write
+ *
+ * @return Number of bytes write on the file.
+ */
+size_t
+kvfs_write(vfs_node_t *node, const void *buffer, size_t len);
+
+/**
+ * @brief Read some data from a file.
+ *
+ * @param node       The node where to read the data
+ * @param buffer     The buffer to put the data
+ * @param len        Number of maximum byte to read
+ *
+ * @return Number of bytes read on the file.
+ */
+size_t
+kvfs_read(vfs_node_t *node, void *buffer, size_t len);
+
+/**
  * @brief Open a file and go through its entire path to get the node associated to the end level.
  *
  * @param path   The complete path to a node (e.g. "/abc/dir/a.txt")
