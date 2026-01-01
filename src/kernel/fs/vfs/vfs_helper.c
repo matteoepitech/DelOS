@@ -75,3 +75,22 @@ kvfs_split_path(const char *path, char tokens[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME
     }
     return count;
 }
+
+/**
+ * @brief Check if a path is absolute or relative.
+ *
+ * @param path   The path to check
+ *
+ * @return OK_TRUE if absolute, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_is_absolute_path(const char *path)
+{
+    if (path == NULL) {
+        return KO_FALSE;
+    }
+    if (path[0] != '/') {
+        return KO_FALSE;
+    }
+    return OK_TRUE;
+}

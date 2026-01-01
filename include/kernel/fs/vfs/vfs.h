@@ -210,4 +210,14 @@ kvfs_get_type_string(vfs_node_type_t type);
 size_t
 kvfs_split_path(const char *path, char tokens[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME_LEN]);
 
+/**
+ * @brief Check if a path is absolute or relative.
+ *
+ * @param path   The path to check
+ *
+ * @return OK_TRUE if absolute, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_is_absolute_path(const char *path);
+
 #endif /* ifndef KERNEL_FS_VFS_H_ */

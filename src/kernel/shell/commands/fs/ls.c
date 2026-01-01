@@ -25,8 +25,8 @@ kshell_ls(uint32_t argc, char *argv[])
     char *path = "/";
 
     if (argc >= 2) {
-        if (argv[1][0] != '/') {
-            KPRINTF_ERROR("ls: custom path need to be absolute");
+        if (kvfs_is_absolute_path(argv[1]) == KO_FALSE) {
+            KPRINTF_ERROR("ls: only absolute path is supported yet");
             return OK_TRUE;
         }
         path = argv[1];

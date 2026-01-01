@@ -26,13 +26,18 @@ kvfs_opendir(const char *path)
         return NULL;
     }
     dir_node = kvfs_open(path);
-    if (dir_node->_type != KVFS_DIR) {
+    if (dir_node == NULL) {
         KPRINTF_ERROR("vfs: cannot open this directory: %s", path);
+        return NULL;
+    }
+    if (dir_node->_type != KVFS_DIR) {
+        KPRINTF_ERROR("vfs: not a directory: %s", path);
         kvfs_close(dir_node);
         return NULL;
     }
     dir = kcalloc(sizeof(vfs_dir_t));
     if (dir == NULL) {
+        kvfs_close(dir_node);
         return NULL;
     }
     dir->_dir_node = dir_node;
