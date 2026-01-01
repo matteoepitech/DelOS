@@ -7,6 +7,9 @@
 
 #include <kernel/fs/vfs/vfs.h>
 
+/* @brief Variable for kernel space "current working directory" (should be root at start time) */
+vfs_node_t *kvfs_cwd = NULL;
+
 /**
  * @brief Give us the pointer to the literal string of a type node name.
  *

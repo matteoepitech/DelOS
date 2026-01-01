@@ -25,6 +25,7 @@ kfs_init(void)
         KPRINTF_ERROR("file_system: failed to mount the tmpfs");
         return KO_FALSE;
     }
+    kvfs_cwd = root;
     KPRINTF_OK("file_system: successfully mounted the kernel's tmpfs");
     return OK_TRUE;
 }

@@ -101,6 +101,8 @@ typedef struct vfs_ops_s {
 
 /* @brief Variable that contain the pointer to the VFS node of the root directory obtained by mouting the VFS */
 extern vfs_node_t *kvfs_root_mount_dir;
+/* @brief Variable for kernel space "current working directory" (should be root at start time) */
+extern vfs_node_t *kvfs_cwd ;
 
 /**
  * @brief Mount a filesystem in our VFS architecture.
@@ -180,6 +182,17 @@ kvfs_read(vfs_node_t *node, void *buffer, size_t len);
  */
 vfs_node_t *
 kvfs_open(const char *path);
+
+/**
+ * @brief Resolve and get the VFS node of a relative path using the start.
+ *
+ * @param start  The start of the resolving, NULL for root
+ * @param path   The relative path to a node from the start (e.g. "abc/dir/a.txt")
+ *
+ * @return The VFS node of the path result. (Can be anything: file, dir, link, ...)
+ */
+vfs_node_t *
+kvfs_resolve_from(vfs_node_t *start, const char *path);
 
 /**
  * @brief Close a VFS node, if the refcount is zeroed then destroying it.
