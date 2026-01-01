@@ -34,6 +34,7 @@ const shell_command_t shell_commands[] = {
     {"heapdump", &kshell_heap_dump, "Dump the informations about the heap (kmalloc)"},
     {"ls", &kshell_ls, "List files on a directory or root if none specified"},
     {"mkdir", &kshell_mkdir, "Create a directory on a specific path"},
+    {"touch", &kshell_touch, "Create a file on a specific path"},
     {NULL, NULL, NULL}
 };
 
