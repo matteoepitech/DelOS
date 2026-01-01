@@ -77,6 +77,9 @@ typedef struct vfs_mount_s {
     vfs_node_t *_root;
 } vfs_mount_t;
 
+/* @brief This prevent to include vfs_dir.h which will make infinite inclusion */
+struct vfs_dirent_s;
+
 /*
  * @brief Structure for all VFS operations like open, read, write.
  *        This is using for callback implementations for differentes file system.
@@ -90,6 +93,7 @@ typedef struct vfs_ops_s {
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
     bool32_t (*_create)(vfs_node_t *parent, const char *name);
     bool32_t (*_mkdir)(vfs_node_t *parent, const char *name);
+    bool32_t (*_readdir)(vfs_node_t *dir, uint32_t index, struct vfs_dirent_s *dirent);
 } vfs_ops_t;
 
 /* @brief Variable that contain the pointer to the VFS node of the root directory obtained by mouting the VFS */

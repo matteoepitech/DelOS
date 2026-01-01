@@ -5,6 +5,7 @@
 ** TMPFS header file
 */
 
+#include <kernel/fs/vfs/vfs_dir.h>
 #include <kernel/fs/vfs/vfs.h>
 #include <defines.h>
 #include <types.h>
@@ -121,12 +122,34 @@ bool32_t
 ktmpfs_mkdir(vfs_node_t *parent, const char *name);
 
 /**
+ * @brief Iterate through the VFS node directory.
+ *
+ * @param dir        The directory strcuture (VFS node)
+ * @param index      The current index in the directory (iterator way)
+ * @param dirent     A pointer to the structure to fill out of informations
+ *
+ * @return OK_TRUE if worked, KO_FALSE othewise.
+ */
+bool32_t
+ktmpfs_readdir(vfs_node_t *dir, uint32_t index, vfs_dirent_t *dirent);
+
+/**
  * @brief Get the structure containing every callback for that filesystem.
  *
  * @return Pointer to the vfs_ops_t structure for the TMPFS fs.
  */
 vfs_ops_t *
 ktmpfs_get_operations(void);
+
+/**
+ * @brief Convert a file type from TMPFS into VFS type.
+ *
+ * @param type   The type to convert (tmpfs file type specific)
+ *
+ * @return The final type of VFS node type.
+ */
+vfs_node_type_t
+ktmpfs_convert_vfs_node_type(tmpfs_file_type_t type);
 
 /**
  * @brief Create a VFS node using an entry on that tmpfs.

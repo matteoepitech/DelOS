@@ -19,7 +19,8 @@ vfs_ops_t ktmpfs_operations = {
     ktmpfs_write,
     ktmpfs_lookup,
     ktmpfs_create,
-    ktmpfs_mkdir
+    ktmpfs_mkdir,
+    ktmpfs_readdir
 };
 
 /**
@@ -31,6 +32,25 @@ vfs_ops_t *
 ktmpfs_get_operations(void)
 {
     return &ktmpfs_operations;
+}
+
+/**
+ * @brief Convert a file type from TMPFS into VFS type.
+ *
+ * @param type   The type to convert (tmpfs file type specific)
+ *
+ * @return The final type of VFS node type.
+ */
+vfs_node_type_t
+ktmpfs_convert_vfs_node_type(tmpfs_file_type_t type)
+{
+    switch (type) {
+        case KTMPFS_DIR:
+            return KVFS_DIR;
+        default:
+        case KTMPFS_FILE:
+            return KVFS_FILE;
+    }
 }
 
 /**
@@ -58,7 +78,7 @@ ktmpfs_create_vfs_node(tmpfs_entry_t *entry)
     node->_ops = ktmpfs_get_operations();
     node->_private = entry;
     node->_refcount = 1;
-    node->_type = entry->_type == KTMPFS_FILE ? KVFS_FILE : KVFS_DIR;
+    node->_type = ktmpfs_convert_vfs_node_type(entry->_type);
     node->_size = 0;
     return node;
 }
