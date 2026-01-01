@@ -20,19 +20,12 @@
 vfs_dirent_t *
 kvfs_readdir(vfs_dir_t *dir)
 {
-    vfs_dirent_t *dirent = NULL;
-
-    if (dir == NULL) {
+    if (dir == NULL || dir->_dir_node == NULL || dir->_dir_node->_ops == NULL || dir->_dir_node->_ops->_readdir == NULL) {
         return NULL;
     }
-    dirent = kmalloc(sizeof(vfs_dirent_t));
-    if (dirent == NULL) {
-        return NULL;
-    }
-    if (dir->_dir_node->_ops->_readdir(dir->_dir_node, dir->_index, dirent) == KO_FALSE) {
-        kfree(dirent);
+    if (dir->_dir_node->_ops->_readdir(dir->_dir_node, dir->_index, &dir->_dirent) == KO_FALSE) {
         return NULL;
     }
     dir->_index++;
-    return dirent;
+    return &dir->_dirent;
 }

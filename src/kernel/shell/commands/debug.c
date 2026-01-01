@@ -33,6 +33,9 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     kvfs_mkdir(kvfs_root_mount_dir, "secret");
     vfs_node_t *secret_dir = kvfs_lookup(kvfs_root_mount_dir, "secret");
     kvfs_create(secret_dir, "secret.file");
+    kvfs_create(secret_dir, "hayo");
+    kvfs_create(secret_dir, "aaaa");
+    kvfs_mkdir(secret_dir, "home");
     // ----- END SETUP -----
 
     vfs_dir_t *dir = kvfs_opendir("/secret/");
@@ -40,5 +43,15 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
         KPRINTF_ERROR("debug: cannot open the directory");
         return OK_TRUE;
     }
+    vfs_dirent_t *dirent = kvfs_readdir(dir);
+    while (dirent != NULL) {
+        if (dirent->_type == KVFS_DIR) {
+            KPRINTF_DEBUG("%s/", dirent->_name);
+        } else {
+            KPRINTF_DEBUG("%s", dirent->_name);
+        }
+        dirent = kvfs_readdir(dir);
+    }
+    kvfs_closedir(dir);
     return KO_FALSE;
 }

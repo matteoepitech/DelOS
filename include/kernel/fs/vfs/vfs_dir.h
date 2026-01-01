@@ -11,16 +11,6 @@
     #define KERNEL_FS_VFS_DIR_H_
 
 /*
- * @brief Structure for a directory lookup. Only used for that reason.
- *        - dir_node = the directory VFS node
- *        - index    = the current lookup index (iterator way)
- */
-typedef struct vfs_dir_s {
-    vfs_node_t *_dir_node;
-    uint32_t _index;
-} vfs_dir_t;
-
-/*
  * @brief Structure for re-implementation of the POSIX dirent structure.
  *        - inode = the identifier of the file
  *        - type  = the type of the file
@@ -33,6 +23,18 @@ typedef struct vfs_dirent_s {
     vfs_node_type_t _type;
     char _name[KVFS_MAX_NAME_LEN];
 } vfs_dirent_t;
+
+/*
+ * @brief Structure for a directory lookup. Only used for that reason.
+ *        - dir_node = the directory VFS node
+ *        - index    = the current lookup index (iterator way)
+ *        - dirent   = the structure dirent which we store information (readdir)
+ */
+typedef struct vfs_dir_s {
+    vfs_node_t *_dir_node;
+    uint32_t _index;
+    vfs_dirent_t _dirent;
+} vfs_dir_t;
 
 /**
  * @brief Open a directory and get a structure which act like an iterator.
