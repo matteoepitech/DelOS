@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/debug
+** src/kernel/shell/commands/misc/debug
 ** File description:
 ** debug command source file
 */

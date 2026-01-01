@@ -1,17 +1,17 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/reboot
+** src/kernel/shell/commands/system/panic_test
 ** File description:
-** Reboot command source file
+** panic_test command source file
 */
 
-#include <kernel/misc/reboot.h>
 #include <kernel/shell/shell.h>
+#include <kernel/misc/panic.h>
 #include <utils/misc/print.h>
 #include <defines.h>
 
 /**
- * @brief Command for reboot.
+ * @brief Command for panic_test.
  *
  * @param argc          The number of argument
  * @param argv[]        The array of argument
@@ -19,9 +19,8 @@
  * @return The final code of the operation.
  */
 uint8_t
-kshell_reboot(UNUSED uint32_t argc, UNUSED char *argv[])
+kshell_panic_test(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    KPRINTF_WARN("DelOS is trying to reboot...");
-    kreboot();
+    KPANIC("This is a panic test.");
     return KO_FALSE;
 }

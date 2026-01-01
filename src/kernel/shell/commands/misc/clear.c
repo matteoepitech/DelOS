@@ -1,17 +1,16 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/panic_test
+** src/kernel/shell/commands/misc/clear
 ** File description:
-** panic_test command source file
+** clear command source file
 */
 
 #include <kernel/shell/shell.h>
-#include <kernel/misc/panic.h>
-#include <utils/misc/print.h>
+#include <kernel/tty/tty.h>
 #include <defines.h>
 
 /**
- * @brief Command for panic_test.
+ * @brief Command for clear.
  *
  * @param argc          The number of argument
  * @param argv[]        The array of argument
@@ -19,8 +18,9 @@
  * @return The final code of the operation.
  */
 uint8_t
-kshell_panic_test(UNUSED uint32_t argc, UNUSED char *argv[])
+kshell_clear(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    KPANIC("This is a panic test.");
+    ktty_fill(' ', VGA_TEXT_DEFAULT_COLOR);
+    ktty_cursor_set(0, 0);
     return KO_FALSE;
 }

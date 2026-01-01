@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/pmm_dump
+** src/kernel/shell/commands/memory/pmm_dump
 ** File description:
 ** pmm_dump command source file
 */

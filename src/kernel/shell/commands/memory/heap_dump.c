@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/heap_dump
+** src/kernel/shell/commands/memory/heap_dump
 ** File description:
 ** heap_dump command source file
 */

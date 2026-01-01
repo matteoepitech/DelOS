@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/timer
+** src/kernel/shell/commands/system/timer
 ** File description:
 ** timer command source file
 */

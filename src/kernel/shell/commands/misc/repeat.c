@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/repeat
+** src/kernel/shell/commands/misc/repeat
 ** File description:
 ** repeat command source file
 */

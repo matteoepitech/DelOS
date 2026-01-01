@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/loadkeys
+** src/kernel/shell/commands/misc/loadkeys
 ** File description:
 ** loadkeys command source file
 */

@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/uptime
+** src/kernel/shell/commands/system/uptime
 ** File description:
 ** uptime command source file
 */

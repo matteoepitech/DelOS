@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/help
+** src/kernel/shell/commands/misc/help
 ** File description:
 ** help command source file
 */

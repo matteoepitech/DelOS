@@ -1,16 +1,17 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/clear
+** src/kernel/shell/commands/system/reboot
 ** File description:
-** clear command source file
+** Reboot command source file
 */
 
+#include <kernel/misc/reboot.h>
 #include <kernel/shell/shell.h>
-#include <kernel/tty/tty.h>
+#include <utils/misc/print.h>
 #include <defines.h>
 
 /**
- * @brief Command for clear.
+ * @brief Command for reboot.
  *
  * @param argc          The number of argument
  * @param argv[]        The array of argument
@@ -18,9 +19,9 @@
  * @return The final code of the operation.
  */
 uint8_t
-kshell_clear(UNUSED uint32_t argc, UNUSED char *argv[])
+kshell_reboot(UNUSED uint32_t argc, UNUSED char *argv[])
 {
-    ktty_fill(' ', VGA_TEXT_DEFAULT_COLOR);
-    ktty_cursor_set(0, 0);
+    KPRINTF_WARN("DelOS is trying to reboot...");
+    kreboot();
     return KO_FALSE;
 }

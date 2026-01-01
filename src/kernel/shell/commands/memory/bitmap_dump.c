@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/bitmap_dump
+** src/kernel/shell/commands/memory/bitmap_dump
 ** File description:
 ** bitmap_dump command source file
 */

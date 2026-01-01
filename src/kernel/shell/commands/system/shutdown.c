@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/shutdown
+** src/kernel/shell/commands/system/shutdown
 ** File description:
 ** shutdown command source file
 */

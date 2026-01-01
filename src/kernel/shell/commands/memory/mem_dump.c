@@ -1,6 +1,6 @@
 /*
 ** DELOS PROJECT, 2025
-** src/kernel/shell/commands/mem_dump
+** src/kernel/shell/commands/memory/mem_dump
 ** File description:
 ** mem_dump command source file
 */
