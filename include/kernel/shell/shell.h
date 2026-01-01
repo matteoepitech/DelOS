@@ -244,4 +244,15 @@ kshell_mkdir(uint32_t argc, char *argv[]);
 uint8_t
 kshell_touch(uint32_t argc, char *argv[]);
 
+/**
+ * @brief Command for cat.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_cat(uint32_t argc, char *argv[]);
+
 #endif /* ifndef KERNEL_SHELL_H_ */

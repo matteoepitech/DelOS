@@ -79,7 +79,7 @@ ktmpfs_create_vfs_node(tmpfs_entry_t *entry)
     node->_private = entry;
     node->_refcount = 1;
     node->_type = ktmpfs_convert_vfs_node_type(entry->_type);
-    node->_size = 0;
+    node->_size = entry->_file._size;
     return node;
 }
 

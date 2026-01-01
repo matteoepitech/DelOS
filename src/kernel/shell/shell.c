@@ -35,6 +35,7 @@ const shell_command_t shell_commands[] = {
     {"ls", &kshell_ls, "List files on a directory or root if none specified"},
     {"mkdir", &kshell_mkdir, "Create a directory on a specific path"},
     {"touch", &kshell_touch, "Create a file on a specific path"},
+    {"cat", &kshell_cat, "Read the content of a file and print it"},
     {NULL, NULL, NULL}
 };
 
