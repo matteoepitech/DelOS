@@ -31,11 +31,10 @@ kvfs_opendir(const char *path)
         kvfs_close(dir_node);
         return NULL;
     }
-    dir = kmalloc(sizeof(vfs_dir_t));
+    dir = kcalloc(sizeof(vfs_dir_t));
     if (dir == NULL) {
         return NULL;
     }
     dir->_dir_node = dir_node;
-    dir->_index = 0;
     return dir;
 }

@@ -70,6 +70,16 @@ void *
 kmalloc(size_t size);
 
 /**
+ * @brief Simple implementation of calloc (not count and size like usual calloc implementation).
+ *
+ * @param size   The number of bytes to allocate
+ *
+ * @return The pointer allocated in memory and filled by 0.
+ */
+void *
+kcalloc(size_t size);
+
+/**
  * @brief Realloc a zone of data into a new one with a different size.
  *
  * @param ptr    The pointer to get data from and free
