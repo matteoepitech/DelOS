@@ -83,9 +83,12 @@ struct vfs_dirent_s;
 /*
  * @brief Structure for all VFS operations like open, read, write.
  *        This is using for callback implementations for differentes file system.
- *        - read   = the function pointer to read data from the node
- *        - write  = the function pointer to write data from the node
- *        - lookup = the function pointer to get another node from a node
+ *        - read    = the function pointer to read data from the node
+ *        - write   = the function pointer to write data from the node
+ *        - lookup  = the function pointer to get another node from a node
+ *        - create  = the function pointer to create a file in a parent node
+ *        - mkdir   = the function pointer to create a dir in a parent node
+ *        - readdir = the function pointer to iterate through a directory VFS struct
  */
 typedef struct vfs_ops_s {
     size_t (*_read)(vfs_node_t *node, off_t offset, void *buffer, size_t len);
