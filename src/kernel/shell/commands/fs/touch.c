@@ -30,10 +30,6 @@ kshell_touch(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", "usage: touch <path>");
         return OK_TRUE;
     }
-    if (kvfs_is_absolute_path(argv[1]) == KO_FALSE) {
-        KPRINTF_ERROR("%s", "touch: only absolute path is supported yet");
-        return OK_TRUE;
-    }
     path_parts_count = kvfs_split_path(argv[1], path_parts);
     node = kvfs_root_mount_dir;
     if (path_parts_count <= 1) {

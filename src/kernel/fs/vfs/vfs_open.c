@@ -27,7 +27,7 @@ kvfs_resolve_from(vfs_node_t *start, const char *path)
     uint32_t count_part = 0;
 
     start = start == NULL ? kvfs_root_mount_dir : start;
-    if (path == NULL) {
+    if (path == NULL || start == NULL) {
         return NULL;
     }
     count_part = kvfs_split_path(path, path_parts);
@@ -35,7 +35,7 @@ kvfs_resolve_from(vfs_node_t *start, const char *path)
         return NULL;
     }
     tmp_node = start;
-    for (uint32_t i = 1; i < count_part; i++) {
+    for (uint32_t i = start == kvfs_root_mount_dir ? 1 : 0; i < count_part; i++) {
         free_node = tmp_node;
         tmp_node = kvfs_lookup(tmp_node, path_parts[i]);
         if (free_node != start) {

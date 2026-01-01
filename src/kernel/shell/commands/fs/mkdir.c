@@ -30,16 +30,8 @@ kshell_mkdir(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", "usage: mkdir <path>");
         return OK_TRUE;
     }
-    if (kvfs_is_absolute_path(argv[1]) == KO_FALSE) {
-        KPRINTF_ERROR("%s", "mkdir: only absolute path is supported yet");
-        return OK_TRUE;
-    }
     path_parts_count = kvfs_split_path(argv[1], path_parts);
     node = kvfs_root_mount_dir;
-    if (path_parts_count <= 1) {
-        KPRINTF_ERROR("%s", "mkdir: invalid path");
-        return OK_TRUE;
-    }
     for (uint32_t i = 1; i < path_parts_count - 1; i++) {
         node = node->_ops->_lookup(node, path_parts[i]);
         if (node == NULL) {

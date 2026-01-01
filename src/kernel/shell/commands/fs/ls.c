@@ -25,10 +25,6 @@ kshell_ls(uint32_t argc, char *argv[])
     char *path = "/";
 
     if (argc >= 2) {
-        if (kvfs_is_absolute_path(argv[1]) == KO_FALSE) {
-            KPRINTF_ERROR("ls: only absolute path is supported yet");
-            return OK_TRUE;
-        }
         path = argv[1];
     }
     dir = kvfs_opendir(path);
