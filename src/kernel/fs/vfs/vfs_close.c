@@ -19,7 +19,10 @@
 void
 kvfs_close(vfs_node_t *node)
 {
-    if (node == NULL) {
+    if (node == NULL || node == kvfs_root_mount_dir) {
+        return;
+    }
+    if (node->_refcount == 0) {
         return;
     }
     node->_refcount--;
