@@ -25,17 +25,22 @@ kvfs_resolve_from(vfs_node_t *start, const char *path)
     vfs_node_t *free_node = NULL;
     vfs_node_t *tmp_node = NULL;
     uint32_t count_part = 0;
+    uint32_t part_index = 0;
 
-    start = start == NULL ? kvfs_root_mount_dir : start;
-    if (path == NULL || start == NULL) {
+    if (path == NULL) {
+        return NULL;
+    }
+    start = kvfs_is_absolute_path(path) || start == NULL ? kvfs_root_mount_dir : start;
+    if (start == NULL) {
         return NULL;
     }
     count_part = kvfs_split_path(path, path_parts);
     if (count_part == 0) {
         return NULL;
     }
+    part_index = path_parts[0][0] == '/' ? 1 : 0;
     tmp_node = start;
-    for (uint32_t i = start == kvfs_root_mount_dir ? 1 : 0; i < count_part; i++) {
+    for (uint32_t i = part_index; i < count_part; i++) {
         free_node = tmp_node;
         tmp_node = kvfs_lookup(tmp_node, path_parts[i]);
         if (free_node != start) {

@@ -25,14 +25,22 @@ kshell_mkdir(uint32_t argc, char *argv[])
     uint32_t path_parts_count = 0;
     vfs_node_t *node = NULL;
     vfs_node_t *tmp = NULL;
+    bool32_t is_absolute = KO_FALSE;
+    uint32_t start_idx = 0;
 
     if (argc < 2) {
         KPRINTF_ERROR("%s", "usage: mkdir <path>");
         return OK_TRUE;
     }
     path_parts_count = kvfs_split_path(argv[1], path_parts);
-    node = kvfs_root_mount_dir;
-    for (uint32_t i = 1; i < path_parts_count - 1; i++) {
+    is_absolute = kvfs_is_absolute_path(argv[1]);
+    node = is_absolute ? kvfs_root_mount_dir : kvfs_cwd;
+    start_idx = is_absolute ? 1 : 0;
+    if (node == NULL || path_parts_count <= start_idx) {
+        KPRINTF_ERROR("%s", "mkdir: invalid path");
+        return OK_TRUE;
+    }
+    for (uint32_t i = start_idx; i < path_parts_count - 1; i++) {
         node = node->_ops->_lookup(node, path_parts[i]);
         if (node == NULL) {
             KPRINTF_ERROR("mkdir: no such file or directory called %s", path_parts[i]);

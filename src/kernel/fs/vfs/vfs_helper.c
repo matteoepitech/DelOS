@@ -48,33 +48,37 @@ kvfs_split_path(const char *path, char tokens[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME
 {
     size_t count = 0;
     size_t i = 0;
-    size_t j = 0;
 
     if (!path || KVFS_MAX_PATH_PARTS == 0) {
         return 0;
     }
-    if (path[0] == '/') {
+    bool32_t is_absolute = kvfs_is_absolute_path(path);
+    if (is_absolute) {
         if (count >= KVFS_MAX_PATH_PARTS) {
             return count;
         }
         tokens[count][0] = '/';
         tokens[count][1] = '\0';
         count++;
-        i = 1;
+    }
+    while (path[i] == '/') {
+        i++;
     }
     while (path[i] != '\0' && count < KVFS_MAX_PATH_PARTS) {
-        for (; path[i] == '/'; i++);
-        if (path[i] == '\0') {
-            break;
-        }
-        j = 0;
+        size_t j = 0;
+
         while (path[i] != '/' && path[i] != '\0' && j < KVFS_MAX_NAME_LEN - 1) {
             tokens[count][j] = path[i];
             j++;
             i++;
         }
         tokens[count][j] = '\0';
-        count++;
+        if (j > 0) {
+            count++;
+        }
+        while (path[i] == '/') {
+            i++;
+        }
     }
     return count;
 }
