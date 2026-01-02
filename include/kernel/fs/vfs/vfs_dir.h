@@ -47,6 +47,17 @@ vfs_dir_t *
 kvfs_opendir(const char *path);
 
 /**
+ * @brief Open a directory and get a structure which act like an iterator.
+ *        VFS node version.
+ *
+ * @param node   The node to open dir (will no be close after that)
+ *
+ * @return The directory structure of the concerned path.
+ */
+vfs_dir_t *
+kvfs_opendir_from_node(vfs_node_t *node);
+
+/**
  * @brief Read one entry of a directory structure.
  *
  * @param dir    The directory structure (not a dirent)

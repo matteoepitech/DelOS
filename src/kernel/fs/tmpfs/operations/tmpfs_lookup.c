@@ -31,6 +31,11 @@ ktmpfs_lookup(vfs_node_t *node, const char *next_level)
     if (entry->_type != KTMPFS_DIR) {
         return NULL;
     }
+    if (kstrcmp(next_level, ".") == 0) {
+        return ktmpfs_create_vfs_node(entry);
+    } else if (kstrcmp(next_level, "..") == 0) {
+        return ktmpfs_create_vfs_node(entry->_parent == NULL ? entry : entry->_parent);
+    }
     child_entry = entry->_dir._child;
     while (child_entry != NULL && kstrcmp(child_entry->_name, next_level) != 0) {
         child_entry = child_entry->_next;

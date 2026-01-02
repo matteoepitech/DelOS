@@ -43,3 +43,38 @@ kvfs_opendir(const char *path)
     dir->_dir_node = dir_node;
     return dir;
 }
+
+/**
+ * @brief Open a directory and get a structure which act like an iterator.
+ *        VFS node version.
+ *
+ * @param node   The node to open dir (will no be close after that since it does copy)
+ *
+ * @return The directory structure of the concerned path.
+ */
+vfs_dir_t *
+kvfs_opendir_from_node(vfs_node_t *node)
+{
+    vfs_dir_t *dir = NULL;
+    vfs_node_t *dir_node = NULL;
+
+    if (node == NULL) {
+        return NULL;
+    }
+    dir_node = node->_ops->_lookup(node, ".");
+    if (dir_node == NULL) {
+        return NULL;
+    }
+    if (dir_node->_type != KVFS_DIR) {
+        KPRINTF_ERROR("vfs: not a directory: %s", "no path given (opendir from node)");
+        kvfs_close(dir_node);
+        return NULL;
+    }
+    dir = kcalloc(sizeof(vfs_dir_t));
+    if (dir == NULL) {
+        kvfs_close(dir_node);
+        return NULL;
+    }
+    dir->_dir_node = dir_node;
+    return dir;
+}

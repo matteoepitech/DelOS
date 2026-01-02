@@ -22,14 +22,14 @@ uint8_t
 kshell_ls(uint32_t argc, char *argv[])
 {
     vfs_dir_t *dir = NULL;
-    char *path = "/";
 
-    if (argc >= 2) {
-        path = argv[1];
+    if (argc < 2) {
+        dir = kvfs_opendir_from_node(kvfs_cwd);
+    } else {
+        dir = kvfs_opendir(argv[1]);
     }
-    dir = kvfs_opendir(path);
     if (dir == NULL) {
-        KPRINTF_ERROR("ls: cannot open directory %s", path);
+        KPRINTF_ERROR("%s", "ls: cannot open directory");
         return OK_TRUE;
     }
     for (vfs_dirent_t *dirent = kvfs_readdir(dir); dirent != NULL; dirent = kvfs_readdir(dir)) {

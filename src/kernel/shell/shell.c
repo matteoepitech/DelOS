@@ -39,6 +39,7 @@ const shell_command_t shell_commands[] = {
     {"unlink", &kshell_unlink, "Unlink a file (remove its entry and not its raw data)"},
     {"rmdir", &kshell_rmdir, "Remove a directory (when empty)"},
     {"pwd", &kshell_pwd, "Print the working directory"},
+    {"cd", &kshell_cd, "Change directory"},
     {NULL, NULL, NULL}
 };
 
