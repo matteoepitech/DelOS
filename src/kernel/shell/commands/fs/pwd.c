@@ -25,17 +25,35 @@ uint8_t
 kshell_pwd(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     char buffer[KVFS_MAX_PATH_PARTS * KVFS_MAX_NAME_LEN] = {0};
-    vfs_node_t *tmp_node = NULL;
-    uint32_t tmp_name_len = 0;
-    char *tmp_name = NULL;
+    vfs_node_t *node = kvfs_lookup(kvfs_cwd, ".");
+    vfs_node_t *parent = NULL;
+    const char *name = NULL;
+    uint32_t name_len = 0;
+    uint32_t buf_len = 0;
 
-    tmp_node = kvfs_cwd;
-    while (tmp_node != NULL) {
-        tmp_name = ((tmpfs_entry_t *) tmp_node->_private)->_name;
-        tmp_name_len = kstrlen(tmp_name);
-        kmemmove(buffer, buffer + tmp_name_len, kstrlen(buffer));
-        kmemcpy(buffer, tmp_name, tmp_name_len);
-        tmp_node = tmp_node->_ops->_lookup(tmp_node, "..");
+    if (node == NULL) {
+        KPRINTF_ERROR("%s", "pwd: failed to resolve current directory");
+        return OK_TRUE;
+    }
+    while (node != NULL) {
+        parent = node->_ops->_lookup(node, "..");
+        if (parent == NULL || parent->_private == node->_private) {
+            kvfs_close(parent);
+            break;
+        }
+        name = ((tmpfs_entry_t *) node->_private)->_name;
+        name_len = kstrlen(name);
+        kmemmove(buffer + name_len + 1, buffer, buf_len + 1);
+        buffer[0] = '/';
+        kmemcpy(buffer + 1, name, name_len);
+        buf_len += name_len + 1;
+        kvfs_close(node);
+        node = parent;
+    }
+    kvfs_close(node);
+    if (buffer[0] == '\0') {
+        buffer[0] = '/';
+        buffer[1] = '\0';
     }
     KPRINTF_INFO("%s", buffer);
     return KO_FALSE;
