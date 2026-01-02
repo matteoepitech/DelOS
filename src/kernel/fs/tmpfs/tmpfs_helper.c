@@ -20,6 +20,7 @@ vfs_ops_t ktmpfs_operations = {
     ktmpfs_lookup,
     ktmpfs_create,
     ktmpfs_mkdir,
+    ktmpfs_rmdir,
     ktmpfs_readdir,
     ktmpfs_unlink
 };
@@ -124,4 +125,38 @@ ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, tmpfs_file_type_t t
             break;
     }
     return entry;
+}
+
+/**
+ * @brief Remove the entry from the parent linked list childs.
+ *
+ * @param parent     The pointer to the parent of that entry
+ * @param entry      The pointer to the entry to remove
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+ktmpfs_remove_from_parent_ll(tmpfs_entry_t *parent, tmpfs_entry_t *entry)
+{
+    tmpfs_entry_t *prev = NULL;
+    tmpfs_entry_t *tmp = NULL;
+
+    if (parent == NULL || entry == NULL) {
+        return KO_FALSE;
+    }
+    tmp = parent->_dir._child;
+    while (tmp != entry && tmp != NULL) {
+        prev = tmp;
+        tmp = tmp->_next;
+    }
+    if (tmp == NULL) {
+        return KO_FALSE;
+    }
+    if (prev == NULL) {
+        parent->_dir._child = tmp->_next;
+    } else {
+        prev->_next = tmp->_next;
+    }
+    kfree(tmp);
+    return OK_TRUE;
 }

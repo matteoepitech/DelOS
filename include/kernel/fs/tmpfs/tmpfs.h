@@ -122,6 +122,17 @@ bool32_t
 ktmpfs_mkdir(vfs_node_t *parent, const char *name);
 
 /**
+ * @brief Remove a directory only and only when its content is empty.
+ *        TODO: handle the '.' and '..' files
+ *
+ * @param dir    The directory VFS node to delete
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+ktmpfs_rmdir(vfs_node_t *dir);
+
+/**
  * @brief Iterate through the VFS node directory.
  *
  * @param dir        The directory strcuture (VFS node)
@@ -182,5 +193,16 @@ ktmpfs_create_vfs_node(tmpfs_entry_t *entry);
  */
 tmpfs_entry_t *
 ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, tmpfs_file_type_t type);
+
+/**
+ * @brief Remove the entry from the parent linked list childs.
+ *
+ * @param parent     The pointer to the parent of that entry
+ * @param entry      The pointer to the entry to remove
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+ktmpfs_remove_from_parent_ll(tmpfs_entry_t *parent, tmpfs_entry_t *entry);
 
 #endif /* ifndef KERNEL_FS_TMPFS_H_ */

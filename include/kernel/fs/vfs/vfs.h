@@ -88,7 +88,9 @@ struct vfs_dirent_s;
  *        - lookup  = the function pointer to get another node from a node
  *        - create  = the function pointer to create a file in a parent node
  *        - mkdir   = the function pointer to create a dir in a parent node
+ *        - rmdir   = the function pointer to remove a directory within a parent
  *        - readdir = the function pointer to iterate through a directory VFS struct
+ *        - unlink  = the function pointer to unlink a file whithin a parent
  */
 typedef struct vfs_ops_s {
     size_t (*_read)(vfs_node_t *node, off_t offset, void *buffer, size_t len);
@@ -96,6 +98,7 @@ typedef struct vfs_ops_s {
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
     bool32_t (*_create)(vfs_node_t *parent, const char *name);
     bool32_t (*_mkdir)(vfs_node_t *parent, const char *name);
+    bool32_t (*_rmdir)(vfs_node_t *dir);
     bool32_t (*_readdir)(vfs_node_t *dir, uint32_t index, struct vfs_dirent_s *dirent);
     bool32_t (*_unlink)(vfs_node_t *node);
 } vfs_ops_t;
@@ -149,6 +152,16 @@ kvfs_create(vfs_node_t *parent, const char *name);
  */
 bool32_t
 kvfs_mkdir(vfs_node_t *parent, const char *name);
+
+/**
+ * @brief Remove a directory at a given path.
+ *
+ * @param path   The path of the directory to remove
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_rmdir(const char *path);
 
 /**
  * @brief Write some data in a file.
