@@ -5,6 +5,7 @@
 ** TMPFS header file
 */
 
+#include <kernel/fs/vfs/vfs_stat.h>
 #include <kernel/fs/vfs/vfs_dir.h>
 #include <kernel/fs/vfs/vfs.h>
 #include <defines.h>
@@ -25,6 +26,7 @@ typedef enum {
  * @brief Structure for a file entry in the tmpfs file system.
  *        - name     = the name of the entry (max len KTMPFS_NAME_MAX_LEN)
  *        - type     = the type of the entry
+ *        - stat     = the stat metadata of the entry
  *        - parent   = the parent of the entry (likely a dir)
  *        - data_ptr = the pointer to the raw data in memory (file type)
  *        - size     = the size of the raw data in memory (file type)
@@ -34,6 +36,7 @@ typedef enum {
 typedef struct tmpfs_entry_s {
     char _name[KVFS_MAX_NAME_LEN];
     tmpfs_file_type_t _type;
+    vfs_stat_t _stat;
     struct tmpfs_entry_s *_parent;
     union {
         struct {
@@ -123,7 +126,6 @@ ktmpfs_mkdir(vfs_node_t *parent, const char *name);
 
 /**
  * @brief Remove a directory only and only when its content is empty.
- *        TODO: handle the '.' and '..' files
  *
  * @param dir    The directory VFS node to delete
  *
@@ -131,6 +133,17 @@ ktmpfs_mkdir(vfs_node_t *parent, const char *name);
  */
 bool32_t
 ktmpfs_rmdir(vfs_node_t *dir);
+
+/**
+ * @brief Get metadata using the stat structure of a file or directory or such.
+ *
+ * @param node       The node of the file to get stat from
+ * @param stat_ptr   The pointer to the stat buffer
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+ktmpfs_stat(vfs_node_t *node, vfs_stat_t *stat_ptr);
 
 /**
  * @brief Iterate through the VFS node directory.

@@ -11,6 +11,10 @@
 
 #ifndef KERNEL_FS_VFS_REGISTRY_H_
     #define KERNEL_FS_VFS_REGISTRY_H_
+    
+    #ifndef KVFS_REGISTRY_LEN
+        #define KVFS_REGISTRY_LEN 1
+    #endif /* ifndef KVFS_REGISTRY_LEN */
 
 /* @brief Variable to get all available file system here */
 extern vfs_fs_t kvfs_registry[KVFS_REGISTRY_LEN];

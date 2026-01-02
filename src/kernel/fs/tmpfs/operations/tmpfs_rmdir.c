@@ -12,7 +12,6 @@
 
 /**
  * @brief Remove a directory only and only when its content is empty.
- *        TODO: handle the '.' and '..' files
  *
  * @param dir    The directory VFS node to delete
  *

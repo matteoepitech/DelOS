@@ -15,10 +15,6 @@
         #define KVFS_MAX_FS_NAME_LEN 8
     #endif /* ifndef KVFS_MAX_FS_NAME_LEN */
 
-    #ifndef KVFS_REGISTRY_LEN
-        #define KVFS_REGISTRY_LEN 1
-    #endif /* ifndef KVFS_REGISTRY_LEN */
-
     #ifndef KVFS_MAX_PATH_PARTS
         #define KVFS_MAX_PATH_PARTS 16
     #endif /* ifndef KVFS_MAX_PATH_PARTS */
@@ -80,6 +76,9 @@ typedef struct vfs_mount_s {
 /* @brief This prevent to include vfs_dir.h which will make infinite inclusion */
 struct vfs_dirent_s;
 
+/* @brief This prevent to include vfs_stat.h */
+struct vfs_stat_s;
+
 /*
  * @brief Structure for all VFS operations like open, read, write.
  *        This is using for callback implementations for differentes file system.
@@ -101,6 +100,7 @@ typedef struct vfs_ops_s {
     bool32_t (*_rmdir)(vfs_node_t *dir);
     bool32_t (*_readdir)(vfs_node_t *dir, uint32_t index, struct vfs_dirent_s *dirent);
     bool32_t (*_unlink)(vfs_node_t *node);
+    bool32_t (*_stat)(vfs_node_t *node, struct vfs_stat_s *stat_ptr);
 } vfs_ops_t;
 
 /* @brief Variable that contain the pointer to the VFS node of the root directory obtained by mouting the VFS */
@@ -196,6 +196,17 @@ kvfs_read(vfs_node_t *node, void *buffer, size_t len);
  */
 bool32_t
 kvfs_unlink(const char *path);
+
+/**
+ * @brief Get metadata using the stat structure of a file or directory or such.
+ *
+ * @param path       The path of the file to get stat from
+ * @param stat_ptr   The pointer to the stat buffer
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_stat(const char *path, struct vfs_stat_s *stat_ptr);
 
 /**
  * @brief Open a file and go through its entire path to get the node associated to the end level.
