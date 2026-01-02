@@ -36,6 +36,7 @@ const shell_command_t shell_commands[] = {
     {"mkdir", &kshell_mkdir, "Create a directory on a specific path"},
     {"touch", &kshell_touch, "Create a file on a specific path"},
     {"cat", &kshell_cat, "Read the content of a file and print it"},
+    {"unlink", &kshell_unlink, "Unlink a file (remove its entry and not its raw data)"},
     {NULL, NULL, NULL}
 };
 
