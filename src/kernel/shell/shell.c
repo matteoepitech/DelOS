@@ -37,6 +37,7 @@ const shell_command_t shell_commands[] = {
     {"touch", &kshell_touch, "Create a file on a specific path"},
     {"cat", &kshell_cat, "Read the content of a file and print it"},
     {"unlink", &kshell_unlink, "Unlink a file (remove its entry and not its raw data)"},
+    {"rmdir", &kshell_rmdir, "Remove a directory (when empty)"},
     {NULL, NULL, NULL}
 };
 

@@ -41,7 +41,7 @@ kshell_mkdir(uint32_t argc, char *argv[])
         return OK_TRUE;
     }
     for (uint32_t i = start_idx; i < path_parts_count - 1; i++) {
-        node = node->_ops->_lookup(node, path_parts[i]);
+        node = kvfs_lookup(node, path_parts[i]);
         if (node == NULL) {
             KPRINTF_ERROR("mkdir: no such file or directory called %s", path_parts[i]);
             return OK_TRUE;
@@ -51,12 +51,12 @@ kshell_mkdir(uint32_t argc, char *argv[])
             return OK_TRUE;
         }
     }
-    tmp = node->_ops->_lookup(node, path_parts[path_parts_count - 1]);
+    tmp = kvfs_lookup(node, path_parts[path_parts_count - 1]);
     if (tmp != NULL) {
         kvfs_close(tmp);
         KPRINTF_ERROR("%s", "mkdir: file already exists");
         return OK_TRUE;
     }
-    node->_ops->_mkdir(node, path_parts[path_parts_count - 1]);
+    kvfs_mkdir(node, path_parts[path_parts_count - 1]);
     return KO_FALSE;
 }
