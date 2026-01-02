@@ -24,7 +24,8 @@ kshell_cd(uint32_t argc, char *argv[])
     vfs_node_t *dir_to_cd = NULL;
 
     if (argc < 2) {
-        kvfs_cwd = kvfs_root_mount_dir;
+        kvfs_close(kvfs_cwd);
+        kvfs_cwd = kvfs_open("/");
         return KO_FALSE;
     }
     dir_to_cd = kvfs_open(argv[1]);
