@@ -134,6 +134,16 @@ bool32_t
 ktmpfs_readdir(vfs_node_t *dir, uint32_t index, vfs_dirent_t *dirent);
 
 /**
+ * @brief Unlink a file (remove it's entry but not his data of course)
+ *
+ * @param node   The node to remove its entry
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+ktmpfs_unlink(vfs_node_t *node);
+
+/**
  * @brief Get the structure containing every callback for that filesystem.
  *
  * @return Pointer to the vfs_ops_t structure for the TMPFS fs.

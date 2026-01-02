@@ -97,6 +97,7 @@ typedef struct vfs_ops_s {
     bool32_t (*_create)(vfs_node_t *parent, const char *name);
     bool32_t (*_mkdir)(vfs_node_t *parent, const char *name);
     bool32_t (*_readdir)(vfs_node_t *dir, uint32_t index, struct vfs_dirent_s *dirent);
+    bool32_t (*_unlink)(vfs_node_t *node);
 } vfs_ops_t;
 
 /* @brief Variable that contain the pointer to the VFS node of the root directory obtained by mouting the VFS */
@@ -172,6 +173,16 @@ kvfs_write(vfs_node_t *node, const void *buffer, size_t len);
  */
 size_t
 kvfs_read(vfs_node_t *node, void *buffer, size_t len);
+
+/**
+ * @brief Unlink a node (remove it's entry but not his data of course)
+ *
+ * @param path   The path to the file to unlink
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_unlink(const char *path);
 
 /**
  * @brief Open a file and go through its entire path to get the node associated to the end level.
