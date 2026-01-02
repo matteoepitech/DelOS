@@ -29,6 +29,10 @@ kvfs_rmdir(const char *path)
     if (node == NULL) {
         return KO_FALSE;
     }
+    if (node->_type != KVFS_DIR) {
+        KPRINTF_ERROR("vfs: this file is not a directory");
+        return KO_FALSE;
+    }
     if (node->_ops->_rmdir(node) == KO_FALSE) {
         KPRINTF_ERROR("vfs: error while removing a directory");
         return KO_FALSE;

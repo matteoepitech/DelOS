@@ -277,4 +277,15 @@ kshell_unlink(uint32_t argc, char *argv[]);
 uint8_t
 kshell_rmdir(uint32_t argc, char *argv[]);
 
+/**
+ * @brief Command for pwd.
+ *
+ * @param argc          The number of argument
+ * @param argv[]        The array of argument
+ *
+ * @return The final code of the operation.
+ */
+uint8_t
+kshell_pwd(UNUSED uint32_t argc, UNUSED char *argv[]);
+
 #endif /* ifndef KERNEL_SHELL_H_ */
