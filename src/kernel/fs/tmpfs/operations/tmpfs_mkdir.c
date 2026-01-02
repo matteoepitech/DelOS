@@ -25,7 +25,7 @@ ktmpfs_mkdir(vfs_node_t *parent, const char *name)
     if (parent == NULL || name == NULL) {
         return KO_FALSE;
     }
-    if (ktmpfs_create_entry(parent->_private, name, KTMPFS_DIR) == NULL) {
+    if (ktmpfs_create_entry(parent->_private, name, KVFS_STAT_IFDIR) == NULL) {
         return KO_FALSE;
     }
     return OK_TRUE;

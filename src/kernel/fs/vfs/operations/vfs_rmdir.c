@@ -20,6 +20,7 @@
 bool32_t
 kvfs_rmdir(const char *path)
 {
+    vfs_stat_t stat_buffer = {0};
     vfs_node_t *node = NULL;
 
     if (path == NULL) {
@@ -29,7 +30,11 @@ kvfs_rmdir(const char *path)
     if (node == NULL) {
         return KO_FALSE;
     }
-    if (node->_type != KVFS_DIR) {
+    if (node->_ops->_stat(node, &stat_buffer) == KO_FALSE) {
+        kvfs_close(node);
+        return KO_FALSE;
+    }
+    if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
         KPRINTF_ERROR("vfs: this file is not a directory");
         return KO_FALSE;
     }

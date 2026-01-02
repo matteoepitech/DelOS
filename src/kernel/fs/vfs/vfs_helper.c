@@ -13,26 +13,19 @@ vfs_node_t *kvfs_cwd = NULL;
 /**
  * @brief Give us the pointer to the literal string of a type node name.
  *
- * @param type   The type of the node we want to get the string from
+ * @param mode   The mode of the entry
  *
  * @return The pointer to the literal string 
  */
 char *
-kvfs_get_type_string(vfs_node_type_t type)
+kvfs_get_type_string(mode_t mode)
 {
-    switch (type) {
-        case KVFS_DIR:
-            return "directory";
-        case KVFS_FILE:
-            return "file";
-        case KVFS_SYMLINK:
-            return "symbolic link";
-        case KVFS_DEVICE:
-            return "device file";
-        default:
-            return "unknown type";
+    if (KVFS_STAT_ISDIR(mode)) {
+        return "directory";
+    } else if (KVFS_STAT_ISREG(mode)) {
+        return "file";
     }
-    return NULL;
+    return "?";
 }
 
 /**

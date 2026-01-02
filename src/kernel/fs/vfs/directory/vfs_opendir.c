@@ -5,6 +5,7 @@
 ** VFS opendir source file
 */
 
+#include "defines.h"
 #include <kernel/memory/api/kmalloc.h>
 #include <kernel/fs/vfs/vfs_dir.h>
 #include <utils/misc/print.h>
@@ -19,6 +20,7 @@
 vfs_dir_t *
 kvfs_opendir(const char *path)
 {
+    vfs_stat_t stat_buffer = {0};
     vfs_node_t *dir_node = NULL;
     vfs_dir_t *dir = NULL;
 
@@ -30,7 +32,11 @@ kvfs_opendir(const char *path)
         KPRINTF_ERROR("vfs: cannot open this directory: %s", path);
         return NULL;
     }
-    if (dir_node->_type != KVFS_DIR) {
+    if (dir_node->_ops->_stat(dir_node, &stat_buffer) == KO_FALSE) {
+        kvfs_close(dir_node);
+        return KO_FALSE;
+    }
+    if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
         KPRINTF_ERROR("vfs: not a directory: %s", path);
         kvfs_close(dir_node);
         return NULL;
@@ -55,8 +61,9 @@ kvfs_opendir(const char *path)
 vfs_dir_t *
 kvfs_opendir_from_node(vfs_node_t *node)
 {
-    vfs_dir_t *dir = NULL;
+    vfs_stat_t stat_buffer = {0};
     vfs_node_t *dir_node = NULL;
+    vfs_dir_t *dir = NULL;
 
     if (node == NULL) {
         return NULL;
@@ -65,7 +72,11 @@ kvfs_opendir_from_node(vfs_node_t *node)
     if (dir_node == NULL) {
         return NULL;
     }
-    if (dir_node->_type != KVFS_DIR) {
+    if (dir_node->_ops->_stat(dir_node, &stat_buffer) == KO_FALSE) {
+        kvfs_close(dir_node);
+        return KO_FALSE;
+    }
+    if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
         KPRINTF_ERROR("vfs: not a directory: %s", "no path given (opendir from node)");
         kvfs_close(dir_node);
         return NULL;

@@ -28,7 +28,7 @@ ktmpfs_lookup(vfs_node_t *node, const char *next_level)
         return NULL;
     }
     entry = (tmpfs_entry_t *) node->_private;
-    if (entry->_type != KTMPFS_DIR) {
+    if (KVFS_STAT_ISDIR(entry->_stat._mode) == KO_FALSE) {
         return NULL;
     }
     if (kstrcmp(next_level, ".") == 0) {

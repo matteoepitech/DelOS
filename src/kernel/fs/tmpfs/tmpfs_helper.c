@@ -38,25 +38,6 @@ ktmpfs_get_operations(void)
 }
 
 /**
- * @brief Convert a file type from TMPFS into VFS type.
- *
- * @param type   The type to convert (tmpfs file type specific)
- *
- * @return The final type of VFS node type.
- */
-vfs_node_type_t
-ktmpfs_convert_vfs_node_type(tmpfs_file_type_t type)
-{
-    switch (type) {
-        case KTMPFS_DIR:
-            return KVFS_DIR;
-        default:
-        case KTMPFS_FILE:
-            return KVFS_FILE;
-    }
-}
-
-/**
  * @brief Create a VFS node using an entry on that tmpfs.
  *
  * @param entry     The entry to get data from
@@ -81,8 +62,6 @@ ktmpfs_create_vfs_node(tmpfs_entry_t *entry)
     node->_ops = ktmpfs_get_operations();
     node->_private = entry;
     node->_refcount = 1;
-    node->_type = ktmpfs_convert_vfs_node_type(entry->_type);
-    node->_size = entry->_file._size;
     return node;
 }
 
@@ -91,23 +70,19 @@ ktmpfs_create_vfs_node(tmpfs_entry_t *entry)
  *
  * @param parent     The parent of the entry
  * @param name       The name of the entry
- * @param type       The type of the entry
+ * @param mode       The mode of the entry
  *
  * @return The entry created.
  */
 tmpfs_entry_t *
-ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, tmpfs_file_type_t type)
+ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, mode_t mode)
 {
     tmpfs_entry_t *entry = NULL;
 
-    if (parent == NULL || name == NULL || parent->_type != KTMPFS_DIR) {
+    if (parent == NULL || name == NULL || !KVFS_STAT_ISDIR(parent->_stat._mode)) {
         return NULL;
     }
-    if (type != KTMPFS_DIR && type != KTMPFS_FILE) {
-        KPANIC("Trying to create a file using an unknown type on a TMPFS file system.");
-        return NULL;
-    }
-    entry = kmalloc(sizeof(tmpfs_entry_t));
+    entry = kcalloc(sizeof(tmpfs_entry_t));
     if (entry == NULL) {
         return NULL;
     }
@@ -115,15 +90,17 @@ ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, tmpfs_file_type_t t
     entry->_next = parent->_dir._child;
     parent->_dir._child = entry;
     entry->_parent = parent;
-    entry->_type = type;
-    switch (type) {
-        case KTMPFS_DIR:
-            entry->_dir._child = NULL;
-            break;
-        case KTMPFS_FILE:
-            entry->_file._data_ptr = NULL;
-            entry->_file._size = 0;
-            break;
+    entry->_stat._atime = 0;
+    entry->_stat._mtime = 0;
+    entry->_stat._ctime = 0;
+    entry->_stat._mode = mode;
+    entry->_stat._nlink = 0;
+    entry->_stat._size = 0;
+    if (KVFS_STAT_ISDIR(mode)) {
+        entry->_dir._child = NULL;
+    } else {
+        entry->_file._data_ptr = NULL;
+        entry->_file._size = 0;
     }
     return entry;
 }

@@ -35,7 +35,7 @@ ktmpfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len)
     if (entry == NULL) {
         return NULL;
     }
-    if (entry->_type != KTMPFS_FILE) {
+    if (KVFS_STAT_ISREG(entry->_stat._mode) == KO_FALSE) {
         KPRINTF_ERROR("tmpfs: cannot write on an entry which is not a file");
         return 0;
     }
@@ -51,6 +51,6 @@ ktmpfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len)
     }
     kmemcpy(&entry->_file._data_ptr[offset], buffer, len);
     entry->_file._size = MAX(new_size, entry->_file._size);
-    node->_size = entry->_file._size;
+    entry->_stat._size = entry->_file._size;
     return len;
 }

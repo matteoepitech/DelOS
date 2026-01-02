@@ -20,6 +20,7 @@
 bool32_t
 kvfs_unlink(const char *path)
 {
+    vfs_stat_t stat_buffer = {0};
     vfs_node_t *node = NULL;
 
     if (path == NULL) {
@@ -30,7 +31,11 @@ kvfs_unlink(const char *path)
         KPRINTF_ERROR("vfs: no such file or directory to unlink");
         return KO_FALSE;
     }
-    if (node->_type == KVFS_DIR || node->_type == KVFS_DEVICE) {
+    if (node->_ops->_stat(node, &stat_buffer) == KO_FALSE) {
+        kvfs_close(node);
+        return KO_FALSE;
+    }
+    if (KVFS_STAT_ISREG(stat_buffer._mode)) {
         KPRINTF_ERROR("vfs: cannot unlink this type of file");
         return KO_FALSE;
     }

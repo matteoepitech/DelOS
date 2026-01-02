@@ -32,8 +32,13 @@ create_root_entry(const char *loc)
     }
     root_entry->_parent = NULL;
     root_entry->_next = NULL;
-    root_entry->_type = KTMPFS_DIR;
     root_entry->_dir._child = NULL;
+    root_entry->_stat._atime = 0;
+    root_entry->_stat._ctime = 0;
+    root_entry->_stat._mtime = 0;
+    root_entry->_stat._mode = KVFS_STAT_IFDIR;
+    root_entry->_stat._nlink = 0;
+    root_entry->_stat._size = 0;
     return root_entry;
 }
 

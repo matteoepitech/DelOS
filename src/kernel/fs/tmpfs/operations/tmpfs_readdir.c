@@ -27,7 +27,7 @@ fill_out_dirent(vfs_dirent_t *dirent, tmpfs_entry_t *res)
     }
     dirent->_inode = 0; // NOT USED on TMPFS
     kstrcpy(dirent->_name, res->_name);
-    dirent->_type = ktmpfs_convert_vfs_node_type(res->_type);
+    dirent->_type = KVFS_STAT_TYPE(res->_stat._mode);
     return OK_TRUE;
 }
 

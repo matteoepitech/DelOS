@@ -15,17 +15,8 @@
     #define KERNEL_FS_TMPFS_H_
 
 /*
- * @brief This enumeration contains all differents type of a file for the TMPFS.
- */
-typedef enum {
-    KTMPFS_FILE,
-    KTMPFS_DIR,
-} tmpfs_file_type_t;
-
-/*
  * @brief Structure for a file entry in the tmpfs file system.
  *        - name     = the name of the entry (max len KTMPFS_NAME_MAX_LEN)
- *        - type     = the type of the entry
  *        - stat     = the stat metadata of the entry
  *        - parent   = the parent of the entry (likely a dir)
  *        - data_ptr = the pointer to the raw data in memory (file type)
@@ -35,7 +26,6 @@ typedef enum {
  */
 typedef struct tmpfs_entry_s {
     char _name[KVFS_MAX_NAME_LEN];
-    tmpfs_file_type_t _type;
     vfs_stat_t _stat;
     struct tmpfs_entry_s *_parent;
     union {
@@ -176,16 +166,6 @@ vfs_ops_t *
 ktmpfs_get_operations(void);
 
 /**
- * @brief Convert a file type from TMPFS into VFS type.
- *
- * @param type   The type to convert (tmpfs file type specific)
- *
- * @return The final type of VFS node type.
- */
-vfs_node_type_t
-ktmpfs_convert_vfs_node_type(tmpfs_file_type_t type);
-
-/**
  * @brief Create a VFS node using an entry on that tmpfs.
  *
  * @param entry     The entry to get data from
@@ -200,12 +180,12 @@ ktmpfs_create_vfs_node(tmpfs_entry_t *entry);
  *
  * @param parent     The parent of the entry
  * @param name       The name of the entry
- * @param type       The type of the entry
+ * @param mode       The mode of the entry
  *
  * @return The entry created.
  */
 tmpfs_entry_t *
-ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, tmpfs_file_type_t type);
+ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, mode_t mode);
 
 /**
  * @brief Remove the entry from the parent linked list childs.

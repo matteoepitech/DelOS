@@ -13,14 +13,14 @@
 /*
  * @brief Structure for re-implementation of the POSIX dirent structure.
  *        - inode = the identifier of the file
- *        - type  = the type of the file
+ *        - type  = the type of the file (provided from the stat buffer)
  *        - name  = the name of the file
  *
  *        This structure may changes in the future.
  */
 typedef struct vfs_dirent_s {
     uint32_t _inode;
-    vfs_node_type_t _type;
+    uint32_t _type;
     char _name[KVFS_MAX_NAME_LEN];
 } vfs_dirent_t;
 

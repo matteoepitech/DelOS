@@ -5,6 +5,7 @@
 ** VFS header file
 */
 
+#include <kernel/fs/vfs/vfs_stat.h>
 #include <defines.h>
 #include <types.h>
 
@@ -24,16 +25,6 @@
     #endif /* ifndef KVFS_MAX_NAME_LEN */
 
 /*
- * @brief This enumeration contains all differents type of a node for the VFS.
- */
-typedef enum {
-    KVFS_FILE,
-    KVFS_DIR,
-    KVFS_SYMLINK,
-    KVFS_DEVICE
-} vfs_node_type_t;
-
-/*
  * @brief Structure for a VFS node which is a file object in memory for file, dir, link, ...
  *        - type     = the type of the node (file, dir, symlink, device)
  *        - size     = the size in bytes of the file
@@ -43,8 +34,6 @@ typedef enum {
  *        - private  = the pointer to something we don't know (used by the fs drivers)
  */
 typedef struct vfs_node_s {
-    vfs_node_type_t _type;
-    uint32_t _size;
     uint32_t _refcount;
     struct vfs_ops_s *_ops;
     struct vfs_fs_s *_fs;
@@ -240,12 +229,12 @@ kvfs_close(vfs_node_t *node);
 /**
  * @brief Give us the pointer to the literal string of a type node name.
  *
- * @param type   The type of the node we want to get the string from
+ * @param mode   The mode of the entry
  *
  * @return The pointer to the literal string 
  */
 char *
-kvfs_get_type_string(vfs_node_type_t type);
+kvfs_get_type_string(mode_t mode);
 
 /**
  * @brief Split an entire path into some tokens for easier parsing.
