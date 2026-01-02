@@ -30,6 +30,10 @@ kvfs_unlink(const char *path)
         KPRINTF_ERROR("vfs: no such file or directory to unlink");
         return KO_FALSE;
     }
+    if (node->_type == KVFS_DIR || node->_type == KVFS_DEVICE) {
+        KPRINTF_ERROR("vfs: cannot unlink this type of file");
+        return KO_FALSE;
+    }
     if (node->_ops->_unlink(node) == KO_FALSE) {
         KPRINTF_ERROR("vfs: error while unlinking the file in fs operation");
         return KO_FALSE;
