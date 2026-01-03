@@ -20,7 +20,16 @@ size_t
 kvfs_read(vfs_node_t *node, void *buffer, size_t len)
 {
     // TODO: do the offset, need file descriptors for that
+    const cred_t cred = {0, 0};
+    vfs_stat_t st = {0};
+
     if (node == NULL || buffer == NULL || len == 0) {
+        return 0;
+    }
+    if (kvfs_get_stat(node, &st) == KO_FALSE) {
+        return 0;
+    }
+    if (kvfs_stat_can_read(&st, &cred) == KO_FALSE) {
         return 0;
     }
     return node->_ops->_read(node, 0, buffer, len);

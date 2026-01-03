@@ -5,7 +5,7 @@
 ** VFS rmdir source file
 */
 
-#include <kernel/fs/vfs/vfs.h>
+#include <kernel/fs/vfs/vfs_open.h>
 #include <utils/misc/print.h>
 #include <defines.h>
 #include <types.h>

@@ -30,3 +30,20 @@ kvfs_stat_create(mode_t mode)
     }
     return stat_buffer;
 }
+
+/**
+ * @brief Get the stat of a file using node.
+ *
+ * @param node   The node of the VFS file
+ * @param out    The struct buffer pointer
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_get_stat(vfs_node_t *node, vfs_stat_t *out)
+{
+    if (node == NULL || node->_ops == NULL || node->_ops->_stat == NULL || out == NULL) {
+        return KO_FALSE;
+    }
+    return node->_ops->_stat(node, out);
+}

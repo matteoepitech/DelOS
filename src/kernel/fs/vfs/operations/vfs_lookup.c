@@ -19,5 +19,17 @@
 vfs_node_t *
 kvfs_lookup(vfs_node_t *node, const char *next_level)
 {
+    const cred_t cred = {0, 0};
+    vfs_stat_t st = {0};
+
+    if (node == NULL || next_level == NULL) {
+        return NULL;
+    }
+    if (kvfs_get_stat(node, &st) == KO_FALSE) {
+        return NULL;
+    }
+    if (kvfs_stat_can_exec(&st, &cred) == KO_FALSE) {
+        return NULL;
+    }
     return node->_ops->_lookup(node, next_level);
 }

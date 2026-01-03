@@ -5,10 +5,11 @@
 ** VFS opendir source file
 */
 
-#include "defines.h"
 #include <kernel/memory/api/kmalloc.h>
+#include <kernel/fs/vfs/vfs_open.h>
 #include <kernel/fs/vfs/vfs_dir.h>
 #include <utils/misc/print.h>
+#include "defines.h"
 
 /**
  * @brief Open a directory and get a structure which act like an iterator.

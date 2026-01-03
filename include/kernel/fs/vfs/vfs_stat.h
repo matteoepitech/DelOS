@@ -11,6 +11,10 @@
 #ifndef KERNEL_FS_VFS_STAT_H_
     #define KERNEL_FS_VFS_STAT_H_
 
+    #ifndef KVFS_STAT_MODE_MASK_IT
+        #define KVFS_STAT_MODE_MASK_IT(mode) (mode & 0777)
+    #endif /* ifndef KVFS_STAT_MODE_MASK_IT */
+
     #ifndef KVFS_STAT_MODE_MASK
         #define KVFS_STAT_MODE_MASK
         #define KVFS_STAT_IFMT   0170000
@@ -52,6 +56,9 @@
         #define KVFS_STAT_CAN_OTH_EXEC(mode)  ((mode) & KVFS_STAT_IXOTH)
     #endif /* ifndef KVFS_STAT_PERM_MASK */
 
+/* @brief This prevent to include vfs.h */
+struct vfs_node_s;
+
 /*
  * @brief Structure for a stat entry.
  *        - mode = the type + permission integer using mask
@@ -81,6 +88,17 @@ typedef struct vfs_stat_s {
  */
 vfs_stat_t
 kvfs_stat_create(mode_t mode);
+
+/**
+ * @brief Get the stat of a file using node.
+ *
+ * @param node   The node of the VFS file
+ * @param out    The struct buffer pointer
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_get_stat(struct vfs_node_s *node, vfs_stat_t *out);
 
 /**
  * @brief Update the access time to now.

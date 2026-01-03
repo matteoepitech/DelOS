@@ -132,7 +132,7 @@ kshell_mkdir(uint32_t argc, char *argv[])
     if (ensure_target_absent(node, path_parts[path_parts_count - 1]) == KO_FALSE) {
         return OK_TRUE;
     }
-    if (kvfs_mkdir(node, path_parts[path_parts_count - 1]) == KO_FALSE) {
+    if (kvfs_mkdir(node, path_parts[path_parts_count - 1], 0664) == KO_FALSE) {
         KPRINTF_ERROR("%s", "mkdir: failed to create directory");
         return OK_TRUE;
     }

@@ -5,8 +5,8 @@
 ** cd command source file
 */
 
+#include <kernel/fs/vfs/vfs_open.h>
 #include <kernel/shell/shell.h>
-#include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
 #include <defines.h>
 

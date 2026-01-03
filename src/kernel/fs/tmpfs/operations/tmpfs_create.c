@@ -16,17 +16,19 @@
  *
  * @param parent     The parent of the file (likely a dir)
  * @param name       The name of the file we want to create
+ * @param mode       The file mode
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-ktmpfs_create(vfs_node_t *parent, const char *name)
+ktmpfs_create(vfs_node_t *parent, const char *name, mode_t mode)
 {
     if (parent == NULL || name == NULL) {
         return KO_FALSE;
     }
-    if (ktmpfs_create_entry(parent->_private, name, KVFS_STAT_IFREG) == NULL) {
+    if (ktmpfs_create_entry(parent->_private, name, mode) == NULL) {
         return KO_FALSE;
     }
+    kvfs_stat_inc_nlink(&((tmpfs_entry_t *) parent->_private)->_stat);
     return OK_TRUE;
 }

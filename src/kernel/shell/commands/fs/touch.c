@@ -62,6 +62,6 @@ kshell_touch(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", "touch: file already exists");
         return OK_TRUE;
     }
-    kvfs_create(node, path_parts[path_parts_count - 1]);
+    kvfs_create(node, path_parts[path_parts_count - 1], 0644);
     return KO_FALSE;
 }

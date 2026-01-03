@@ -97,22 +97,24 @@ ktmpfs_lookup(vfs_node_t *node, const char *next_level);
  *
  * @param parent     The parent of the file (likely a dir)
  * @param name       The name of the file we want to create
+ * @param mode       The file mode
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-ktmpfs_create(vfs_node_t *parent, const char *name);
+ktmpfs_create(vfs_node_t *parent, const char *name, mode_t mode);
 
 /**
  * @brief Create a directory in a parent entry on the TMPFS.
  *
  * @param parent     The parent of the dir (likely a dir)
  * @param name       The name of the dir we want to mkdir
+ * @param mode       The mode for the directory
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-ktmpfs_mkdir(vfs_node_t *parent, const char *name);
+ktmpfs_mkdir(vfs_node_t *parent, const char *name, mode_t mode);
 
 /**
  * @brief Remove a directory only and only when its content is empty.

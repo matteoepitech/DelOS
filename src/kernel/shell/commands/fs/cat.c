@@ -6,9 +6,9 @@
 */
 
 #include <kernel/memory/api/kmalloc.h>
+#include <kernel/fs/vfs/vfs_open.h>
 #include <kernel/fs/vfs/vfs_stat.h>
 #include <kernel/shell/shell.h>
-#include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
 #include <defines.h>
 

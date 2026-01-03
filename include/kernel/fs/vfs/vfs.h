@@ -65,9 +65,6 @@ typedef struct vfs_mount_s {
 /* @brief This prevent to include vfs_dir.h which will make infinite inclusion */
 struct vfs_dirent_s;
 
-/* @brief This prevent to include vfs_stat.h */
-struct vfs_stat_s;
-
 /*
  * @brief Structure for all VFS operations like open, read, write.
  *        This is using for callback implementations for differentes file system.
@@ -84,8 +81,8 @@ typedef struct vfs_ops_s {
     size_t (*_read)(vfs_node_t *node, off_t offset, void *buffer, size_t len);
     size_t (*_write)(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
-    bool32_t (*_create)(vfs_node_t *parent, const char *name);
-    bool32_t (*_mkdir)(vfs_node_t *parent, const char *name);
+    bool32_t (*_create)(vfs_node_t *parent, const char *name, mode_t mode);
+    bool32_t (*_mkdir)(vfs_node_t *parent, const char *name, mode_t mode);
     bool32_t (*_rmdir)(vfs_node_t *dir);
     bool32_t (*_readdir)(vfs_node_t *dir, uint32_t index, struct vfs_dirent_s *dirent);
     bool32_t (*_unlink)(vfs_node_t *node);
@@ -125,22 +122,24 @@ kvfs_lookup(vfs_node_t *node, const char *next_level);
  *
  * @param parent     The parent of the file (likely a dir)
  * @param name       The name of the file we want to create
+ * @param mode       The mode of the file
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-kvfs_create(vfs_node_t *parent, const char *name);
+kvfs_create(vfs_node_t *parent, const char *name, mode_t mode);
 
 /**
  * @brief Create a directory in a parent node.
  *
  * @param parent     The parent of the directory (likely a dir)
  * @param name       The name of the directory we want to mkdir
+ * @param mode       The mode for the directory
  *
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-kvfs_mkdir(vfs_node_t *parent, const char *name);
+kvfs_mkdir(vfs_node_t *parent, const char *name, mode_t mode);
 
 /**
  * @brief Remove a directory at a given path.
@@ -207,29 +206,6 @@ kvfs_stat(const char *path, struct vfs_stat_s *stat_ptr);
  */
 bool32_t
 kvfs_stat_from_node(vfs_node_t *node, vfs_stat_t *stat_ptr);
-
-/**
- * @brief Open a file and go through its entire path to get the node associated to the end level.
- *        This version is returning NULL if the file doesn't exist.
- *        Use the API function kvfs_open() instead which can handle flags.
- *
- * @param path   The complete path to a node (e.g. "/abc/dir/a.txt")
- *
- * @return The VFS node of the path result. (Can be anything: file, dir, link, ...)
- */
-vfs_node_t *
-kvfs_lookup_open(const char *path);
-
-/**
- * @brief Resolve and get the VFS node of a relative path using the start.
- *
- * @param start  The start of the resolving, NULL for root
- * @param path   The relative path to a node from the start (e.g. "abc/dir/a.txt")
- *
- * @return The VFS node of the path result. (Can be anything: file, dir, link, ...)
- */
-vfs_node_t *
-kvfs_resolve_from(vfs_node_t *start, const char *path);
 
 /**
  * @brief Close a VFS node, if the refcount is zeroed then destroying it.
