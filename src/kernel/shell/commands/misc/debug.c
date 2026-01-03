@@ -31,11 +31,19 @@ uint8_t
 kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     // ------- SETUP -------
+    char buffer_read[10] = {0};
     char buffer[10] = "Salut la!";
+    vfs_stat_t stat_buffer = {0};
     fd_t file = kfd_open("./my_file", KVFS_O_CREAT | KVFS_O_RDWR, 0644);
-    KPRINTF_DEBUG("%d", file);
-    // file->_ops->_write(file, 0, buffer, sizeof(buffer));
-    // kvfs_close(file);
+    if (file >= 0) {
+        kfd_write(file, buffer, sizeof(buffer));
+        kfd_get(file)->_offset = 0;
+        kfd_read(file, buffer_read, 10);
+        KPRINTF_DEBUG("%s", buffer_read);
+        kfd_stat(file, &stat_buffer);
+        KPRINTF_DEBUG("%d", stat_buffer._size);
+        kfd_close(file);
+    }
     // ----- END SETUP -----
     return KO_FALSE;
 }
