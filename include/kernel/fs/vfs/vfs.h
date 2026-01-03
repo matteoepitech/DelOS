@@ -198,6 +198,17 @@ bool32_t
 kvfs_stat(const char *path, struct vfs_stat_s *stat_ptr);
 
 /**
+ * @brief Get metadata using the stat structure of a file or directory or such.
+ *
+ * @param node       The node of the file to stat (will not be closed or modified)
+ * @param stat_ptr   The pointer to the stat buffer
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_stat_from_node(vfs_node_t *node, vfs_stat_t *stat_ptr);
+
+/**
  * @brief Open a file and go through its entire path to get the node associated to the end level.
  *
  * @param path   The complete path to a node (e.g. "/abc/dir/a.txt")

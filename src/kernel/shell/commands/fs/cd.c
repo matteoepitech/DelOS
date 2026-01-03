@@ -34,7 +34,7 @@ kshell_cd(uint32_t argc, char *argv[])
         KPRINTF_ERROR("cd: failed to change directory");
         return OK_TRUE;
     }
-    if (dir_to_cd->_ops->_stat(dir_to_cd, &stat_buffer) == KO_FALSE) {
+    if (kvfs_stat_from_node(dir_to_cd, &stat_buffer) == KO_FALSE) {
         kvfs_close(dir_to_cd);
         return OK_TRUE;
     }

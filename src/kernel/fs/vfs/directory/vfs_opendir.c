@@ -52,7 +52,8 @@ kvfs_opendir(const char *path)
 
 /**
  * @brief Open a directory and get a structure which act like an iterator.
- *        VFS node version.
+ *        VFS node version. (it does a copy since the node is in the directory structure).
+ *        If you closedir the node will be closed so that why we have a copy here.
  *
  * @param node   The node to open dir (will no be close after that since it does copy)
  *

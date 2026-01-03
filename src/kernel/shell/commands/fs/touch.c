@@ -47,7 +47,7 @@ kshell_touch(uint32_t argc, char *argv[])
             KPRINTF_ERROR("touch: no such file or directory called %s", path_parts[i]);
             return OK_TRUE;
         }
-        if (node->_ops->_stat(node, &stat_buffer) == KO_FALSE) {
+        if (kvfs_stat_from_node(node, &stat_buffer) == KO_FALSE) {
             kvfs_close(node);
             return KO_FALSE;
         }

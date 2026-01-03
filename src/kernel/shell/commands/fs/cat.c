@@ -37,7 +37,7 @@ kshell_cat(uint32_t argc, char *argv[])
         KPRINTF_ERROR("cat: no such file or directory");
         return OK_TRUE;
     }
-    if (file->_ops->_stat(file, &stat_buffer) == KO_FALSE) {
+    if (kvfs_stat_from_node(file, &stat_buffer) == KO_FALSE) {
         kvfs_close(file);
         return OK_TRUE;
     }

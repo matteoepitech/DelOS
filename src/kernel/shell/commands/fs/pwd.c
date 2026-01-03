@@ -36,7 +36,7 @@ kshell_pwd(UNUSED uint32_t argc, UNUSED char *argv[])
         return OK_TRUE;
     }
     while (node != NULL) {
-        parent = node->_ops->_lookup(node, "..");
+        kvfs_lookup(node, "..");
         if (parent == NULL || parent->_private == node->_private) {
             kvfs_close(parent);
             break;

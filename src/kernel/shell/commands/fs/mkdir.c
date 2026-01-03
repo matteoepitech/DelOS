@@ -63,7 +63,7 @@ resolve_parent_node(vfs_node_t *start, char path_parts[KVFS_MAX_PATH_PARTS][KVFS
             KPRINTF_ERROR("mkdir: no such file or directory called %s", path_parts[i]);
             return NULL;
         }
-        if (next->_ops->_stat(next, &stat_buffer) == KO_FALSE) {
+        if (kvfs_stat_from_node(next, &stat_buffer) == KO_FALSE) {
             kvfs_close(next);
             return NULL;
         }
