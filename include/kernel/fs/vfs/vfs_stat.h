@@ -5,6 +5,7 @@
 ** VFS stat header file
 */
 
+#include <kernel/system/cred.h>
 #include <types.h>
 
 #ifndef KERNEL_FS_VFS_STAT_H_
@@ -32,24 +33,24 @@
         #define KVFS_STAT_IRUSR  0000400
         #define KVFS_STAT_IWUSR  0000200
         #define KVFS_STAT_IXUSR  0000100
+        #define KVFS_STAT_CAN_USR_READ(mode)  ((mode) & KVFS_STAT_IRUSR)
+        #define KVFS_STAT_CAN_USR_WRITE(mode) ((mode) & KVFS_STAT_IWUSR)
+        #define KVFS_STAT_CAN_USR_EXEC(mode)  ((mode) & KVFS_STAT_IXUSR)
 
         #define KVFS_STAT_IRGRP  0000040
         #define KVFS_STAT_IWGRP  0000020
         #define KVFS_STAT_IXGRP  0000010
+        #define KVFS_STAT_CAN_GRP_READ(mode)  ((mode) & KVFS_STAT_IRGRP)
+        #define KVFS_STAT_CAN_GRP_WRITE(mode) ((mode) & KVFS_STAT_IWGRP)
+        #define KVFS_STAT_CAN_GRP_EXEC(mode)  ((mode) & KVFS_STAT_IXGRP)
 
         #define KVFS_STAT_IROTH  0000004
         #define KVFS_STAT_IWOTH  0000002
         #define KVFS_STAT_IXOTH  0000001
-
-        #define KVFS_STAT_CAN_READ(mode)  ((mode) & KVFS_STAT_IRUSR)
-        #define KVFS_STAT_CAN_WRITE(mode) ((mode) & KVFS_STAT_IWUSR)
-        #define KVFS_STAT_CAN_EXEC(mode)  ((mode) & KVFS_STAT_IXUSR)
+        #define KVFS_STAT_CAN_OTH_READ(mode)  ((mode) & KVFS_STAT_IROTH)
+        #define KVFS_STAT_CAN_OTH_WRITE(mode) ((mode) & KVFS_STAT_IWOTH)
+        #define KVFS_STAT_CAN_OTH_EXEC(mode)  ((mode) & KVFS_STAT_IXOTH)
     #endif /* ifndef KVFS_STAT_PERM_MASK */
-
-/**
- * @brief Mode typedef unsigned integer 32 bits.
- */
-typedef uint32_t mode_t;
 
 /*
  * @brief Structure for a stat entry.
@@ -67,8 +68,8 @@ typedef struct vfs_stat_s {
     uint64_t _atime;
     uint64_t _mtime;
     uint64_t _ctime;
-    uint32_t _uid;
-    uint32_t _gid;
+    uid_t _uid;
+    gid_t _gid;
 } vfs_stat_t;
 
 /**
@@ -147,5 +148,40 @@ kvfs_stat_dec_nlink(vfs_stat_t *st);
  */
 void
 kvfs_stat_set_nlink(vfs_stat_t *st, size_t nlink);
+
+/**
+ * @brief Check if a user within a group can read or not a file.
+ *
+ * @param stat   The stat buffer pointer
+ * @param cred   The cred buffer pointer
+ *
+ * @return OK_TRUE if can read, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_stat_can_read(const vfs_stat_t *stat, const cred_t *cred);
+
+/**
+ * @brief Check if a user within a group can write or not a file.
+ *        Bypassing root user (0).
+ *
+ * @param stat   The stat buffer pointer
+ * @param cred   The cred buffer pointer
+ *
+ * @return OK_TRUE if can write, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_stat_can_write(const vfs_stat_t *stat, const cred_t *cred);
+
+/**
+ * @brief Check if a user within a group can exec or not a file.
+ *        Bypassing root user (0).
+ *
+ * @param stat   The stat buffer pointer
+ * @param cred   The cred buffer pointer
+ *
+ * @return OK_TRUE if can exec, KO_FALSE otherwise.
+ */
+bool32_t
+kvfs_stat_can_exec(const vfs_stat_t *stat, const cred_t *cred);
 
 #endif /* ifndef KERNEL_FS_VFS_STAT_H_ */

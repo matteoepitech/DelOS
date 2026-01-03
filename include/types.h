@@ -50,6 +50,21 @@ typedef uint32_t size_t;
 typedef uint32_t off_t;
 
 /**
+ * @brief Mode typedef unsigned integer 32 bits.
+ */
+typedef uint32_t mode_t;
+
+/**
+ * @brief UID typedef unsigned integer 32 bits.
+ */
+typedef uint32_t uid_t;
+
+/**
+ * @brief GID typedef unsigned integer 32 bits.
+ */
+typedef uint32_t gid_t;
+
+/**
  * @brief Short (2 bytes)
  */
 typedef short int16_t;
