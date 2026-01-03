@@ -35,7 +35,7 @@ kvfs_unlink(const char *path)
         kvfs_close(node);
         return KO_FALSE;
     }
-    if (KVFS_STAT_ISREG(stat_buffer._mode)) {
+    if (KVFS_STAT_ISREG(stat_buffer._mode) == KO_FALSE) {
         KPRINTF_ERROR("vfs: cannot unlink this type of file");
         return KO_FALSE;
     }

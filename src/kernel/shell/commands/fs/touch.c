@@ -22,10 +22,11 @@ uint8_t
 kshell_touch(uint32_t argc, char *argv[])
 {
     char path_parts[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME_LEN] = {0};
+    bool32_t is_absolute = KO_FALSE;
     uint32_t path_parts_count = 0;
+    vfs_stat_t stat_buffer = {0};
     vfs_node_t *node = NULL;
     vfs_node_t *tmp = NULL;
-    bool32_t is_absolute = KO_FALSE;
     uint32_t start_idx = 0;
 
     if (argc < 2) {
@@ -41,22 +42,26 @@ kshell_touch(uint32_t argc, char *argv[])
         return OK_TRUE;
     }
     for (uint32_t i = start_idx; i < path_parts_count - 1; i++) {
-        node = node->_ops->_lookup(node, path_parts[i]);
+        node = kvfs_lookup(node, path_parts[i]);
         if (node == NULL) {
             KPRINTF_ERROR("touch: no such file or directory called %s", path_parts[i]);
             return OK_TRUE;
         }
-        if (node->_type != KVFS_DIR) {
+        if (node->_ops->_stat(node, &stat_buffer) == KO_FALSE) {
+            kvfs_close(node);
+            return KO_FALSE;
+        }
+        if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
             KPRINTF_ERROR("touch: not a directory %s", path_parts[i]);
             return OK_TRUE;
         }
     }
-    tmp = node->_ops->_lookup(node, path_parts[path_parts_count - 1]);
+    tmp = kvfs_lookup(node, path_parts[path_parts_count - 1]);
     if (tmp != NULL) {
         kvfs_close(tmp);
         KPRINTF_ERROR("%s", "touch: file already exists");
         return OK_TRUE;
     }
-    node->_ops->_create(node, path_parts[path_parts_count - 1]);
+    kvfs_create(node, path_parts[path_parts_count - 1]);
     return KO_FALSE;
 }

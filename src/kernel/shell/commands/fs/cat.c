@@ -6,6 +6,7 @@
 */
 
 #include <kernel/memory/api/kmalloc.h>
+#include <kernel/fs/vfs/vfs_stat.h>
 #include <kernel/shell/shell.h>
 #include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
@@ -22,6 +23,7 @@
 uint8_t
 kshell_cat(uint32_t argc, char *argv[])
 {
+    vfs_stat_t stat_buffer = {0};
     vfs_node_t *file = NULL;
     char *buffer = NULL;
     size_t len = 0;
@@ -35,11 +37,15 @@ kshell_cat(uint32_t argc, char *argv[])
         KPRINTF_ERROR("cat: no such file or directory");
         return OK_TRUE;
     }
-    if (file->_type != KVFS_FILE) {
+    if (file->_ops->_stat(file, &stat_buffer) == KO_FALSE) {
+        kvfs_close(file);
+        return OK_TRUE;
+    }
+    if (KVFS_STAT_ISREG(stat_buffer._mode) == KO_FALSE) {
         KPRINTF_ERROR("cat: not a file to read");
         return OK_TRUE;
     }
-    len = file->_size;
+    len = stat_buffer._size;
     if (len == 0) {
         return KO_FALSE;
     }

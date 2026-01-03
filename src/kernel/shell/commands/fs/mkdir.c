@@ -50,18 +50,29 @@ validate_and_split_path(uint32_t argc, char *argv[], char path_parts[KVFS_MAX_PA
 static vfs_node_t *
 resolve_parent_node(vfs_node_t *start, char path_parts[KVFS_MAX_PATH_PARTS][KVFS_MAX_NAME_LEN], uint32_t path_parts_count, uint32_t start_idx)
 {
-    for (uint32_t i = start_idx; i < path_parts_count - 1; i++) {
-        vfs_node_t *next = kvfs_lookup(start, path_parts[i]);
+    vfs_stat_t stat_buffer = {0};
+    vfs_node_t *next = NULL;
+    vfs_node_t *free = NULL;
 
+    for (uint32_t i = start_idx; i < path_parts_count - 1; i++) {
+        next = kvfs_lookup(start, path_parts[i]);
+        if (free != NULL) {
+            kvfs_close(free);
+        }
         if (next == NULL) {
             KPRINTF_ERROR("mkdir: no such file or directory called %s", path_parts[i]);
             return NULL;
         }
-        if (next->_type != KVFS_DIR) {
+        if (next->_ops->_stat(next, &stat_buffer) == KO_FALSE) {
+            kvfs_close(next);
+            return NULL;
+        }
+        if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
             KPRINTF_ERROR("mkdir: not a directory %s", path_parts[i]);
             kvfs_close(next);
             return NULL;
         }
+        free = next;
         start = next;
     }
     return start;

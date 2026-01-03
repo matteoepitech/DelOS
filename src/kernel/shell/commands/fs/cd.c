@@ -21,6 +21,7 @@
 uint8_t
 kshell_cd(uint32_t argc, char *argv[])
 {
+    vfs_stat_t stat_buffer = {0};
     vfs_node_t *dir_to_cd = NULL;
 
     if (argc < 2) {
@@ -31,6 +32,14 @@ kshell_cd(uint32_t argc, char *argv[])
     dir_to_cd = kvfs_open(argv[1]);
     if (dir_to_cd == NULL) {
         KPRINTF_ERROR("cd: failed to change directory");
+        return OK_TRUE;
+    }
+    if (dir_to_cd->_ops->_stat(dir_to_cd, &stat_buffer) == KO_FALSE) {
+        kvfs_close(dir_to_cd);
+        return OK_TRUE;
+    }
+    if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
+        KPRINTF_ERROR("cd: not a directory");
         return OK_TRUE;
     }
     kvfs_close(kvfs_cwd);

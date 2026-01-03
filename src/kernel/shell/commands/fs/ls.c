@@ -33,7 +33,7 @@ kshell_ls(uint32_t argc, char *argv[])
         return OK_TRUE;
     }
     for (vfs_dirent_t *dirent = kvfs_readdir(dir); dirent != NULL; dirent = kvfs_readdir(dir)) {
-        KPRINTF_INFO("%s%s", dirent->_name, dirent->_type == KVFS_DIR ? "/" : "");
+        KPRINTF_INFO("%s%s", dirent->_name, KVFS_STAT_ISDIR(dirent->_type) == OK_TRUE ? "/" : "");
     }
     kvfs_closedir(dir);
     return KO_FALSE;
