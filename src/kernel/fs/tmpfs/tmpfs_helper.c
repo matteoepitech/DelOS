@@ -130,6 +130,7 @@ ktmpfs_remove_from_parent_ll(tmpfs_entry_t *parent, tmpfs_entry_t *entry)
     } else {
         prev->_next = tmp->_next;
     }
+    kvfs_stat_dec_nlink(&parent->_stat);
     kfree(tmp);
     return OK_TRUE;
 }

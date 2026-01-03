@@ -33,7 +33,7 @@ create_root_entry(const char *loc)
     root_entry->_parent = NULL;
     root_entry->_next = NULL;
     root_entry->_dir._child = NULL;
-    root_entry->_stat = kvfs_stat_create(KVFS_STAT_IFDIR);
+    root_entry->_stat = kvfs_stat_create(0755 | KVFS_STAT_IFDIR);
     return root_entry;
 }
 

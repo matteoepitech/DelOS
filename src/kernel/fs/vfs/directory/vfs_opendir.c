@@ -33,7 +33,7 @@ kvfs_opendir(const char *path)
         KPRINTF_ERROR("vfs: cannot open this directory: %s", path);
         return NULL;
     }
-    if (dir_node->_ops->_stat(dir_node, &stat_buffer) == KO_FALSE) {
+    if (kvfs_get_stat(dir_node, &stat_buffer) == KO_FALSE) {
         kvfs_close(dir_node);
         return KO_FALSE;
     }
@@ -70,11 +70,11 @@ kvfs_opendir_from_node(vfs_node_t *node)
     if (node == NULL) {
         return NULL;
     }
-    dir_node = node->_ops->_lookup(node, ".");
+    dir_node = kvfs_lookup(node, ".");
     if (dir_node == NULL) {
         return NULL;
     }
-    if (dir_node->_ops->_stat(dir_node, &stat_buffer) == KO_FALSE) {
+    if (kvfs_get_stat(dir_node, &stat_buffer) == KO_FALSE) {
         kvfs_close(dir_node);
         return KO_FALSE;
     }

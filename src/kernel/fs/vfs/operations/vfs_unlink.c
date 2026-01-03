@@ -20,8 +20,9 @@
 bool32_t
 kvfs_unlink(const char *path)
 {
-    vfs_stat_t stat_buffer = {0};
+    const cred_t cred = {0, 0};
     vfs_node_t *node = NULL;
+    vfs_stat_t st = {0};
 
     if (path == NULL) {
         return KO_FALSE;
@@ -31,11 +32,15 @@ kvfs_unlink(const char *path)
         KPRINTF_ERROR("vfs: no such file or directory to unlink");
         return KO_FALSE;
     }
-    if (node->_ops->_stat(node, &stat_buffer) == KO_FALSE) {
+    if (kvfs_get_stat(node, &st) == KO_FALSE) {
         kvfs_close(node);
         return KO_FALSE;
     }
-    if (KVFS_STAT_ISREG(stat_buffer._mode) == KO_FALSE) {
+    if (kvfs_stat_can_write(&st, &cred) == KO_FALSE) {
+        kvfs_close(node);
+        return KO_FALSE;
+    }
+    if (KVFS_STAT_ISREG(st._mode) == KO_FALSE) {
         KPRINTF_ERROR("vfs: cannot unlink this type of file");
         return KO_FALSE;
     }

@@ -47,3 +47,22 @@ kvfs_get_stat(vfs_node_t *node, vfs_stat_t *out)
     }
     return node->_ops->_stat(node, out);
 }
+
+/**
+ * @brief Copy the data stat of source into stat_ptr.
+ *
+ * @param stat_ptr   Where to copy the stat data to
+ * @param source     Where to take data from
+ */
+void
+kvfs_stat_copy(vfs_stat_t *dst, vfs_stat_t *src)
+{
+    dst->_atime = src->_atime;
+    dst->_ctime = src->_ctime;
+    dst->_mtime = src->_mtime;
+    dst->_mode  = src->_mode;
+    dst->_nlink = src->_nlink;
+    dst->_size  = src->_size;
+    dst->_uid   = src->_uid;
+    dst->_gid   = src->_gid;
+}

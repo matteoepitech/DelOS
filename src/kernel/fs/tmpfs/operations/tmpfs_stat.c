@@ -12,23 +12,6 @@
 #include <types.h>
 
 /**
- * @brief Copy the data stat of source into stat_ptr.
- *
- * @param stat_ptr   Where to copy the stat data to
- * @param source     Where to take data from
- */
-static void
-fill_stat_ptr(vfs_stat_t *stat_ptr, vfs_stat_t *source)
-{
-    stat_ptr->_atime = source->_atime;
-    stat_ptr->_ctime = source->_ctime;
-    stat_ptr->_mtime = source->_mtime;
-    stat_ptr->_mode  = source->_mode;
-    stat_ptr->_nlink = source->_nlink;
-    stat_ptr->_size  = source->_size;
-}
-
-/**
  * @brief Get metadata using the stat structure of a file or directory or such.
  *
  * @param node       The node of the file to get stat from
@@ -45,6 +28,6 @@ ktmpfs_stat(vfs_node_t *node, vfs_stat_t *stat_ptr)
         return KO_FALSE;
     }
     entry = node->_private;
-    fill_stat_ptr(stat_ptr, &entry->_stat);
+    kvfs_stat_copy(stat_ptr, &entry->_stat);
     return OK_TRUE;
 }

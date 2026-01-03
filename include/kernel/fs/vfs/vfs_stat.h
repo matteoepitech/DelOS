@@ -101,6 +101,15 @@ bool32_t
 kvfs_get_stat(struct vfs_node_s *node, vfs_stat_t *out);
 
 /**
+ * @brief Copy the data stat of source into stat_ptr.
+ *
+ * @param stat_ptr   Where to copy the stat data to
+ * @param source     Where to take data from
+ */
+void
+kvfs_stat_copy(vfs_stat_t *dst, vfs_stat_t *src);
+
+/**
  * @brief Update the access time to now.
  *
  * @param st     The structure to change (pointer)

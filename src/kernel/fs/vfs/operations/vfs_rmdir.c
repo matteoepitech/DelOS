@@ -20,8 +20,9 @@
 bool32_t
 kvfs_rmdir(const char *path)
 {
-    vfs_stat_t stat_buffer = {0};
+    const cred_t cred = {0, 0};
     vfs_node_t *node = NULL;
+    vfs_stat_t st = {0};
 
     if (path == NULL) {
         return KO_FALSE;
@@ -30,11 +31,15 @@ kvfs_rmdir(const char *path)
     if (node == NULL) {
         return KO_FALSE;
     }
-    if (node->_ops->_stat(node, &stat_buffer) == KO_FALSE) {
+    if (kvfs_get_stat(node, &st) == KO_FALSE) {
         kvfs_close(node);
         return KO_FALSE;
     }
-    if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
+    if (kvfs_stat_can_write(&st, &cred) == KO_FALSE) {
+        kvfs_close(node);
+        return KO_FALSE;
+    }
+    if (KVFS_STAT_ISDIR(st._mode) == KO_FALSE) {
         KPRINTF_ERROR("vfs: this file is not a directory");
         return KO_FALSE;
     }

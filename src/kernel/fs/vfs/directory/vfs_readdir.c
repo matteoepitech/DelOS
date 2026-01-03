@@ -20,7 +20,16 @@
 vfs_dirent_t *
 kvfs_readdir(vfs_dir_t *dir)
 {
-    if (dir == NULL || dir->_dir_node == NULL || dir->_dir_node->_ops == NULL || dir->_dir_node->_ops->_readdir == NULL) {
+    const cred_t cred = {0, 0};
+    vfs_stat_t st = {0};
+
+    if (dir == NULL || dir->_dir_node == NULL) {
+        return NULL;
+    }
+    if (kvfs_get_stat(dir->_dir_node, &st) == KO_FALSE) {
+        return NULL;
+    }
+    if (kvfs_stat_can_read(&st, &cred) == KO_FALSE) {
         return NULL;
     }
     if (dir->_dir_node->_ops->_readdir(dir->_dir_node, dir->_index, &dir->_dirent) == KO_FALSE) {
