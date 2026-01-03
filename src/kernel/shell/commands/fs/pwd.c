@@ -36,9 +36,15 @@ kshell_pwd(UNUSED uint32_t argc, UNUSED char *argv[])
         return OK_TRUE;
     }
     while (node != NULL) {
-        kvfs_lookup(node, "..");
-        if (parent == NULL || parent->_private == node->_private) {
+        parent = kvfs_lookup(node, "..");
+        if (parent == NULL) {
+            kvfs_close(node);
+            KPRINTF_ERROR("%s", "pwd: failed to resolve current directory");
+            return OK_TRUE;
+        }
+        if (parent->_private == node->_private) {
             kvfs_close(parent);
+            kvfs_close(node);
             break;
         }
         name = ((tmpfs_entry_t *) node->_private)->_name;
@@ -50,7 +56,6 @@ kshell_pwd(UNUSED uint32_t argc, UNUSED char *argv[])
         kvfs_close(node);
         node = parent;
     }
-    kvfs_close(node);
     if (buffer[0] == '\0') {
         buffer[0] = '/';
         buffer[1] = '\0';
