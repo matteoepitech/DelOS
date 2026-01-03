@@ -16,6 +16,7 @@
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
+#include <kernel/fs/fd/fd.h>
 #include <defines.h>
 
 /**
@@ -31,9 +32,10 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
 {
     // ------- SETUP -------
     char buffer[10] = "Salut la!";
-    vfs_node_t *file = kvfs_open("./my_file", KVFS_O_CREAT | KVFS_O_RDWR, 0644);
-    file->_ops->_write(file, 0, buffer, sizeof(buffer));
-    kvfs_close(file);
+    fd_t file = kfd_open("./my_file", KVFS_O_CREAT | KVFS_O_RDWR, 0644);
+    KPRINTF_DEBUG("%d", file);
+    // file->_ops->_write(file, 0, buffer, sizeof(buffer));
+    // kvfs_close(file);
     // ----- END SETUP -----
     return KO_FALSE;
 }

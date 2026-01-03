@@ -50,6 +50,11 @@ typedef uint32_t size_t;
 typedef uint32_t off_t;
 
 /**
+ * @brief Signed integer (4 bytes)
+ */
+typedef int32_t fd_t;
+
+/**
  * @brief Mode typedef unsigned integer 32 bits.
  */
 typedef uint32_t mode_t;
