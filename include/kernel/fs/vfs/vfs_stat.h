@@ -5,7 +5,7 @@
 ** VFS stat header file
 */
 
-#include <kernel/system/cred.h>
+#include <kernel/sys/cred.h>
 #include <types.h>
 
 #ifndef KERNEL_FS_VFS_STAT_H_

@@ -5,7 +5,7 @@
 ** GDT source file
 */
 
-#include <kernel/system/gdt.h>
+#include <kernel/sys/gdt.h>
 
 /* @brief Variables for the new Global Descriptor Table */
 static gdt_entry_t gdt_entries[3] __attribute__((aligned(8))) = {0};
