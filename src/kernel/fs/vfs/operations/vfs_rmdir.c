@@ -26,7 +26,7 @@ kvfs_rmdir(const char *path)
     if (path == NULL) {
         return KO_FALSE;
     }
-    node = kvfs_open(path);
+    node = kvfs_lookup_open(path);
     if (node == NULL) {
         return KO_FALSE;
     }

@@ -32,7 +32,7 @@ kshell_cat(uint32_t argc, char *argv[])
         KPRINTF_ERROR("usage: cat <path>");
         return OK_TRUE;
     }
-    file = kvfs_open(argv[1]);
+    file = kvfs_lookup_open(argv[1]);
     if (file == NULL) {
         KPRINTF_ERROR("cat: no such file or directory");
         return OK_TRUE;

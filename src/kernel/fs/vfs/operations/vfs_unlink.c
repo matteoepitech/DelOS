@@ -26,7 +26,7 @@ kvfs_unlink(const char *path)
     if (path == NULL) {
         return KO_FALSE;
     }
-    node = kvfs_open(path);
+    node = kvfs_lookup_open(path);
     if (node == NULL) {
         KPRINTF_ERROR("vfs: no such file or directory to unlink");
         return KO_FALSE;

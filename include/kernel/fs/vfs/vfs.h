@@ -210,13 +210,15 @@ kvfs_stat_from_node(vfs_node_t *node, vfs_stat_t *stat_ptr);
 
 /**
  * @brief Open a file and go through its entire path to get the node associated to the end level.
+ *        This version is returning NULL if the file doesn't exist.
+ *        Use the API function kvfs_open() instead which can handle flags.
  *
  * @param path   The complete path to a node (e.g. "/abc/dir/a.txt")
  *
  * @return The VFS node of the path result. (Can be anything: file, dir, link, ...)
  */
 vfs_node_t *
-kvfs_open(const char *path);
+kvfs_lookup_open(const char *path);
 
 /**
  * @brief Resolve and get the VFS node of a relative path using the start.

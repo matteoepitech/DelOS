@@ -26,10 +26,10 @@ kshell_cd(uint32_t argc, char *argv[])
 
     if (argc < 2) {
         kvfs_close(kvfs_cwd);
-        kvfs_cwd = kvfs_open("/");
+        kvfs_cwd = kvfs_lookup_open("/");
         return KO_FALSE;
     }
-    dir_to_cd = kvfs_open(argv[1]);
+    dir_to_cd = kvfs_lookup_open(argv[1]);
     if (dir_to_cd == NULL) {
         KPRINTF_ERROR("cd: failed to change directory");
         return OK_TRUE;

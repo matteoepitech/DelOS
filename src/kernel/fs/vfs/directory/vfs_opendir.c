@@ -27,7 +27,7 @@ kvfs_opendir(const char *path)
     if (path == NULL) {
         return NULL;
     }
-    dir_node = kvfs_open(path);
+    dir_node = kvfs_lookup_open(path);
     if (dir_node == NULL) {
         KPRINTF_ERROR("vfs: cannot open this directory: %s", path);
         return NULL;

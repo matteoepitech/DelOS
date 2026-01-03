@@ -27,7 +27,7 @@ kvfs_stat(const char *path, vfs_stat_t *stat_ptr)
     if (path == NULL || stat_ptr == NULL) {
         return KO_FALSE;
     }
-    node = kvfs_open(path);
+    node = kvfs_lookup_open(path);
     if (node == NULL) {
         KPRINTF_ERROR("vfs: cannot open file to get stat metadata");
         return KO_FALSE;

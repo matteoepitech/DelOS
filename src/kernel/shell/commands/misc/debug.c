@@ -37,7 +37,7 @@ kshell_debug(UNUSED uint32_t argc, UNUSED char *argv[])
     kvfs_create(secret_dir, "aaaa");
     kvfs_mkdir(secret_dir, "home");
     kvfs_close(secret_dir);
-    vfs_node_t *file = kvfs_open("secret/aaaa");
+    vfs_node_t *file = kvfs_lookup_open("secret/aaaa");
     file->_ops->_write(file, 0, "Coucou", 6);
     kvfs_close(file);
     // ----- END SETUP -----
