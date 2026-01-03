@@ -20,7 +20,11 @@
 fd_t
 kfd_open(const char *path, int32_t flags, mode_t mode)
 {
-    vfs_node_t *node = kvfs_open(path, flags, mode);
+    vfs_node_t *node = NULL;
 
-    return kfd_create(node);
+    if (path == NULL) {
+        return KFD_ERROR;
+    }
+    node = kvfs_open(path, flags, mode);
+    return kfd_create(node, flags);
 }

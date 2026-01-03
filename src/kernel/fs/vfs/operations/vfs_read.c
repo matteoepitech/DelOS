@@ -11,15 +11,15 @@
  * @brief Read some data from a file.
  *
  * @param node       The node where to read the data
+ * @param offset     The offset for reading
  * @param buffer     The buffer to put the data
  * @param len        Number of maximum byte to read
  *
  * @return Number of bytes read on the file.
  */
 size_t
-kvfs_read(vfs_node_t *node, void *buffer, size_t len)
+kvfs_read(vfs_node_t *node, off_t offset, void *buffer, size_t len)
 {
-    // TODO: do the offset, need file descriptors for that
     const cred_t cred = {0, 0};
     vfs_stat_t st = {0};
 
@@ -32,5 +32,5 @@ kvfs_read(vfs_node_t *node, void *buffer, size_t len)
     if (kvfs_stat_can_read(&st, &cred) == KO_FALSE) {
         return 0;
     }
-    return node->_ops->_read(node, 0, buffer, len);
+    return node->_ops->_read(node, offset, buffer, len);
 }

@@ -15,11 +15,12 @@ file_desc_t *kfd_table[KFD_MAX_COUNT] = {NULL};
  * @brief Create a file descriptor from a VFS node.
  *
  * @param node   The VFS node
+ * @param flags  The flags used to open the descriptor
  *
  * @return The file descriptor created from the node.
  */
 fd_t
-kfd_create(vfs_node_t *node)
+kfd_create(vfs_node_t *node, int32_t flags)
 {
     file_desc_t *fd_struct = NULL;
     fd_t fd = KFD_ERROR;
@@ -41,8 +42,24 @@ kfd_create(vfs_node_t *node)
     }
     fd_struct->_node = node;
     fd_struct->_offset = 0;
-    fd_struct->_flags = 0;
+    fd_struct->_flags = flags;
     fd_struct->_refcount = 1;
     kfd_table[fd] = fd_struct;
     return fd;
+}
+
+/**
+ * @brief Get the information about a FD.
+ *
+ * @param fd     The FD to get
+ *
+ * @return The structure file descriptor pointer.
+ */
+file_desc_t *
+kfd_get(fd_t fd)
+{
+    if (fd < 0 || fd >= KFD_MAX_COUNT) {
+        return NULL;
+    }
+    return kfd_table[fd];
 }

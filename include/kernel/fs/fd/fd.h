@@ -40,11 +40,22 @@ extern file_desc_t *kfd_table[KFD_MAX_COUNT];
  * @brief Create a file descriptor from a VFS node.
  *
  * @param node   The VFS node
+ * @param flags  The flags used to open the descriptor
  *
  * @return The file descriptor created from the node.
  */
 fd_t
-kfd_create(vfs_node_t *node);
+kfd_create(vfs_node_t *node, int32_t flags);
+
+/**
+ * @brief Get the information about a FD.
+ *
+ * @param fd     The FD to get
+ *
+ * @return The structure file descriptor pointer.
+ */
+file_desc_t *
+kfd_get(fd_t fd);
 
 /**
  * @brief Open a file and go through its entire path to get the node associated to the end level.
@@ -57,5 +68,50 @@ kfd_create(vfs_node_t *node);
  */
 fd_t
 kfd_open(const char *path, int32_t flags, mode_t mode);
+
+/**
+ * @brief Close a file descriptor and drop its reference to the VFS node.
+ *
+ * @param fd   The file descriptor to close
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kfd_close(fd_t fd);
+
+/**
+ * @brief Write some data in a file descriptor.
+ *
+ * @param fd       The file descriptor
+ * @param buffer   The buffer to take the data from
+ * @param len      Number of maximum byte to write
+ *
+ * @return Number of bytes written on the file.
+ */
+size_t
+kfd_write(fd_t fd, const void *buffer, size_t len);
+
+/**
+ * @brief Read some data from a file descriptor.
+ *
+ * @param fd       The file descriptor
+ * @param buffer   The buffer to put the data
+ * @param len      Number of maximum byte to read
+ *
+ * @return Number of bytes read on the file.
+ */
+size_t
+kfd_read(fd_t fd, void *buffer, size_t len);
+
+/**
+ * @brief Get metadata of a file descriptor using the stat structure.
+ *
+ * @param fd         The file descriptor to stat
+ * @param stat_ptr   The pointer to the stat buffer
+ *
+ * @return OK_TRUE if worked, KO_FALSE otherwise.
+ */
+bool32_t
+kfd_stat(fd_t fd, vfs_stat_t *stat_ptr);
 
 #endif /* ifndef KERNEL_FS_FD_H_ */

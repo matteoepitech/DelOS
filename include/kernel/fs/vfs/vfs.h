@@ -155,25 +155,27 @@ kvfs_rmdir(const char *path);
  * @brief Write some data in a file.
  *
  * @param node       The node where to write the data
+ * @param offset     The offset for writing
  * @param buffer     The buffer to take the data from
  * @param len        Number of maximum byte to write
  *
  * @return Number of bytes write on the file.
  */
 size_t
-kvfs_write(vfs_node_t *node, const void *buffer, size_t len);
+kvfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
 
 /**
  * @brief Read some data from a file.
  *
  * @param node       The node where to read the data
+ * @param offset     The offset for reading
  * @param buffer     The buffer to put the data
  * @param len        Number of maximum byte to read
  *
  * @return Number of bytes read on the file.
  */
 size_t
-kvfs_read(vfs_node_t *node, void *buffer, size_t len);
+kvfs_read(vfs_node_t *node, off_t offset, void *buffer, size_t len);
 
 /**
  * @brief Unlink a node (remove it's entry but not his data of course)
