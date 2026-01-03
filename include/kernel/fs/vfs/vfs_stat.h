@@ -10,7 +10,8 @@
 #ifndef KERNEL_FS_VFS_STAT_H_
     #define KERNEL_FS_VFS_STAT_H_
 
-    #ifndef KVFS_STAT_MODE_MASK    
+    #ifndef KVFS_STAT_MODE_MASK
+        #define KVFS_STAT_MODE_MASK
         #define KVFS_STAT_IFMT   0170000
         #define KVFS_STAT_IFREG  0100000
         #define KVFS_STAT_IFDIR  0040000
@@ -27,9 +28,18 @@
     #endif /* ifndef KVFS_STAT_MODE_MASK */
 
     #ifndef KVFS_STAT_PERM_MASK
+        #define KVFS_STAT_PERM_MASK
         #define KVFS_STAT_IRUSR  0000400
         #define KVFS_STAT_IWUSR  0000200
         #define KVFS_STAT_IXUSR  0000100
+
+        #define KVFS_STAT_IRGRP  0000040
+        #define KVFS_STAT_IWGRP  0000020
+        #define KVFS_STAT_IXGRP  0000010
+
+        #define KVFS_STAT_IROTH  0000004
+        #define KVFS_STAT_IWOTH  0000002
+        #define KVFS_STAT_IXOTH  0000001
 
         #define KVFS_STAT_CAN_READ(mode)  ((mode) & KVFS_STAT_IRUSR)
         #define KVFS_STAT_CAN_WRITE(mode) ((mode) & KVFS_STAT_IWUSR)
@@ -47,8 +57,8 @@ typedef uint32_t mode_t;
  *        - nlink = number of links associated to this file
  *        - size = the file size in bytes
  *        - atime = the last access time
- *        - mtime = last metadata modification time
- *        - ctime = last modification time
+ *        - mtime = last modification time
+ *        - ctime = last metadata modification time
  */
 typedef struct vfs_stat_s {
     mode_t _mode;
@@ -57,6 +67,8 @@ typedef struct vfs_stat_s {
     uint64_t _atime;
     uint64_t _mtime;
     uint64_t _ctime;
+    uint32_t _uid;
+    uint32_t _gid;
 } vfs_stat_t;
 
 /**
@@ -78,7 +90,7 @@ void
 kvfs_stat_update_atime(vfs_stat_t *st);
 
 /**
- * @brief Update the modification time to now.
+ * @brief Update the modification time to now + ctime modification.
  *
  * @param st     The structure to change (pointer)
  */

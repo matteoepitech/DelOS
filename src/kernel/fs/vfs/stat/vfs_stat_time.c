@@ -20,7 +20,7 @@ kvfs_stat_update_atime(vfs_stat_t *st)
 }
 
 /**
- * @brief Update the modification time to now.
+ * @brief Update the modification time to now + ctime modification.
  *
  * @param st     The structure to change (pointer)
  */
@@ -28,6 +28,7 @@ void
 kvfs_stat_update_mtime(vfs_stat_t *st)
 {
     st->_mtime = 0;// TODO: ktime_now()
+    st->_ctime = 0;// TODO: ktime_now()
 }
 
 /**
