@@ -34,7 +34,7 @@ kfd_read(fd_t fd, void *buffer, size_t len)
     if (fd_struct == NULL || fd_struct->_node == NULL) {
         return 0;
     }
-    if ((fd_struct->_flags & KVFS_O_ACCMODE) == KVFS_O_WRONLY) {
+    if (kfd_check_access(fd, KFD_ACCESS_READ) == KO_FALSE) {
         return 0;
     }
     if (kvfs_get_stat(fd_struct->_node, &st) == KO_FALSE) {

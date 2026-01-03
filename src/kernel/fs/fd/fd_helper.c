@@ -6,6 +6,7 @@
 */
 
 #include <kernel/memory/api/kmalloc.h>
+#include <kernel/fs/vfs/vfs_open.h>
 #include <kernel/fs/fd/fd.h>
 
 /* @brief TEMPORARY variable to store file descriptors */
@@ -62,4 +63,37 @@ kfd_get(fd_t fd)
         return NULL;
     }
     return kfd_table[fd];
+}
+
+/**
+ * @brief Check if a file descriptor has the required access permissions.
+ *
+ * @param fd              The file descriptor index.
+ * @param required_access The minimum access required (KFD_ACCESS_*).
+ *
+ * @return OK_TRUE if access is allowed, KO_FALSE otherwise.
+ */
+bool32_t
+kfd_check_access(fd_t fd, fd_access_t required_access)
+{
+    file_desc_t *desc;
+    uint32_t allowed = 0;
+
+    if (fd < 0 || fd >= KFD_MAX_COUNT) {
+        return KO_FALSE;
+    }
+    desc = kfd_table[fd];
+    if (desc == NULL) {
+        return KO_FALSE;
+    }
+    if (desc->_flags & KVFS_O_RDONLY || desc->_flags & KVFS_O_RDWR) {
+        allowed |= KFD_ACCESS_READ;
+    }
+    if (desc->_flags & KVFS_O_WRONLY || desc->_flags & KVFS_O_RDWR) {
+        allowed |= KFD_ACCESS_WRITE;
+    }
+    if ((allowed & required_access) != required_access) {
+        return KO_FALSE;
+    }
+    return OK_TRUE;
 }

@@ -26,5 +26,8 @@ kfd_open(const char *path, int32_t flags, mode_t mode)
         return KFD_ERROR;
     }
     node = kvfs_open(path, flags, mode);
+    if (node == NULL) {
+        return KFD_ERROR;
+    }
     return kfd_create(node, flags);
 }

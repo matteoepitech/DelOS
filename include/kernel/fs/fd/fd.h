@@ -36,6 +36,16 @@ typedef struct file_desc_s {
 /* @brief TEMPORARY variable to store file descriptors */
 extern file_desc_t *kfd_table[KFD_MAX_COUNT];
 
+/*
+ * @brief Enumerations for accessing FD.
+ *        - KFD_ACCESS_READ  = need to read
+ *        - KFD_ACCESS_WRITE = need to write
+ */
+typedef enum {
+    KFD_ACCESS_READ  = 1 << 0,
+    KFD_ACCESS_WRITE = 1 << 1,
+} fd_access_t;
+
 /**
  * @brief Create a file descriptor from a VFS node.
  *
@@ -56,6 +66,17 @@ kfd_create(vfs_node_t *node, int32_t flags);
  */
 file_desc_t *
 kfd_get(fd_t fd);
+
+/**
+ * @brief Check if a file descriptor has the required access permissions.
+ *
+ * @param fd              The file descriptor index.
+ * @param required_access The minimum access required (KFD_ACCESS_*).
+ *
+ * @return OK_TRUE if access is allowed, KO_FALSE otherwise.
+ */
+bool32_t
+kfd_check_access(fd_t fd, fd_access_t required_access);
 
 /**
  * @brief Open a file and go through its entire path to get the node associated to the end level.
