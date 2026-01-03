@@ -51,6 +51,7 @@ ktmpfs_readdir(vfs_node_t *dir, uint32_t index, vfs_dirent_t *dirent)
     }
     dir_entry = (tmpfs_entry_t *) dir->_private;
     child = dir_entry->_dir._child;
+    kvfs_stat_update_atime(&dir_entry->_stat);
     for (; index > 0; index--) {
         if (child == NULL) {
             break;

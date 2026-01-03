@@ -51,6 +51,6 @@ ktmpfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len)
     }
     kmemcpy(&entry->_file._data_ptr[offset], buffer, len);
     entry->_file._size = MAX(new_size, entry->_file._size);
-    entry->_stat._size = entry->_file._size;
+    kvfs_stat_update_size(&entry->_stat, entry->_file._size);
     return len;
 }

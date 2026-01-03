@@ -90,12 +90,7 @@ ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, mode_t mode)
     entry->_next = parent->_dir._child;
     parent->_dir._child = entry;
     entry->_parent = parent;
-    entry->_stat._atime = 0;
-    entry->_stat._mtime = 0;
-    entry->_stat._ctime = 0;
-    entry->_stat._mode = mode;
-    entry->_stat._nlink = 0;
-    entry->_stat._size = 0;
+    entry->_stat = kvfs_stat_create(mode);
     if (KVFS_STAT_ISDIR(mode)) {
         entry->_dir._child = NULL;
     } else {

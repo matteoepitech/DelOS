@@ -42,5 +42,6 @@ ktmpfs_read(vfs_node_t *node, off_t offset, void *buffer, size_t len)
     }
     read_content = (entry->_file._size - offset) > len ? len : (entry->_file._size - offset);
     kmemcpy(buffer, &entry->_file._data_ptr[offset], read_content);
+    kvfs_stat_update_atime(&entry->_stat);
     return read_content;
 }
