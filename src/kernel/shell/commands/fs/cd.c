@@ -6,6 +6,7 @@
 */
 
 #include <kernel/fs/vfs/vfs_open.h>
+#include <kernel/sys/syscall.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -21,29 +22,9 @@
 uint8_t
 kshell_cd(uint32_t argc, char *argv[])
 {
-    vfs_stat_t stat_buffer = {0};
-    vfs_node_t *dir_to_cd = NULL;
-
     if (argc < 2) {
-        kvfs_close(kvfs_cwd);
-        kvfs_cwd = kvfs_lookup_open("/");
-        return KO_FALSE;
+        return ksys_chdir("/") == -1 ? KO_FALSE : OK_TRUE;
+    } else {
+        return ksys_chdir(argv[1]) == -1 ? KO_FALSE : OK_TRUE;
     }
-    dir_to_cd = kvfs_lookup_open(argv[1]);
-    if (dir_to_cd == NULL) {
-        KPRINTF_ERROR("cd: failed to change directory");
-        return OK_TRUE;
-    }
-    if (kvfs_stat_from_node(dir_to_cd, &stat_buffer) == KO_FALSE) {
-        kvfs_close(dir_to_cd);
-        return OK_TRUE;
-    }
-    if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
-        KPRINTF_ERROR("cd: not a directory");
-        kvfs_close(dir_to_cd);
-        return OK_TRUE;
-    }
-    kvfs_close(kvfs_cwd);
-    kvfs_cwd = dir_to_cd;
-    return KO_FALSE;
 }

@@ -5,11 +5,12 @@
 ** cat command source file
 */
 
+#include <kernel/fs/fd/fd_operations.h>
 #include <kernel/memory/api/kmalloc.h>
 #include <kernel/fs/vfs/vfs_open.h>
-#include <kernel/fs/vfs/vfs_stat.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
+#include <kernel/fs/fd/fd.h>
 #include <defines.h>
 
 /**
@@ -24,7 +25,7 @@ uint8_t
 kshell_cat(uint32_t argc, char *argv[])
 {
     vfs_stat_t stat_buffer = {0};
-    vfs_node_t *file = NULL;
+    fd_t fd = KFD_ERROR;
     char *buffer = NULL;
     size_t len = 0;
 
@@ -32,13 +33,13 @@ kshell_cat(uint32_t argc, char *argv[])
         KPRINTF_ERROR("usage: cat <path>");
         return OK_TRUE;
     }
-    file = kvfs_lookup_open(argv[1]);
-    if (file == NULL) {
+    fd = kfd_open(argv[1], KVFS_O_RDONLY, 0);
+    if (fd == KFD_ERROR) {
         KPRINTF_ERROR("cat: no such file or directory");
         return OK_TRUE;
     }
-    if (kvfs_stat_from_node(file, &stat_buffer) == KO_FALSE) {
-        kvfs_close(file);
+    if (kfd_stat(fd, &stat_buffer) == KO_FALSE) {
+        kfd_close(fd);
         return OK_TRUE;
     }
     if (KVFS_STAT_ISREG(stat_buffer._mode) == KO_FALSE) {
@@ -54,9 +55,10 @@ kshell_cat(uint32_t argc, char *argv[])
         KPRINTF_ERROR("cat: failed to read, no more memory space available");
         return OK_TRUE;
     }
-    file->_ops->_read(file, 0, buffer, len);
+    kfd_read(fd, buffer, len);
     KPRINTF_OK("%s", argv[1]);
     ktty_puts(buffer, VGA_TEXT_DEFAULT_COLOR);
     ktty_putc('\n', VGA_TEXT_DEFAULT_COLOR);
+    kfd_close(fd);
     return KO_FALSE;
 }
