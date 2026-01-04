@@ -43,9 +43,6 @@ kfd_read(fd_t fd, void *buffer, size_t len)
     if (kvfs_stat_can_read(&st, &cred) == KO_FALSE) {
         return 0;
     }
-    read_bytes = kvfs_read(fd_struct->_node, fd_struct->_offset, buffer, len);
-    if (read_bytes > 0) {
-        fd_struct->_offset += read_bytes;
-    }
+    read_bytes = kvfs_read(fd_struct->_node, &fd_struct->_offset, buffer, len);
     return read_bytes;
 }

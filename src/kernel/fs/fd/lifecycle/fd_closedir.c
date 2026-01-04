@@ -1,15 +1,16 @@
 /*
 ** DELOS PROJECT, 2026
-** src/kernel/fs/vfs/directory/vfs_closedir
+** src/kernel/fs/fd/directory/fd_closedir
 ** File description:
-** VFS close dir source file
+** FD closedir source file
 */
 
 #include <kernel/memory/api/kmalloc.h>
-#include <kernel/fs/vfs/vfs_dir.h>
-#include <kernel/fs/vfs/vfs.h>
+#include <kernel/fs/vfs/vfs_open.h>
+#include <kernel/fs/fd/fd_dir.h>
+#include <utils/misc/print.h>
+#include <kernel/fs/fd/fd.h>
 #include <defines.h>
-#include <types.h>
 
 /**
  * @brief Close a directory iterator.
@@ -20,12 +21,14 @@
  * @return OK_TRUE if worked, KO_FALSE otherwise.
  */
 bool32_t
-kvfs_closedir(vfs_dir_t *dir)
+kfd_closedir(fd_dir_t *dir)
 {
     if (dir == NULL) {
         return KO_FALSE;
     }
-    kvfs_close(dir->_dir_node);
+    if (kfd_close(dir->_fd) == KO_FALSE) {
+        return KO_FALSE;
+    }
     kfree(dir);
     return OK_TRUE;
 }

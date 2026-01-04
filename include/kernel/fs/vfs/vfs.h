@@ -6,6 +6,8 @@
 */
 
 #include <kernel/fs/vfs/vfs_stat.h>
+#include <kernel/fs/fd/fd_dir.h>
+#include <kernel/fs/dirent.h>
 #include <defines.h>
 #include <types.h>
 
@@ -78,13 +80,13 @@ struct vfs_dirent_s;
  *        - unlink  = the function pointer to unlink a file whithin a parent
  */
 typedef struct vfs_ops_s {
-    size_t (*_read)(vfs_node_t *node, off_t offset, void *buffer, size_t len);
-    size_t (*_write)(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
+    size_t (*_read)(vfs_node_t *node, off_t *offset, void *buffer, size_t len);
+    size_t (*_write)(vfs_node_t *node, off_t *offset, const void *buffer, size_t len);
     vfs_node_t *(*_lookup)(vfs_node_t *node, const char *next_level);
     bool32_t (*_create)(vfs_node_t *parent, const char *name, mode_t mode);
     bool32_t (*_mkdir)(vfs_node_t *parent, const char *name, mode_t mode);
     bool32_t (*_rmdir)(vfs_node_t *dir);
-    bool32_t (*_readdir)(vfs_node_t *dir, uint32_t index, struct vfs_dirent_s *dirent);
+    bool32_t (*_readdir)(vfs_node_t *dir, off_t *offset, dirent_t *dirent);
     bool32_t (*_unlink)(vfs_node_t *node);
     bool32_t (*_stat)(vfs_node_t *node, struct vfs_stat_s *stat_ptr);
 } vfs_ops_t;
@@ -152,30 +154,42 @@ bool32_t
 kvfs_rmdir(const char *path);
 
 /**
+ * @brief VFS generic readdir dispatcher.
+ *
+ * @param node    VFS node (directory)
+ * @param offset  Directory offset pointer (owned by fd)
+ * @param out     Output directory entry
+ *
+ * @return OK_TRUE if entry read, KO_FALSE otherwise
+ */
+bool32_t
+kvfs_readdir(vfs_node_t *node, off_t *offset, dirent_t *out);
+
+/**
  * @brief Write some data in a file.
  *
  * @param node       The node where to write the data
- * @param offset     The offset for writing
+ * @param offset     The offset pointer for writing
  * @param buffer     The buffer to take the data from
  * @param len        Number of maximum byte to write
  *
  * @return Number of bytes write on the file.
  */
 size_t
-kvfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
+kvfs_write(vfs_node_t *node, off_t *offset, const void *buffer, size_t len);
 
 /**
  * @brief Read some data from a file.
  *
  * @param node       The node where to read the data
- * @param offset     The offset for reading
+ * @param offset     The offset pointer for reading
  * @param buffer     The buffer to put the data
  * @param len        Number of maximum byte to read
  *
  * @return Number of bytes read on the file.
  */
 size_t
-kvfs_read(vfs_node_t *node, off_t offset, void *buffer, size_t len);
+kvfs_read(vfs_node_t *node, off_t *offset, void *buffer, size_t len);
 
 /**
  * @brief Unlink a node (remove it's entry but not his data of course)

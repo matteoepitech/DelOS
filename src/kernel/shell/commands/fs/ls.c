@@ -5,9 +5,10 @@
 ** ls command source file
 */
 
-#include <kernel/fs/vfs/vfs_dir.h>
+#include <kernel/fs/fd/fd_dir.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
+#include <kernel/fs/fd/fd.h>
 #include <defines.h>
 
 /**
@@ -21,20 +22,22 @@
 uint8_t
 kshell_ls(uint32_t argc, char *argv[])
 {
-    vfs_dir_t *dir = NULL;
+    dirent_t dirent = {0};
+    fd_dir_t *dir = NULL;
+    fd_t fd = KFD_ERROR;
 
     if (argc < 2) {
-        dir = kvfs_opendir_from_node(kvfs_cwd);
+        dir = kfd_opendir(".");
     } else {
-        dir = kvfs_opendir(argv[1]);
+        dir = kfd_opendir(argv[1]);
     }
     if (dir == NULL) {
-        KPRINTF_ERROR("%s", "ls: cannot open directory");
+        KPRINTF_ERROR("ls: cannot open directory");
         return OK_TRUE;
     }
-    for (vfs_dirent_t *dirent = kvfs_readdir(dir); dirent != NULL; dirent = kvfs_readdir(dir)) {
-        KPRINTF_INFO("%s%s", dirent->_name, KVFS_STAT_ISDIR(dirent->_type) == OK_TRUE ? "/" : "");
+    while (kfd_readdir(fd, &dirent) == OK_TRUE) {
+        KPRINTF_INFO("%s%s", dirent._name, dirent._type == KVFS_STAT_IFDIR ? "/" : "");
     }
-    kvfs_closedir(dir);
+    kfd_close(fd);
     return KO_FALSE;
 }

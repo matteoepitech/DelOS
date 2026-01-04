@@ -6,7 +6,6 @@
 */
 
 #include <utils/kstdlib/kstring.h>
-#include <kernel/fs/vfs/vfs_dir.h>
 #include <kernel/fs/tmpfs/tmpfs.h>
 #include <defines.h>
 #include <types.h>
@@ -20,7 +19,7 @@
  * @return OK_TRUE if worked, KO_FALSE othewise.
  */
 static bool32_t
-fill_out_dirent(vfs_dirent_t *dirent, tmpfs_entry_t *res)
+fill_out_dirent(dirent_t *dirent, tmpfs_entry_t *res)
 {
     if (res == NULL) {
         return KO_FALSE;
@@ -35,16 +34,17 @@ fill_out_dirent(vfs_dirent_t *dirent, tmpfs_entry_t *res)
  * @brief Iterate through the VFS node directory.
  *
  * @param dir        The directory strcuture (VFS node)
- * @param index      The current index in the directory (iterator way)
+ * @param offset     The current index in the directory (iterator way)
  * @param dirent     A pointer to the structure to fill out of informations
  *
  * @return OK_TRUE if worked, KO_FALSE othewise.
  */
 bool32_t
-ktmpfs_readdir(vfs_node_t *dir, uint32_t index, vfs_dirent_t *dirent)
+ktmpfs_readdir(vfs_node_t *dir, off_t *offset, dirent_t *dirent)
 {
     tmpfs_entry_t *dir_entry = NULL;
     tmpfs_entry_t *child = NULL;
+    off_t index = *offset;
 
     if (dir == NULL || dirent == NULL) {
         return KO_FALSE;
@@ -58,5 +58,6 @@ ktmpfs_readdir(vfs_node_t *dir, uint32_t index, vfs_dirent_t *dirent)
         }
         child = child->_next;
     }
+    (*offset)++;
     return fill_out_dirent(dirent, child);
 }

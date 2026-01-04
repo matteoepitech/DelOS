@@ -22,9 +22,10 @@
     #ifndef KVFS_O_MISC
         #define KVFS_O_MISC
         #define KVFS_O_CREAT    0x0040
-        #define KVFS_O_EXCL     0x0080 //TODO:
-        #define KVFS_O_TRUNC    0x0200 //TODO:
+        #define KVFS_O_EXCL     0x0080
+        #define KVFS_O_TRUNC    0x0200
         #define KVFS_O_APPEND   0x0400 //TODO:
+        #define KVFS_O_DIRECTORY 0x10000
     #endif /* ifndef KVFS_O_MISC */
 
 /**

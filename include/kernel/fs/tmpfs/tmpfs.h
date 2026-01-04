@@ -6,8 +6,8 @@
 */
 
 #include <kernel/fs/vfs/vfs_stat.h>
-#include <kernel/fs/vfs/vfs_dir.h>
 #include <kernel/fs/vfs/vfs.h>
+#include <kernel/fs/dirent.h>
 #include <defines.h>
 #include <types.h>
 
@@ -59,27 +59,27 @@ ktmpfs_mount(const char *loc, UNUSED void *device);
  * @brief Read data in the temporary virtual file system.
  *
  * @param node       The node of the file in the VFS
- * @param offset     The offset in the file
+ * @param offset     The offset pointer in the file
  * @param buffer     The buffer where to store the data read in (should be allocated to len size)
  * @param len        The number of byte to read
  *
  * @return The number of bytes read.
  */
 size_t
-ktmpfs_read(vfs_node_t *node, off_t offset, void *buffer, size_t len);
+ktmpfs_read(vfs_node_t *node, off_t *offset, void *buffer, size_t len);
 
 /**
  * @brief Write data in the temporary virtual file system.
  *
  * @param node       The node of the file in the VFS
- * @param offset     The offset in the file
+ * @param offset     The offset pointer in the file
  * @param buffer     The buffer where the data to write is in
  * @param len        The number of bytes to write
  *
  * @return The size of the number of bytes write in the file.
  */
 size_t
-ktmpfs_write(vfs_node_t *node, off_t offset, const void *buffer, size_t len);
+ktmpfs_write(vfs_node_t *node, off_t *offset, const void *buffer, size_t len);
 
 /**
  * @brief Get another node from the VFS with a node and next level path.
@@ -141,13 +141,13 @@ ktmpfs_stat(vfs_node_t *node, vfs_stat_t *stat_ptr);
  * @brief Iterate through the VFS node directory.
  *
  * @param dir        The directory strcuture (VFS node)
- * @param index      The current index in the directory (iterator way)
+ * @param offset     The current index in the directory (iterator way)
  * @param dirent     A pointer to the structure to fill out of informations
  *
  * @return OK_TRUE if worked, KO_FALSE othewise.
  */
 bool32_t
-ktmpfs_readdir(vfs_node_t *dir, uint32_t index, vfs_dirent_t *dirent);
+ktmpfs_readdir(vfs_node_t *dir, off_t *offset, dirent_t *dirent);
 
 /**
  * @brief Unlink a file (remove it's entry but not his data of course)

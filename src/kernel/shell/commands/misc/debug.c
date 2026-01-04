@@ -7,9 +7,9 @@
 
 #include <kernel/memory/early_allocator/early_alloc.h>
 #include <kernel/fs/vfs/vfs_registry.h>
+#include <kernel/fs/fd/fd_operations.h>
 #include <kernel/memory/api/kmalloc.h>
 #include <kernel/fs/vfs/vfs_open.h>
-#include <kernel/fs/vfs/vfs_dir.h>
 #include <kernel/fs/tmpfs/tmpfs.h>
 #include <utils/kstdlib/kstring.h>
 #include <kernel/memory/vmm/vmm.h>

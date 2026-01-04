@@ -26,7 +26,6 @@ kfd_write(fd_t fd, const void *buffer, size_t len)
     const cred_t cred = {0, 0};
     vfs_stat_t st = {0};
     size_t written = 0;
-    off_t offset = 0;
 
     if (buffer == NULL || len == 0) {
         return 0;
@@ -47,10 +46,6 @@ kfd_write(fd_t fd, const void *buffer, size_t len)
     if (fd_struct->_node->_ops == NULL || fd_struct->_node->_ops->_write == NULL) {
         return 0;
     }
-    offset = (fd_struct->_flags & KVFS_O_APPEND) ? (off_t) st._size : fd_struct->_offset;
-    written = kvfs_write(fd_struct->_node, fd_struct->_offset, buffer, len);
-    if (written > 0) {
-        fd_struct->_offset = offset + written;
-    }
+    written = kvfs_write(fd_struct->_node, &fd_struct->_offset, buffer, len);
     return written;
 }
