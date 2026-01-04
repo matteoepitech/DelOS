@@ -40,6 +40,7 @@ kshell_cd(uint32_t argc, char *argv[])
     }
     if (KVFS_STAT_ISDIR(stat_buffer._mode) == KO_FALSE) {
         KPRINTF_ERROR("cd: not a directory");
+        kvfs_close(dir_to_cd);
         return OK_TRUE;
     }
     kvfs_close(kvfs_cwd);

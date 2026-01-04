@@ -76,8 +76,9 @@ kfd_get(fd_t fd)
 bool32_t
 kfd_check_access(fd_t fd, fd_access_t required_access)
 {
-    file_desc_t *desc;
+    file_desc_t *desc = NULL;
     uint32_t allowed = 0;
+    int32_t accmode = 0;
 
     if (fd < 0 || fd >= KFD_MAX_COUNT) {
         return KO_FALSE;
@@ -86,11 +87,13 @@ kfd_check_access(fd_t fd, fd_access_t required_access)
     if (desc == NULL) {
         return KO_FALSE;
     }
-    if (desc->_flags & KVFS_O_RDONLY || desc->_flags & KVFS_O_RDWR) {
-        allowed |= KFD_ACCESS_READ;
-    }
-    if (desc->_flags & KVFS_O_WRONLY || desc->_flags & KVFS_O_RDWR) {
+    accmode = desc->_flags & KVFS_O_ACCMODE;
+    if (accmode == KVFS_O_WRONLY) {
         allowed |= KFD_ACCESS_WRITE;
+    } else if (accmode == KVFS_O_RDWR) {
+        allowed |= KFD_ACCESS_READ | KFD_ACCESS_WRITE;
+    } else {
+        allowed |= KFD_ACCESS_READ;
     }
     if ((allowed & required_access) != required_access) {
         return KO_FALSE;

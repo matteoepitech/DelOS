@@ -24,7 +24,6 @@ kshell_ls(uint32_t argc, char *argv[])
 {
     dirent_t dirent = {0};
     fd_dir_t *dir = NULL;
-    fd_t fd = KFD_ERROR;
 
     if (argc < 2) {
         dir = kfd_opendir(".");
@@ -35,9 +34,9 @@ kshell_ls(uint32_t argc, char *argv[])
         KPRINTF_ERROR("ls: cannot open directory");
         return OK_TRUE;
     }
-    while (kfd_readdir(fd, &dirent) == OK_TRUE) {
+    while (kfd_readdir(dir->_fd, &dirent) == OK_TRUE) {
         KPRINTF_INFO("%s%s", dirent._name, dirent._type == KVFS_STAT_IFDIR ? "/" : "");
     }
-    kfd_close(fd);
+    kfd_closedir(dir);
     return KO_FALSE;
 }

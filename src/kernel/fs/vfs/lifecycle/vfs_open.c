@@ -115,6 +115,8 @@ kvfs_open(const char *path, int32_t flags, mode_t mode)
         //kvfs_truncate(node, 0);
         //TODO: truncate operation
     }
-    kvfs_close(parent);
+    if (parent != kvfs_cwd) {
+        kvfs_close(parent);
+    }
     return node;
 }

@@ -96,6 +96,7 @@ ktmpfs_create_entry(tmpfs_entry_t *parent, const char *name, mode_t mode)
     } else {
         entry->_file._data_ptr = NULL;
         entry->_file._size = 0;
+        entry->_file._capacity = 0;
     }
     return entry;
 }
@@ -130,7 +131,7 @@ ktmpfs_remove_from_parent_ll(tmpfs_entry_t *parent, tmpfs_entry_t *entry)
     } else {
         prev->_next = tmp->_next;
     }
-    kvfs_stat_dec_nlink(&parent->_stat);
     kfree(tmp);
+    kvfs_stat_dec_nlink(&parent->_stat);
     return OK_TRUE;
 }

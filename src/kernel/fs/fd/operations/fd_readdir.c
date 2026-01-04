@@ -33,6 +33,9 @@ kfd_readdir(fd_t fd, dirent_t *out)
     if (desc == NULL || desc->_node == NULL) {
         return KO_FALSE;
     }
+    if (kfd_check_access(fd, KFD_ACCESS_READ) == KO_FALSE) {
+        return KO_FALSE;
+    }
     if (kvfs_get_stat(desc->_node, &stat_buffer) == KO_FALSE) {
         return KO_FALSE;
     }
@@ -42,6 +45,5 @@ kfd_readdir(fd_t fd, dirent_t *out)
     if (kvfs_readdir(desc->_node, &desc->_offset, out) == KO_FALSE) {
         return KO_FALSE;
     }
-    desc->_offset++;
     return OK_TRUE;
 }
