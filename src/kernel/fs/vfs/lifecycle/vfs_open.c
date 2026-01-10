@@ -77,7 +77,12 @@ kvfs_open(const char *path, int32_t flags, mode_t mode)
                 return NULL;
             }
         } else {
-            if (kvfs_create(parent, file_name, mode) == KO_FALSE) {
+            if (flags & KVFS_O_DIRECTORY) {
+                if (kvfs_mkdir(parent, file_name, mode) == KO_FALSE) {
+                    kvfs_close(parent);
+                    return NULL;
+                }
+            } else if (kvfs_create(parent, file_name, mode) == KO_FALSE) {
                 kvfs_close(parent);
                 return NULL;
             }
