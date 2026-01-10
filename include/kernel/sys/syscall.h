@@ -31,4 +31,14 @@ ksys_chdir(const char *path);
 int32_t
 ksys_mkdir(const char *path);
 
+/**
+ * @brief Syscall to remove a directory using his path.
+ *
+ * @param path   The path to directory to remove
+ *
+ * @return O if worked, -1 if any error.
+ */
+int32_t
+ksys_rmdir(const char *path);
+
 #endif /* ifndef KERNEL_SYS_SYSCALL_H_ */

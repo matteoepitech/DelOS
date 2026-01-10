@@ -22,9 +22,16 @@
 uint8_t
 kshell_cd(uint32_t argc, char *argv[])
 {
+    int32_t r = -1;
+
     if (argc < 2) {
-        return ksys_chdir("/") == -1 ? KO_FALSE : OK_TRUE;
+        r = ksys_chdir("/");
     } else {
-        return ksys_chdir(argv[1]) == -1 ? KO_FALSE : OK_TRUE;
+        r = ksys_chdir(argv[1]);
     }
+    if (r == -1) {
+        KPRINTF_ERROR("cd: error while changing directory");
+        return OK_TRUE;
+    }
+    return KO_FALSE;
 }

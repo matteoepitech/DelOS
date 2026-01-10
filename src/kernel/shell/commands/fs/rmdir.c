@@ -6,6 +6,7 @@
 */
 
 #include <kernel/shell/shell.h>
+#include <kernel/sys/syscall.h>
 #include <kernel/fs/vfs/vfs.h>
 #include <utils/misc/print.h>
 #include <defines.h>
@@ -25,6 +26,9 @@ kshell_rmdir(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", "usage: rmdir <path>");
         return OK_TRUE;
     }
-    kvfs_rmdir(argv[1]);
+    if (ksys_rmdir(argv[1]) == -1) {
+        KPRINTF_ERROR("rmdir: error while removing the directory");
+        return OK_TRUE;
+    }
     return KO_FALSE;
 }
