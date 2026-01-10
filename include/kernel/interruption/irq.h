@@ -15,7 +15,7 @@
 
     // This macro is used for declaring interruption service routine easier
     #ifndef IRQ_DECLARE_HANDLER
-        #define IRQ_DECLARE_HANDLER(name) extern void name(registers_t *regs)
+        #define IRQ_DECLARE_HANDLER(name) extern void name(isr_registers_t *regs)
     #endif /* ifndef IRQ_DECLARE_HANDLER */
 
 #endif /* ifndef KERNEL_INTERRUTPION_IRQ_H_ */

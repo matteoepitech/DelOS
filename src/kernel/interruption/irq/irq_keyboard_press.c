@@ -77,7 +77,7 @@ kkeyboard_pop(void)
  * @param regs          The registers
  */
 void
-irq_keyboard_press(UNUSED registers_t *regs)
+irq_keyboard_press(UNUSED isr_registers_t *regs)
 {
     uint8_t code = inb(0x60);
     uint8_t *scancodes = kkeyboard_get_keymap_values(keymap, shift_pressed ^ caps_lock_activated);

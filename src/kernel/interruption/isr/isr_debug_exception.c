@@ -25,7 +25,7 @@
  * @param regs          The registers
  */
 void
-isr_debug_exception(registers_t *regs)
+isr_debug_exception(isr_registers_t *regs)
 {
     KPRINTF_DEBUG("Debug step activated on an instruction.");
     DEACTIVATE_TRAP_FLAG(regs);

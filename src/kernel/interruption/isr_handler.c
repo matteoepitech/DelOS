@@ -44,7 +44,7 @@ kisr_register_handler(uint8_t index, isr_handler_t func_handler)
  * @param err_code              The error code if provided by the CPU
  */
 __attribute__((used)) void
-kisr_handler(registers_t *regs)
+kisr_handler(isr_registers_t *regs)
 {
     if (regs == NULL) {
         KPANIC("Interruption's registers not pushed on stack.");

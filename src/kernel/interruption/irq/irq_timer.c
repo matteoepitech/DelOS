@@ -17,7 +17,7 @@
  * @param regs          The registers
  */
 void
-irq_timer(UNUSED registers_t *regs)
+irq_timer(UNUSED isr_registers_t *regs)
 {
     static uint32_t sec_tick_count = 0;
 

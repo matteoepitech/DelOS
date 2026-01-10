@@ -16,7 +16,7 @@
  * @param regs          The registers
  */
 void
-isr_div_zero(UNUSED registers_t *regs)
+isr_div_zero(UNUSED isr_registers_t *regs)
 {
     KPANIC("Division by zero.");
 }

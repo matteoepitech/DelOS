@@ -5,11 +5,12 @@
 ** Kernel Source file main
 */
 
-#include <kernel/interruption/interruption.h>
 #include <kernel/memory/early_allocator/early_alloc.h>
+#include <kernel/interruption/interruption.h>
+#include <kernel/scheduler/scheduler.h>
+#include <kernel/memory/api/kmalloc.h>
 #include <kernel/interruption/idt.h>
 #include <kernel/interruption/pic.h>
-#include <kernel/memory/api/kmalloc.h>
 #include <kernel/memory/pmm/pmm.h>
 #include <kernel/memory/vmm/vmm.h>
 #include <kernel/memory/stack.h>
@@ -38,6 +39,7 @@ kmain(void)
     kearly_malloc_disable();
     kmalloc_init();
     kfs_init();
+    kscheduler_init();
 
     kshell_start();
 

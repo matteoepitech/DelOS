@@ -16,7 +16,7 @@
  * @param regs          The registers
  */
 void
-isr_breakpoint(UNUSED registers_t *regs)
+isr_breakpoint(UNUSED isr_registers_t *regs)
 {
     KPRINTF_DEBUG("A breakpoint has been triggered.");
 }

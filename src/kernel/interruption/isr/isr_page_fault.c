@@ -18,7 +18,7 @@
  * @param regs          The registers
  */
 void
-isr_page_fault(UNUSED registers_t *regs)
+isr_page_fault(UNUSED isr_registers_t *regs)
 {
     char buffer[64] = {0};
 

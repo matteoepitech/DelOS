@@ -25,14 +25,14 @@
 
     // This macro is used for declaring interruption service routine easier
     #ifndef ISR_DECLARE_HANDLER
-        #define ISR_DECLARE_HANDLER(name) extern void name(registers_t *regs)
+        #define ISR_DECLARE_HANDLER(name) extern void name(isr_registers_t *regs)
     #endif /* ifndef ISR_DECLARE_HANDLER */
 
 /**
  * @brief Register structure passed by the CPU when interruption.
  *        -...
  */
-typedef struct registers_s {
+typedef struct isr_registers_s {
     uint32_t _ds;
     uint32_t _es;
     uint32_t _fs;
@@ -52,12 +52,12 @@ typedef struct registers_s {
     uint32_t _eflags;
     uint32_t _useresp;
     uint32_t _ss;
-} registers_t;
+} isr_registers_t;
 
 /**
  * @brief Typedef for the handler isr function type.
  */
-typedef void (*isr_handler_t)(registers_t *regs);
+typedef void (*isr_handler_t)(isr_registers_t *regs);
 
 /**
  * @brief Register an handler of a ISR in the isr_handlers variable.
@@ -77,6 +77,6 @@ kisr_register_handler(uint8_t index, isr_handler_t func_handler);
  * @param err_code              The error code if provided by the CPU
  */
 __attribute__((used)) void
-kisr_handler(registers_t *regs);
+kisr_handler(isr_registers_t *regs);
 
 #endif /* ifndef KERNEL_INTERRUTPION_ISR_H_ */

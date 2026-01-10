@@ -16,7 +16,7 @@
  * @param regs          The registers
  */
 void
-isr_invalid_opcode(UNUSED registers_t *regs)
+isr_invalid_opcode(UNUSED isr_registers_t *regs)
 {
     KPANIC("CPU just ran into an invalid opcode.");
 }
