@@ -21,6 +21,16 @@
 #include <kernel/fs/fs.h>
 #include <defines.h>
 
+static void test_task_idle(void)
+{
+    return;
+}
+
+static void test_task_idle2(void)
+{
+    return;
+}
+
 /**
  * @brief Kernel main entry point.
  *        This function is located at 0x10000 in the memory.
@@ -40,6 +50,16 @@ kmain(void)
     kmalloc_init();
     kfs_init();
     kscheduler_init();
+    
+    task_t *t1 = ktask_create(test_task_idle);
+    task_t *t2 = ktask_create(test_task_idle2);
+
+    if (kscheduler_add_task(t1) == OK_TRUE) {
+        KPRINTF_OK("Task 1 added.");
+    }
+    if (kscheduler_add_task(t2) == OK_TRUE) {
+        KPRINTF_OK("Task 2 added.");
+    }
 
     kshell_start();
 

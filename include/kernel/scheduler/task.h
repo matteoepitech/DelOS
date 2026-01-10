@@ -5,6 +5,9 @@
 ** Scheduler task header file
 */
 
+#include <defines.h>
+#include <types.h>
+
 #ifndef KERNEL_SCHEDULER_TASK_H_
     #define KERNEL_SCHEDULER_TASK_H_
 
@@ -15,9 +18,9 @@
  *        - PAUSED  = Task is paused of execution and waits to be run
  */
 typedef enum {
-    IDLE,
-    RUNNING,
-    PAUSED
+    KTASK_IDLE,
+    KTASK_RUNNING,
+    KTASK_PAUSED
 } task_state_t;
 
 /*
