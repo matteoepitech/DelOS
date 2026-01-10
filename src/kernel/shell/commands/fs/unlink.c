@@ -6,7 +6,7 @@
 */
 
 #include <kernel/shell/shell.h>
-#include <kernel/fs/vfs/vfs.h>
+#include <kernel/sys/syscall.h>
 #include <utils/misc/print.h>
 #include <defines.h>
 
@@ -25,7 +25,7 @@ kshell_unlink(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", "usage: unlink <path>");
         return OK_TRUE;
     }
-    if (kvfs_unlink(argv[1]) == KO_FALSE) {
+    if (ksys_unlink(argv[1]) == -1) {
         KPRINTF_ERROR("unlink: error while unlinking");
         return OK_TRUE;
     }

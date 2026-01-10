@@ -8,6 +8,7 @@
 #include <kernel/fs/vfs/vfs_open.h>
 #include <kernel/shell/shell.h>
 #include <utils/misc/print.h>
+#include <kernel/sys/syscall.h>
 #include <kernel/fs/fd/fd.h>
 #include <defines.h>
 
@@ -28,11 +29,11 @@ kshell_touch(uint32_t argc, char *argv[])
         KPRINTF_ERROR("%s", "usage: touch <path>");
         return OK_TRUE;
     }
-    fd = kfd_open(argv[1], KVFS_O_CREAT, 0644);
+    fd = ksys_open(argv[1], KVFS_O_CREAT, 0644);
     if (fd == KFD_ERROR) {
         KPRINTF_ERROR("touch: cannot create the file");
         return OK_TRUE;
     }
-    kfd_close(fd);
+    ksys_close(fd);
     return KO_FALSE;
 }
