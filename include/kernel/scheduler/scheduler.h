@@ -12,21 +12,11 @@
 #ifndef KERNEL_SCHEDULER_H_
     #define KERNEL_SCHEDULER_H_
 
-/*
- * @brief Structure for a scheduler node.
- *        - task = the task
- *        - next = the next scheduler node
- */
-typedef struct scheduler_node_s {
-    task_t *_task;
-    struct scheduler_node_s *_next;
-} scheduler_node_t;
-
-/* @brief This variable is the head/tail of the schedulers nodes */
-extern scheduler_node_t *kscheduler_node_head;
-extern scheduler_node_t *kscheduler_node_tail;
+/* @brief This variable is the head/tail of the task */
+extern task_t *ktask_head;
+extern task_t *ktask_tail;
 /* @brief This variable contains the current task executed on the CPU */
-extern scheduler_node_t *kcurrent_sched_node;
+extern task_t *kcurrent_task;
 
 /**
  * @brief Initialize the scheduler stuff.

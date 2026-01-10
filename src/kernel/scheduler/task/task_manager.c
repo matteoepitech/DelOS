@@ -29,5 +29,6 @@ ktask_create(void (*entry)(void))
     }
     task->_entry = entry;
     task->_state = KTASK_IDLE;
+    task->_next = NULL;
     return task;
 }

@@ -30,6 +30,7 @@ typedef enum {
 typedef struct task_s {
     void (*_entry)(void); // WARN: Temporary
     task_state_t _state;
+    struct task_s *_next;
 } task_t;
 
 /**
